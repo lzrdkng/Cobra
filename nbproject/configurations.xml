@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="inc">
+        <in>Application.hpp</in>
+        <in>Color.hpp</in>
+        <in>Object.hpp</in>
+        <in>Pair.hpp</in>
+        <in>Point.hpp</in>
+        <in>Rect.hpp</in>
+        <in>Renderer.hpp</in>
+        <in>Texture.hpp</in>
+        <in>Window.hpp</in>
+      </df>
+      <df name="src">
+        <in>Color.cpp</in>
+        <in>Point.cpp</in>
+        <in>Rect.cpp</in>
+        <in>Renderer.cpp</in>
+        <in>Texture.cpp</in>
+        <in>Window.cpp</in>
+        <in>main.cpp</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>nbproject/private/launcher.properties</itemPath>
+      <itemPath>makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+        <prependToolCollectionPath>false</prependToolCollectionPath>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-fopenmp -O3"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f makefile</buildCommand>
+          <cleanCommand>${MAKE} -f makefile clean</cleanCommand>
+          <executablePath>bin/a.out</executablePath>
+          <cTool>
+            <standard>10</standard>
+          </cTool>
+          <ccTool>
+            <standard>8</standard>
+            <incDir>
+              <pElem>inc</pElem>
+              <pElem>/usr/local/include</pElem>
+              <pElem>.</pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="inc/Application.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Color.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Object.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Pair.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Point.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Rect.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Renderer.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Texture.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Window.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Color.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Point.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Rect.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Renderer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Texture.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Window.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

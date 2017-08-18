@@ -1,0 +1,2 @@
+g++ -fopenmp -Wall -O3 -g -Iinc -I/usr/local/include -c -o obj/main.o src/main.cpp
+g++ -o bin/a.out obj/main.o -lSDL2 -lSDL2_image

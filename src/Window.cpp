@@ -1,50 +1,49 @@
 /*
- * The MIT License
- *
- * Copyright 2017 olivier.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ *  Cobra -- SDL2 C++ Wrapper
+ * 
+ *  Copyright (C) 2017 Olivier Dion <olivier-dion@hotmail.com>
+ * 
+ *  This software is provided 'as-is', without any express or implied
+ *  warranty.  In no event will the authors be held liable for any damages
+ *  arising from the use of this software.
+ * 
+ *  Permission is granted to anyone to use this software for any purpose,
+ *  including commercial applications, and to alter it and redistribute it
+ *  freely, subject to the following restrictions:
+ * 
+ *  1.The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ *  2.Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ *  3.This notice may not be removed or altered from any source distribution.
  */
 
 /* 
- * File:   CWindow.cpp
+ * File:   Window.cpp
  * Author: olivier
  * 
  * Created on August 12, 2017, 8:51 PM
  */
 
+
+#include <iostream>
+
 #include "Window.hpp"
 
 // Public interface
 
-using namespace Cobra;
+using namespace SDL;
 
-Window::Window(Uint32 flags,
-               const std::string& title,
+Window::Window(const char* title,
                int x,
                int y,
                int width,
-               int height)         
+               int height,
+               SDL::WindowFlags flags) : Object()
 {
-    m_renderer = nullptr;
-    
-    m_window = SDL_CreateWindow(title.c_str(),
+    m_window = SDL_CreateWindow(title,
                                 x,
                                 y,
                                 width,
@@ -56,22 +55,42 @@ Window::Window(Uint32 flags,
 }
 
 
-Window::~Window()
+Window::Window(const Window& orig)
 {
-    delete m_renderer;
-    m_renderer = nullptr;
-    
-    SDL_DestroyWindow(m_window);
+
+    Point     pos  = orig.getPosition();
+    Pair<int> size = orig.getSize();
+
+    WindowFlags flags = orig.getFlags();
+
+    m_window = SDL_CreateWindow(orig.getTitle().c_str(),
+                                pos.getX(),
+                                pos.getY(),
+                                size.getLeftValue(),
+                                size.getRightValue(),
+                                flags);
+
+    if (m_window == nullptr)
+        throw std::runtime_error(SDL_GetError());
+
+
+
+}
+
+
+Window::~Window()
+{   
+    if (m_window != nullptr)
+        SDL_DestroyWindow(m_window);
+
     m_window   = nullptr;
-    
-    SDL_Quit();
 }
 
 
 
-Uint32 Window::getFlags() const
+WindowFlags Window::getFlags() const
 {
-    return SDL_GetWindowFlags(m_window);
+    return static_cast<WindowFlags>(SDL_GetWindowFlags(m_window));
 }
 
 bool Window::getGrab() const
@@ -120,15 +139,20 @@ float CWindow::getOpacity() const
     return SDL_GetWindowOpacity(m_window, &opacity) == 0 ? opacity : -1.0;
 }*/
 
-Pair<int> Window::getPosition() const
+Point Window::getPosition() const
 {
     int x, y;
     
     SDL_GetWindowPosition(m_window, &x, &y);
     
-    Pair<int> windowPosition(x, y);
+    Point windowPosition(x, y);
     
     return windowPosition;
+}
+
+SDL_Renderer* Window::getRenderer() const
+{
+    return SDL_GetRenderer(m_window);
 }
 
 Pair<int> Window::getSize() const
@@ -146,6 +170,7 @@ std::string Window::getTitle() const
 {
     return SDL_GetWindowTitle(m_window);
 }
+
 /*
 SDL_SysWMinfo Window::getWMInfo() const
 {
@@ -159,12 +184,10 @@ SDL_SysWMinfo Window::getWMInfo() const
 
 
 
-
-Window& Window::setFullscreen(Uint32 flags)
+Window& Window::setFullscreen(SDL::WindowFlags flags)
 {
     if (SDL_SetWindowFullscreen(m_window, flags) == 0)
         return *this;
-    
     throw std::runtime_error(SDL_GetError());
 }
 
@@ -174,34 +197,33 @@ Window& Window::setGrab(bool grabbed)
         SDL_SetWindowGrab(m_window, SDL_TRUE);
     else
         SDL_SetWindowGrab(m_window, SDL_FALSE);
-    
     return *this;
 }
 
 Window& Window::setMaximumSize(int w, int h)
 {
     SDL_SetWindowMaximumSize(m_window, w, h);
-    
     return *this;
 }
 
 Window& Window::setMinimumSize(int w, int h)
 {
-    
     SDL_SetWindowMinimumSize(m_window, w, h);
-    
     return *this;
 }
+
 /* Current version of SDL2 on Ubuntu 16.04 doesn't support 
-bool CWindow::setOpacity(float opacity)
+Window& Window::setOpacity(float opacity)
 {
-    return SDL_SetWindowOpacity(m_window, opacity) == 0 ? true : false;
+    if (SDL_SetWindowOpacity(m_window, opacity) == 0)
+        return *this;
+ 
+   throw
 }*/
 
 Window& Window::setPosition(int x, int y)
 {
     SDL_SetWindowPosition(m_window, x, y);
-    
     return *this;
 }
 /* Current version of SDL2 on Ubuntu 16.04 doesn't support 
@@ -213,43 +235,42 @@ void CWindow::setResizable(bool resizable)
         SDL_SetWindowResizable(m_window, SDL_FALSE);
 } */
 
-bool Window::setSize(int w, int h)
+Window& Window::setSize(int w, int h)
 {
-    if (w < 0 || h < 0)
-        return false;
-    
     SDL_SetWindowSize(m_window, w, h);
-    
-    return true;
+    return *this;
 }
 
-void Window::setTitle(const std::string& title)
+Window& Window::setTitle(const char* title)
 {
-    SDL_SetWindowTitle(m_window, title.c_str()); 
+    SDL_SetWindowTitle(m_window, title);
+    return *this;
 }
 
+// Other methods
 
-Window& Window::hideWindow()
+Window& Window::hide()
 {
     SDL_HideWindow(m_window);
     return *this;
 }
 
-Window& Window::maximizeWindow()
+Window& Window::maximize()
 {
     SDL_MaximizeWindow(m_window);
     return *this;
 }
 
-Window& Window::minimizeWindow()
+Window& Window::minimize()
 {
     SDL_MinimizeWindow(m_window);
     return *this;
 }
 
-void Window::showWindow()
+Window& Window::show()
 {
     SDL_ShowWindow(m_window);
+    return *this;
 }
 
 SDL_Window* Window::toSDL() const
@@ -257,13 +278,9 @@ SDL_Window* Window::toSDL() const
     return m_window;
 }
 
-void Window::warpMouseInWindow(int x, int y) const
+Window& Window::warpMouse(int x, int y)
 {
     SDL_WarpMouseInWindow(m_window, x, y);
+    return *this;
 }
 
-
-void Window::assignRenderer(Renderer& renderer)
-{
-    m_renderer = &renderer;
-}

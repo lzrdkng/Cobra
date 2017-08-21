@@ -1,13 +1,11 @@
-#include "Application.hpp"
-#include "Window.hpp"
+#include "Color.hpp"
+
+#include <iostream>
 
 int main()
 {
-    Cobra::Application* app = Cobra::Application::init(SDL_INIT_VIDEO);
-    
-    Cobra::Window window(0);
-    
-    app->run();
-    
-    return 0;
+
+   return 0;
+
 }
+

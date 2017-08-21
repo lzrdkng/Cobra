@@ -1,52 +1,123 @@
 /*
- * The MIT License
- *
- * Copyright 2017 olivier.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ *  Cobra -- SDL2 C++ Wrapper
+ * 
+ *  Copyright (C) 2017 Olivier Dion <olivier-dion@hotmail.com>
+ * 
+ *  This software is provided 'as-is', without any express or implied
+ *  warranty.  In no event will the authors be held liable for any damages
+ *  arising from the use of this software.
+ * 
+ *  Permission is granted to anyone to use this software for any purpose,
+ *  including commercial applications, and to alter it and redistribute it
+ *  freely, subject to the following restrictions:
+ * 
+ *  1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ *  2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ *  3. This notice may not be removed or altered from any source distribution.
  */
 
 /* 
  * File:   Object.hpp
  * Author: olivier
  *
- * Created on August 14, 2017, 2:13 AM
+ * Created on August 19, 2017, 6:06 PM
  */
 
 #ifndef OBJECT_HPP
 #define OBJECT_HPP
 
-#include <SDL2/SDL_events.h>
-
+#include <vector>
 #include <stdexcept>
 
-namespace Cobra
+namespace SDL
 {
-
+    
 class Object
 {
 public:
     
-    virtual void eventHandler(const SDL_Event& event) = 0;
- 
-};
+    explicit Object() {m_parent = nullptr;}
 
+    virtual ~Object()
+    {
+
+        quitParent();
+
+        for (unsigned i=0; i<m_children.size(); ++i)
+        {
+            m_children[i]->quitParent();
+        }
+    }
+
+
+private:
+
+    std::vector<Object*> m_children;
+
+    std::string m_name;
+
+    Object* m_parent;
+
+ 
+protected:
+
+    virtual void paintEvent()
+    {
+        for (unsigned i=0; i<m_children.size(); ++i)
+            m_children[i]->paintEvent();
+    }
+
+    virtual void quitParent()
+    {
+
+        if (m_parent != nullptr)
+            m_parent->removeChild(this);
+
+        m_parent = nullptr;
+    }
+
+    virtual void joinParent(Object& parent)
+    {
+        this->joinParent(&parent);
+    }
+
+    virtual void joinParent(Object* parent)
+    {
+        quitParent();
+        m_parent = parent;
+    }
+
+public:
+
+    virtual void addChild(Object& child)
+    {
+        m_children.push_back(&child);
+
+        child.joinParent(this);
+    }
+
+
+    virtual void removeChild(Object& child)
+    {
+        this->removeChild(&child);
+    }
+
+    virtual void removeChild(Object* child)
+    {
+        for (unsigned i=0; i<m_children.size(); ++i)
+        {
+            if (m_children[i] == child)
+            {
+                m_children.erase(m_children.begin()+i);
+                break;
+            }
+        }
+    }
+};
 }
 
 #endif /* OBJECT_HPP */

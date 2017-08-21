@@ -1,200 +1,162 @@
 /*
- * The MIT License
- *
- * Copyright 2017 olivier.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ *  Cobra -- SDL2 C++ Wrapper
+ * 
+ *  Copyright (C) 2017 Olivier Dion <olivier-dion@hotmail.com>
+ * 
+ *  This software is provided 'as-is', without any express or implied
+ *  warranty.  In no event will the authors be held liable for any damages
+ *  arising from the use of this software.
+ * 
+ *  Permission is granted to anyone to use this software for any purpose,
+ *  including commercial applications, and to alter it and redistribute it
+ *  freely, subject to the following restrictions:
+ * 
+ *  1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ *  2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ *  3. This notice may not be removed or altered from any source distribution.
  */
 
 /* 
- * File:   CRenderer.cpp
+ * File:   Renderer.cpp
  * Author: olivier
  * 
  * Created on August 12, 2017, 9:01 PM
  */
 
+#include <stdexcept>
+
 #include "Renderer.hpp"
 #include "Point.hpp"
+#include "Window.hpp"
 
-using namespace Cobra;
+#include <iostream>
 
-Renderer::Renderer(SDL_Window* window, Uint8 flags, int index) 
+using namespace SDL;
+
+Renderer::Renderer(SDL::Window& window, SDL::RendererFlags flags, int index) : Object()
 {
-    m_renderer = SDL_CreateRenderer(window, index, flags);
+    m_renderer = SDL_CreateRenderer(window.toSDL(), index, flags);
 }
 
-Renderer::Renderer(const Renderer& orig)
-{
 
-}
 
 Renderer::~Renderer()
 {
-    SDL_DestroyRenderer(m_renderer);
+    if (m_renderer != nullptr)
+        SDL_DestroyRenderer(m_renderer);
+
     m_renderer = nullptr;
 }
 
 
-Renderer& Renderer::clear()
+Rect Renderer::getClipRect() const
 {
-    SDL_RenderClear(m_renderer);
-    
-    return *this;
-}
-/*
-CRenderer& CRenderer::drawLine(int x1, int y1, int x2, int y2)
-{
-    SDL_RenderDrawLine(m_renderer, x1, y1, x2, y2);
-    
-    return *this;
+    SDL_Rect sdl_rect;
+
+    SDL_RenderGetClipRect(m_renderer, &sdl_rect);
+
+    return Rect::fromSDL(sdl_rect);
 }
 
-
-CRenderer& CRenderer::drawLines(const CPoint* points, int count) 
+BlendModes Renderer::getDrawBlendMode() const
 {
-    SDL_Point sdl_points[count];
-    
-    for (int i=0; i<count; ++i)
-        sdl_points[i] = (points[i].toSDL);
-    
-    SDL_RenderDrawLines(m_renderer, sdl_points, count);
-    
-    return *this;
+    SDL_BlendMode blendMode;
+
+    if (SDL_GetRenderDrawBlendMode(m_renderer, &blendMode) == 0)
+        return static_cast<SDL::BlendModes>(blendMode);
+    throw std::runtime_error(SDL_GetError());
 }
 
-
-CRenderer& CRenderer::drawPoint(int x, int y)
+Color Renderer::getDrawColor() const
 {
-    SDL_RenderDrawPoint(m_renderer, x, y);
-    
-    return *this;
-}
+    Uint8 r, g, b, a;
 
-
-CRenderer& CRenderer::drawPoints(const CPoint* points, int count) 
-{
-    for (int i=0; i<count; ++i)
-        drawPoint(points[i].x(), points[i].y());  
-    return *this;
-}
-
-CRenderer& CRenderer::drawRect(const CRect& rect)
-{
-    SDL_RenderDrawRect(m_renderer, &(rect.toSDL()));
-    
-    return *this;
-}
-
-CRenderer& CRenderer::drawRects(const CRect* rects, int count)
-{
-    for (int i=0; i<count; ++i)
-        drawRect(rects[i]);
-    
-    return *this;
-}
-
-
-CRenderer& CRenderer::fillRect(const CRect& rect) 
-{
-    SDL_RenderFillRect(m_renderer, &(rect.toSDL()));
-    return *this;
-}
-
-CRenderer& CRenderer::fillRects(const CRect* rects, int count)
-{
-    for (int i=0; i<count; ++i)
-        fillRect(rects[i]);
-    
-    return *this;
-}
-*/
-void Renderer::getClipRect(SDL_Rect& rect) const
-{
-    SDL_RenderGetClipRect(m_renderer, &rect);
-}
-
-bool Renderer::getDrawBlendMode(SDL_BlendMode& blendMode) const
-{
-    return SDL_GetRenderDrawBlendMode(m_renderer, &blendMode) == 0 ? true:false;
-}
-
-bool Renderer::getDrawColor(Uint8& r, Uint8& g, Uint8& b, Uint8& a) const
-{
-    return SDL_GetRenderDrawColor(m_renderer, &r, &g, &b, &a) == 0 ? true:false;
+    if (SDL_GetRenderDrawColor(m_renderer, &r, &g, &b, &a) == 0)
+        return Color::fromRGBA(r, g, b, a);
+    throw std::runtime_error(SDL_GetError());
 }
 
 bool Renderer::getInfo(SDL_RendererInfo& info) const
 {
     return SDL_GetRendererInfo(m_renderer, &info) == 0 ? true:false;
 }
-/*
-bool CRenderer::getIntegerScale() const
+
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+bool Renderer::getIntegerScale() const
 {
     return SDL_RenderGetIntegerScale(m_renderer) == SDL_TRUE ? true:false;
-}*/
+}
+#endif
 
-void Renderer::getLogicalSize(int& w, int& h) const
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+Pair<int> Renderer::getLogicalSize() const
 {
+    int w, h;
+
     SDL_RenderGetLogicalSize(m_renderer, &w, &h);
+
+    Pair<int> size(w, h);
+
+    return size;
 }
 
-bool Renderer::getOutputSize(int& w, int& h) const
+Pair<int> Renderer::getOutputSize() const
 {
-    return SDL_GetRendererOutputSize(m_renderer, &w, &h) == 0 ? true:false;
+    int w, h;
+
+    if (SDL_GetRendererOutputSize(m_renderer, &w, &h) != 0)
+        throw std::runtime_error(SDL_GetError());
+
+    Pair<int> size(w, h);
+
+    return size;
 }
 
-void Renderer::getScale(float& x, float& y) const
+Pair<float> Renderer::getScale() const
 {
-    SDL_RenderGetScale(m_renderer, &x, &y);  
+    float x, y;
+
+    SDL_RenderGetScale(m_renderer, &x, &y);
+
+    Pair<float> scale(x, y);
+
+    return scale;
+}
+#endif
+
+SDL_Texture* Renderer::getTarget() const
+{
+
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 Rect Renderer::getViewport() const
 {
     SDL_Rect rect;
     
     SDL_RenderGetViewport(m_renderer, &rect);
     
-    return Rect::fromSDL(rect);
-    
+    return Rect::fromSDL(rect); 
+}
+#endif
+
+
+Renderer& Renderer::setClipRect(const Rect& rect)
+{
+    if (SDL_RenderSetClipRect(m_renderer, rect.toSDL()) == 0)
+        return *this;
+    throw std::runtime_error(SDL_GetError());
 }
 
-bool Renderer::isClipEnabled() const
-{
-    return SDL_RenderIsClipEnabled(m_renderer) == SDL_TRUE ? true:false;
-}
 
-Renderer& Renderer::present()
-{
-    SDL_RenderPresent(m_renderer);
-    
-    return *this;
-}
-
-Renderer& Renderer::setClipRect(const SDL_Rect& rect)
-{
-    if (SDL_RenderSetClipRect(m_renderer, &rect) != 0)
-        throw;
-    
-    return *this;
-}
-/*
-CRenderer& CRenderer::setIntegerScale(bool enable)
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+Renderer& Renderer::setIntegerScale(bool enable)
 {
     SDL_bool e = SDL_FALSE;
     
@@ -205,33 +167,64 @@ CRenderer& CRenderer::setIntegerScale(bool enable)
         throw;
     
     return *this;
-}*/
+}
+#endif
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 Renderer& Renderer::setLogicalSize(int w, int h)
 {
-    if (SDL_RenderSetLogicalSize(m_renderer, w, h) != 0)
-        throw;
-    
-    return *this;
+    if (SDL_RenderSetLogicalSize(m_renderer, w, h) == 0)
+        return *this;
+    throw std::runtime_error(SDL_GetError());
 }
 
 Renderer& Renderer::setScale(float scaleX, float scaleY)
 {
-    if (SDL_RenderSetScale(m_renderer, scaleX, scaleY) != 0)
-        throw;
-    
-    return *this;
+    if (SDL_RenderSetScale(m_renderer, scaleX, scaleY) == 0)
+        return *this;
+    throw std::runtime_error(SDL_GetError());
 }
 
-Renderer& Renderer::setViewport(const SDL_Rect& rect)
+Renderer& Renderer::setViewport(const Rect& rect)
 {
-    if (SDL_RenderSetViewport(m_renderer, &rect) != 0)
-        throw;
-    
+    if (SDL_RenderSetViewport(m_renderer, rect.toSDL()) == 0)
+        return *this;            
+    throw std::runtime_error(SDL_GetError());
+}
+
+Renderer& Renderer::setTarget(Texture &texture)
+{
+    return *this;
+}
+#endif
+
+// other methods
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+Renderer& Renderer::clear()
+{
+    if (SDL_RenderClear(m_renderer) == 0)
+        return *this;
+    throw std::runtime_error(SDL_GetError());
+}
+#endif
+
+#if SDL_VERSION_ATLEAST(2, 0, 4)
+bool Renderer::isClipEnabled() const
+{
+    return SDL_RenderIsClipEnabled(m_renderer) == SDL_TRUE ? true:false;
+}
+#endif
+
+Renderer& Renderer::present()
+{
+    SDL_RenderPresent(m_renderer); 
     return *this;
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 bool Renderer::targetSupported() const
 {
     return SDL_RenderTargetSupported(m_renderer) == SDL_TRUE ? true:false;
 }
+#endif

@@ -30,94 +30,79 @@
 #ifndef OBJECT_HPP
 #define OBJECT_HPP
 
-#include <vector>
+#include <unordered_set>
 #include <stdexcept>
 
 namespace SDL
 {
+
+/**
+ * @brief Common interface for SDL wrapper class.
+ *
+ * Every wrapper class from Cobra lib is derived from SDL::Object.
+ * It is use as a common interace for the wrapper. *e.g*
+ * the class propose by default a virtual method for paintEvent.
+ * This combine with the fact that SDL::Object are organize as a tree,
+ * you simply have to call paintEvent method on root, and every descendant
+ * of root will call paintEvent also. Further more, just like Qt framework,
+ * SDL::Object as the ability to manage memory for you. *i.e* on delete of
+ * an SDL::Object instance, every descendant will be delete also.
+ * For example, when you create a SDL::Renderer, the instance is automatically
+ * linked to the SDL::Window pass in argument. This mean that when the instance
+ * of SDL::Window is destroyed, the renderer will also be destroyed. Finally,
+ * the tree is control by two method that are protected. The **joinParent**
+ * and **quitParent** methods. Method to *abandon children* are **private**.
+ *
+ * @note If you don't want your instance to be linked automatically to another
+ * instance (for example the renderer with the window), you can subclass the
+ * class, and simply call **quitParent** in the constructor. This will ensure
+ * that your instance will be un-linked to its parent.
+ *
+ * @warning Always use on **heap** instance. If you use on **stack** instance,
+ * make sure to subclass and un-linked to the parent first. This is because
+ * it's not possible to distinguish between on heap and on stack instance,
+ * during runtime and compile time. Therefore, if a stack instance as a parent,
+ * and this parent is deleted (wheter by scope range or explicitly by delete)
+ * before the stack instance child go out of scope, the behavior is
+ * undefined. **Always use on heap object** or **subclass base class, un-linked
+ * to parent in constructor, and create on stack**.
+ */
     
 class Object
 {
+
+
 public:
-    
-    explicit Object() {m_parent = nullptr;}
 
-    virtual ~Object()
-    {
+    explicit Object(Object* parent = nullptr);
 
-        quitParent();
+    virtual ~Object();
 
-        for (unsigned i=0; i<m_children.size(); ++i)
-        {
-            m_children[i]->quitParent();
-        }
-    }
+    virtual void paintEvent();
+
+    int getNumberOfChild() const;
+
+    const Object* getParent() const;
+
+protected:
+
+    void joinParent(Object* parent);
+
+    void quitParent();
 
 
 private:
 
-    std::vector<Object*> m_children;
-
-    std::string m_name;
+    std::unordered_set<Object*> m_children;
 
     Object* m_parent;
 
- 
-protected:
 
-    virtual void paintEvent()
-    {
-        for (unsigned i=0; i<m_children.size(); ++i)
-            m_children[i]->paintEvent();
-    }
+    void addChild(Object* child);
 
-    virtual void quitParent()
-    {
-
-        if (m_parent != nullptr)
-            m_parent->removeChild(this);
-
-        m_parent = nullptr;
-    }
-
-    virtual void joinParent(Object& parent)
-    {
-        this->joinParent(&parent);
-    }
-
-    virtual void joinParent(Object* parent)
-    {
-        quitParent();
-        m_parent = parent;
-    }
-
-public:
-
-    virtual void addChild(Object& child)
-    {
-        m_children.push_back(&child);
-
-        child.joinParent(this);
-    }
-
-
-    virtual void removeChild(Object& child)
-    {
-        this->removeChild(&child);
-    }
-
-    virtual void removeChild(Object* child)
-    {
-        for (unsigned i=0; i<m_children.size(); ++i)
-        {
-            if (m_children[i] == child)
-            {
-                m_children.erase(m_children.begin()+i);
-                break;
-            }
-        }
-    }
+    void removeChild(Object* child);
 };
+
 }
 
 #endif /* OBJECT_HPP */

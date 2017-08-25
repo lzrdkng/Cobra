@@ -28,6 +28,7 @@ SOURCES = \
    $$PWD/src/Renderer.cpp \
    $$PWD/src/Texture.cpp \
    $$PWD/src/Window.cpp \
+    src/Object.cpp
 
 INCLUDEPATH += $$PWD/inc
 

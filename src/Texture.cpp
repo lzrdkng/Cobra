@@ -93,9 +93,10 @@ Color Texture::getColorMod() const
     
     if (code == 0)
     {
+        /*
         color.setBlue(b);
         color.setGreen(g);
-        color.setRed(r);
+        color.setRed(r);*/
     }
     
     return color;   

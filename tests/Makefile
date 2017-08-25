@@ -2,22 +2,21 @@
 CC          := g++
 
 #The Target Binary Program
-TARGET      := a.out
+TARGET      := tests
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
-INCDIR      := inc
+INCDIR      := ../inc
 BUILDDIR    := obj
 TARGETDIR   := bin
-LIBDIR      := lib
 RESDIR      := res
 SRCEXT      := cpp
 DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fopenmp -Wall -O3 -g -std=gnu++0x
-LIB         := -lSDL2 -lSDL2_image 
+CFLAGS      := -fopenmp -Wall -g -std=gnu++11
+LIB         := -L/usr/local/lib -lSDL2
 INC         := -I$(INCDIR) -I/usr/local/include
 INCDEP      := -I$(INCDIR)
 

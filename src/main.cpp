@@ -1,11 +1,9 @@
-#include "Color.hpp"
-
-#include <iostream>
+#include "Object.hpp"
 
 int main()
 {
 
-   return 0;
 
+    return 0;
 }
 

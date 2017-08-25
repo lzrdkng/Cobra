@@ -43,6 +43,12 @@ public:
         Point newPoint(point.x, point.y);
         return newPoint;
     }
+
+    static Point fromInt(int x, int y)
+    {
+      SDL::Point point(x, y);
+      return point;
+    }
     
     explicit Point(int x=0, int y=0);
     

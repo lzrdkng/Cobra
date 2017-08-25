@@ -1,14 +1,14 @@
 #  Cobra
 
-#### A **C++** wrapper around [SDL](https://www.libsdl.org/) cross-platform development library.
+### A **C++** wrapper around [SDL](https://www.libsdl.org/) cross-platform development library.
 
 
-### Dependencies
+## Dependencies
 **Cobra** is intend to work with all **SDL** major version. Which means that wether you
 work with version 1.0.0 or the latest 2.0.5, it should works.
 Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) work too.
 
-### Testings
+## Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.
 
 To **run** tests, simply type **make**. The Makefile will build depencies for you and run the 
@@ -20,7 +20,7 @@ It's very important that your file start with **test-**. If you don't, the makef
 your test in the dependencies.
 
 
-### Documentation
+## Documentation
 
 **Cobra** uses [Doxygen](http://www.stack.nl/~dimitri/doxygen/) to generate documentation.
 
@@ -29,14 +29,14 @@ documentation provided by the SDL's [wiki](https://wiki.libsdl.org/).
 
 Every other none wrapper class offered by **Cobra** follow the exact same documentation style.
 
-### Namespace and constants
+## Namespace and constants
 
 Every **class** and **enum** are in **SDL** namespace. This ensure there's
 no name collision. 
 
 Talking about name, **Cobra** uses the same name defined by  **SDL**.
 
-*For examples: *
+*For examples:*
 
  **SDL_Window** -> **SDL::Window**
 **SDL_GetWindowPosition** -> **SDL::Window::getPosition**
@@ -52,7 +52,7 @@ Constants have also been re-written in **enum**.
 **SDL_WINDOW_FULLSCREEN** -> **SDL::WindowFlags::WindowFullScreen**
 
 
-### Parent tree
+## Parent tree
 
 Every class, wrapper or not, derived from based class **Object**. 
 
@@ -66,9 +66,9 @@ Every **Object** instance :
 
 
 
-### Usage
+## Usage
 
-~~~C++
+~~~
 #include <Cobra/SDL.hpp>
 #include <Cobra/Application.hpp>
 #include <Cobra/Window.hpp>

@@ -11,7 +11,7 @@ Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) 
 ## Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.
 
-To **run** tests, simply type **make**. The Makefile will build depencies for you and run the 
+To **run** tests, simply type **make** in the tests directory. The Makefile will build depencies for you and run the 
 tests automatically. You can however run the tests later by running the executable in the
 binary directory.
 
@@ -24,7 +24,7 @@ your test in the dependencies.
 
 **Cobra** uses [Doxygen](http://www.stack.nl/~dimitri/doxygen/) to generate documentation.
 
-To make **Cobra** easier to use, every class wrapper use the (almost) exactly 
+To make **Cobra** easier to use, every class wrapper use the (almost) same 
 documentation provided by the SDL's [wiki](https://wiki.libsdl.org/).
 
 Every other none wrapper class offered by **Cobra** follow the exact same documentation style.
@@ -39,9 +39,11 @@ Talking about name, **Cobra** uses the same name defined by  **SDL**.
 *For examples:*
 
  **SDL_Window** -> **SDL::Window**
+ 
 **SDL_GetWindowPosition** -> **SDL::Window::getPosition**
 
 **SDL_Renderer** -> **SDL::Renderer**
+
 **SDL_RenderSetScale** -> **SDL::Renderer::setScale**
 
 Constants have also been re-written in **enum**.
@@ -49,6 +51,7 @@ Constants have also been re-written in **enum**.
 *For examples:*
 
 **SDL_INIT_VIDEO** -> **SDL::InitFlags::InitVideo**
+
 **SDL_WINDOW_FULLSCREEN** -> **SDL::WindowFlags::WindowFullScreen**
 
 

@@ -40,7 +40,7 @@ no name collision.
 
 Talking about name, **Cobra** uses the same name defined by  **SDL**.
 
-*For examples:*
+*For examples*
 
  **SDL_Window** -> **SDL::Window**
  
@@ -52,7 +52,7 @@ Talking about name, **Cobra** uses the same name defined by  **SDL**.
 
 Constants have also been re-written in **enum**.
 
-*For examples:*
+*For examples*
 
 **SDL_INIT_VIDEO** -> **SDL::InitFlags::InitVideo**
 

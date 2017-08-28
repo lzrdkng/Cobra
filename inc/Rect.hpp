@@ -35,44 +35,159 @@
 namespace SDL
 {
 
-class Rect {
-    
-    
+/**
+ * @brief Wrapper class for **SDL_Rect**
+ */
+
+class Rect
+{
 public:
 
-    static Rect fromSDL(const SDL_Rect& sdl_rect)
-    {
-        Rect rect(sdl_rect);
+    // static methods
 
-        return rect;
-    }
+    /**
+     * @brief Return a Rect instance created from integers.
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @return Rect
+     */
+    static Rect fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h);
+
+    /**
+     * @brief Return a Rect instanced created from SDL_Rect.
+     * @param sdl_rect
+     * @return
+     */
+    static Rect fromSDL(const SDL_Rect& sdl_rect);
     
+
+    // operator methods
+
+    void operator =(const Rect& orig);
+
+    bool operator ==(const Rect& comp) const;
+
+    bool operator !=(const Rect& comp) const;
+
+
+    // constructors/destructor
+
+    /**
+     * @brief Explicit constructor of class SDL::Rect
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     */
     explicit Rect(Sint16 x=0,
                   Sint16 y=0,
-                  Uint16 w=252,
-                  Uint16 h=252);
+                  Uint16 w=0,
+                  Uint16 h=0);
 
-    
+    /**
+     * @brief Copy constructor of class SDL::Rect.
+     * @param orig
+     */
     Rect(const Rect& orig);
 
+    /**
+     * @brief Implicit constructor of class SDL::Rect.
+     * @param orig
+     */
     Rect(const SDL_Rect& orig);
     
+    /**
+     * @brief Destructor of class SDL::Rect
+     */
     virtual ~Rect();
     
-    Uint16 height() const;
-    Uint16 width()  const;
-    Sint16 x()      const;
-    Sint16 y()      const;
+
+    // get methods
+
+    /**
+     * @brief Return rect's height.
+     * @return Uint16
+     */
+    Uint16 getHeight() const;
+
+    /**
+     * @brief Return rect's width.
+     * @return Uint16
+     */
+    Uint16 getWidth() const;
+
+    /**
+     * @brief Return rect's x value.
+     * @return Sint16
+     */
+    Sint16 getX() const;
+
+    /**
+     * @brief Return rect's y value.
+     * @return Sint16
+     */
+    Sint16 getY() const;
+
+
+    // set methods
+
+    /**
+     * @brief Set rect's height.
+     * @param h
+     * @return SDL::Rect&
+     */
     Rect& setHeight(Uint16 h);
+
+    /**
+     * @brief Set all rect's values.
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @return SDL::Rect&
+     */
+    Rect& setValues(Sint16 x,
+                    Sint16 y,
+                    Uint16 w,
+                    Uint16 h);
+
+    /**
+     * @brief Set rect's width.
+     * @param w
+     * @return SDL::Rect&
+     */
     Rect& setWidth(Uint16 w);
+
+    /**
+     * @brief Set rect's x value.
+     * @param x
+     * @return SDL::Rect&
+     */
     Rect& setX(Sint16 x);
+
+    /**
+     * @brief Set rect's y value.
+     * @param y
+     * @return SDL::Rect&
+     */
     Rect& setY(Sint16 y);
+
+
+    // other methods
+
+    /**
+     * @brief Return wrapped object.
+     * @return SDL_Rect*
+     * @warning Use with caution.
+     */
     const SDL_Rect* toSDL() const;
     
     
 private:
     
-    SDL_Rect m_rect;
+    SDL_Rect m_rect; // wrapped object
 
 };
 

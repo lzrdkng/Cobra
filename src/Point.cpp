@@ -31,9 +31,46 @@
 
 using namespace SDL;
 
-Point::Point(int x, int y)
-: m_point {x ,y}
+
+// static methods
+
+Point Point::fromInt(int x, int y)
 {
+    SDL::Point point(x, y);
+    return point;
+}
+
+Point Point::fromSDL(const SDL_Point &point)
+{
+    Point newPoint(point.x, point.y);
+    return newPoint;
+}
+
+
+// operator methods
+
+void Point::operator =(const Point& copy)
+{
+    setX(copy.getX());
+    setY(copy.getY());
+}
+
+bool Point::operator ==(const Point& comp) const
+{
+    return (getX() == comp.getX() && getY() == comp.getY());
+}
+
+bool Point::operator !=(const Point& comp) const
+{
+    return !(*this == comp);
+}
+
+
+// constructors/destructor
+
+Point::Point(int x, int y) : m_point {x ,y}
+{
+
 }
 
 Point::Point(const Point& orig) 
@@ -44,11 +81,29 @@ Point::Point(const Point& orig)
 
 Point::~Point() 
 {
+
 }
 
-const SDL_Point* Point::toSDL() const
+
+// get methods
+
+int Point::getX() const
 {
-    return &m_point;
+    return m_point.x;
+}
+
+int Point::getY() const
+{
+    return m_point.y;
+}
+
+
+// set methods
+
+Point& Point::setValues(int x, int y)
+{
+    setX(x);
+    setY(y);
 }
 
 Point& Point::setX(int x)
@@ -63,23 +118,10 @@ Point& Point::setY(int y)
     return *this;
 }
 
-int Point::getX() const
-{
-    return m_point.x;
-}
 
-int Point::getY() const
-{
-    return m_point.y;
-}
+// other methods
 
-
-bool Point::operator ==(const Point& comp) const
+const SDL_Point* Point::toSDL() const
 {
-    return (getX() == comp.getX() && getY() == comp.getY());
-}
-
-bool Point::operator !=(const Point& comp) const
-{
-    return !(*this == comp);
+    return &m_point;
 }

@@ -35,49 +35,126 @@
 namespace SDL
 {
 
-class Point {
+/**
+ * @brief Wrapper class for **SDL_Point**
+ */
+
+class Point
+{
 public:
 
-    static Point fromSDL(const SDL_Point& point)
-    {
-        Point newPoint(point.x, point.y);
-        return newPoint;
-    }
 
-    static Point fromInt(int x, int y)
-    {
-      SDL::Point point(x, y);
-      return point;
-    }
+    /**
+     * @brief static method returning a SDL::Point instance
+     * created from two integers.
+     * @param x
+     * @param y
+     * @return SDL::Point
+     */
+    static Point fromInt(int x, int y);
 
+    /**
+     * @brief static method returning a SDL::Point instance
+     * created from a SDL_Point.
+     * @param point
+     * @return SDL::Point
+     */
+    static Point fromSDL(const SDL_Point& point);
+
+
+    /**
+     * @brief operator =
+     * @param copy
+     */
+    void operator =(const Point& copy);
+
+    /**
+     * @brief operator ==
+     * @param comp
+     * @return bool
+     */
     bool operator ==(const Point& comp) const;
 
+    /**
+     * @brief operator !=
+     * @param comp
+     * @return bool
+     */
     bool operator !=(const Point& comp) const;
 
+
+    /**
+     * @brief Explicit SDL::Point constructor.
+     * @param x
+     * @param y
+     */
     explicit Point(int x=0, int y=0);
 
+
+    /**
+     * @brief Copy SDL::Point constructor.
+     * @param orig
+     */
     Point(const Point& orig);
 
+    /**
+     * @brief SDL::Point destructor
+     */
     virtual ~Point();
+
 
     // get methods
     
+    /**
+     * @brief Return x value.
+     * @return int
+     */
     int getX() const;
+
+    /**
+     * @brief Return y value.
+     * @return int
+     */
     int getY() const;
     
+    /**
+     * @brief Set x, y values.
+     * @param x
+     * @param y
+     * @return SDL::Point
+     */
+    Point& setValues(int x, int y);
+
     // set methods
     
+    /**
+     * @brief Set x value.
+     * @param x
+     * @return SDL::Point
+     */
     Point& setX(int x);
+
+    /**
+     * @brief Set y value.
+     * @param y
+     * @return SDL::Point
+     */
     Point& setY(int y);
     
+
     // other methods
     
+    /**
+     * @brief Return wrapped object.
+     * @return SDL_Point*
+     * @warning Use with caution.
+     */
     const SDL_Point* toSDL() const;
 
     
 private:
 
-    SDL_Point m_point;
+    SDL_Point m_point; // wrapped object
     
 };
 

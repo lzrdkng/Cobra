@@ -31,56 +31,106 @@
 
 using namespace SDL;
 
-// Constructor/destructor
+// static methods
 
-Rect::Rect(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
-: m_rect {x, y, w ,h}
+Rect Rect::fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
 {
+    Rect rect(x, y, w, h);
+    return rect;
+}
+
+Rect Rect::fromSDL(const SDL_Rect& sdl_rect)
+{
+    Rect rect(sdl_rect);
+    return rect;
+}
+
+
+// operator methods
+
+void Rect::operator =(const Rect& orig)
+{
+    setValues(orig.getX(), orig.getY(), orig.getWidth(), orig.getHeight());
+}
+
+bool Rect::operator ==(const Rect& comp) const
+{
+    return ( getX()      == comp.getX()     &&
+             getY()      == comp.getY()     &&
+             getWidth()  == comp.getWidth() &&
+             getHeight() == comp.getHeight()
+            );
+}
+
+bool Rect::operator !=(const Rect& comp) const
+{
+    return !(*this == comp);
+}
+
+
+// Constructors/destructor
+
+Rect::Rect(Sint16 x, Sint16 y, Uint16 w, Uint16 h) : m_rect {x, y, w ,h}
+{
+
 }
 
 Rect::Rect(const Rect& orig) 
 {
-    m_rect.x = orig.x();
-    m_rect.y = orig.y();
-    m_rect.w = orig.width();
-    m_rect.h = orig.height();
+    setX(orig.getX()).
+    setY(orig.getY()).
+    setWidth(orig.getWidth()).
+    setHeight(orig.getHeight());
 }
 
 Rect::Rect(const SDL_Rect& orig)
 {
-    m_rect.x = orig.x;
-    m_rect.y = orig.y;
-    m_rect.w = orig.w;
-    m_rect.h = orig.h;
+    setX(orig.x).
+    setY(orig.y).
+    setWidth(orig.w).
+    setHeight(orig.h);
 }
 
 Rect::~Rect()
 {
+
 }
 
-Uint16 Rect::height() const
+
+// get methods
+
+Uint16 Rect::getHeight() const
 {
     return m_rect.h;
 }
 
-Uint16 Rect::width() const
+Uint16 Rect::getWidth() const
 {
     return m_rect.w;
 }
 
-Sint16 Rect::x() const
+Sint16 Rect::getX() const
 {
     return m_rect.x;
 }
 
-Sint16 Rect::y() const
+Sint16 Rect::getY() const
 {
     return m_rect.y;
 }
 
+
+// set methods
+
 Rect& Rect::setHeight(Uint16 h)
 {
     m_rect.h = h;
+    return *this;
+}
+
+Rect& Rect::setValues(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
+{
+    setX(x).setY(y).setWidth(w).setHeight(h);
     return *this;
 }
 

@@ -39,9 +39,19 @@ namespace SDL
  * @brief Wrapper class for **SDL_Color**
  */
 
-class Color {
+class Color
+{
 public:
     
+    /**
+     * @brief static method to create Color object from rgb.
+     * @param r Red component in range 0-255.
+     * @param g Green component in range 0-255.
+     * @param b Blue component in range 0-255.
+     * @return Color
+     */
+    static Color fromRGB(Uint8 r, Uint8 g, Uint8 b);
+
     /**
      * @brief static method to create Color object from rgba.
      * @param r Red component in range 0-255.
@@ -50,52 +60,19 @@ public:
      * @param a Alpha component in range 0-255.
      * @return Color
      */
-    static Color fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-    {
-        Color color(r, g, b, a);
-        return color;
-    }
-
-
-    /**
-     * @brief static method to create Color object from rgb.
-     * @param r Red component in range 0-255.
-     * @param g Green component in range 0-255.
-     * @param b Blue component in range 0-255.
-     * @return Color
-     */
-    static Color fromRGB(Uint8 r, Uint8 g, Uint8 b)
-    {
-        return Color::fromRGBA(r, g, b, 255);
-    }
+    static Color fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
 
     /**
      * @brief Assign Color operator.
      * @param orig The Color assign.
      */
-    void operator =(const Color& orig)
-    {
-        this->setRed(orig.getRed());
-        this->setGreen(orig.getGreen());
-        this->setBlue(orig.getBlue());
-        this->setAlpha(orig.getAlpha());
-    }
+    void operator =(const Color& orig);
 
+    bool operator ==(const Color& comp) const;
 
-    bool operator ==(const Color& comp)
-    {
-        return ( this->getRed()   == comp.getRed()   &&
-                 this->getGreen() == comp.getGreen() &&
-                 this->getBlue()  == comp.getBlue()  &&
-                 this->getAlpha() == comp.getAlpha()
-               );
-    }
+    bool operator !=(const Color& comp) const;
 
-    bool operator !=(const Color& comp)
-    {
-        return !(*this == comp);
-    }
 
     /**
      * @brief Explicit constructor of class Color.
@@ -108,53 +85,45 @@ public:
     explicit Color(Uint8 r=0,
                    Uint8 g=0,
                    Uint8 b=0,
-                   Uint8 a=255) : m_color {r, g, b, a} {}
+                   Uint8 a=255);
 
 
     /**
      * @brief Copy constructor of class Color.
      * @param orig The orignal color.
      */
-    Color(const Color& orig)
-    {
-        this->setRed(orig.getRed());
-        this->setGreen(orig.getGreen());
-        this->setBlue(orig.getBlue());
-        this->setAlpha(orig.getAlpha());
-    }
-    
+    Color(const Color& orig);
 
     /**
      * @brief Destructor of class Color.
      */
-    virtual ~Color() {}
+    virtual ~Color();
     
 
     /**
      * @brief Return the Color's alpha component.
      * @return Uint8
      */
-    Uint8 getAlpha() const { return m_color.a; }
+    Uint8 getAlpha() const;
 
     /**
      * @brief Return the Color's blue component.
      * @return Uint8
      */
-    Uint8 getBlue()  const { return m_color.b; }
+    Uint8 getBlue() const;
 
 
     /**
      * @brief Return the Color's green component.
      * @return Uint8
      */
-    Uint8 getGreen() const { return m_color.g; }
-
+    Uint8 getGreen() const;
 
     /**
      * @brief Return the Color's red component.
      * @return Uint8
      */
-    Uint8 getRed()   const { return m_color.r; }
+    Uint8 getRed() const;
     
 
     /**
@@ -162,7 +131,7 @@ public:
      * @param alpha The alpha component in range 0-255.
      * @return SDL::Color&
      */
-    Color& setAlpha(Uint8 alpha) { m_color.a = alpha; return *this; }
+    Color& setAlpha(Uint8 alpha);
 
 
     /**
@@ -170,15 +139,14 @@ public:
      * @param blue The blue component in range 0-255.
      * @return SDL::Color&
      */
-    Color& setBlue(Uint8 blue) { m_color.b = blue; return *this; }
-
+    Color& setBlue(Uint8 blue);
 
     /**
      * @brief Set the Color's green component.
      * @param red The green component in range 0-255.
      * @return SDL::Color&
      */
-    Color& setGreen(Uint8 green) { m_color.g = green; return *this; }
+    Color& setGreen(Uint8 green);
 
 
     /**
@@ -186,8 +154,31 @@ public:
      * @param red The red component in range 0-255.
      * @return SDL::Color&
      */
-    Color& setRed(Uint8 red) { m_color.r = red; return *this; }
+    Color& setRed(Uint8 red);
     
+    /**
+     * @brief Set the Color's red, green, blue components.
+     * @param r
+     * @param g
+     * @param b
+     * @return SDL::Color&
+     */
+    Color& setRGB(Uint8 r=0,
+                  Uint8 g=0,
+                  Uint8 b=0);
+
+    /**
+     * @brief Set the Color's red, green, blue, alpha components.
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     * @return SDL::Color&
+     */
+    Color& setRGBA(Uint8 r=0,
+                   Uint8 g=0,
+                   Uint8 b=0,
+                   Uint8 a=255);
 
     /**
      * @brief Return the wrapped object.
@@ -198,7 +189,7 @@ public:
     
 private:
     
-    SDL_Color m_color;
+    SDL_Color m_color; // wrapped value
 };
 
 }

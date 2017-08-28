@@ -10,6 +10,7 @@ INCDIR      := inc
 BUILDDIR    := obj
 TARGETDIR   := lib
 RESDIR      := res
+TESTSDIR    := tests
 SRCEXT      := cpp
 DEPEXT      := d
 OBJEXT      := o
@@ -42,7 +43,7 @@ clean:
 	@$(RM) -rf $(BUILDDIR)
 
 #Full Clean, Objects and Binaries
-cleaner: clean
+cleaner: clean clean-tests
 	@$(RM) -rf $(TARGETDIR)
 
 #Pull in dependency info for *existing* .o files
@@ -63,4 +64,12 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 
 #Non-File Targets
-.PHONY: all remake clean cleaner resources
+.PHONY: all remake clean cleaner resources tests clean-tests
+
+
+# Testing
+tests:
+	make -C $(TESTSDIR)
+
+clean-tests:
+	make -C $(TESTSDIR) cleaner

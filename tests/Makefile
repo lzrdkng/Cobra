@@ -6,8 +6,8 @@ TARGET      := tests
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
-INCDIR      := ../inc
-LIBDIR      := ../lib
+INCDIR      := $(PWD)/inc
+LIBDIR      := $(PWD)/lib
 BUILDDIR    := obj
 TARGETDIR   := bin
 RESDIR      := res
@@ -18,7 +18,7 @@ OBJEXT      := o
 #Flags, Libraries and Includes
 CFLAGS      := -fopenmp -Wall -g -std=gnu++11
 LIB         := -L${LIBDIR} -lCobra
-INC         := -I$(INCDIR) -I/usr/local/include
+INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)
 
 #---------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 #Defauilt Make
-all: $(TARGET)
+all: directories $(TARGET)
 
 #Remake
 remake: cleaner all
@@ -51,7 +51,7 @@ cleaner: clean
 
 #Link
 $(TARGET): $(OBJECTS)
-	$(CC) -Wl,-rpath=$(PWD)/../lib -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
+	$(CC) -Wl,-rpath=$(LIBDIR) -o $(TARGETDIR)/$(TARGET) $^ $(LIB) && ./bin/tests
 
 #Compile
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)

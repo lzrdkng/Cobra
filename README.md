@@ -14,9 +14,9 @@ To **build** the shared library, simply type **make** in the project directory.
 ## Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.
 
-To **run** tests, simply type **make** in the tests directory. The Makefile will build depencies for you can then run the executable in the binary directory.
+To **run** tests, simply type **make tests** in the project directory.
 
-To **build** tests, you simply have to create a file named **test-*.cpp**. 
+To **create** tests, you simply have to create a file named **test-*.cpp** under the directory **tests/src**. 
 It's very important that your file start with **test-**. If you don't, the makefile won't include
 your test in the dependencies.
 

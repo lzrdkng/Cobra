@@ -9,7 +9,7 @@ work with version 1.0.0 or the latest 2.0.5, it should works.
 Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) work too.
 
 ## Build library
-Simply run make in the project directory.
+To **build** the shared library, simply type **make** in the project directory.
 
 ## Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.

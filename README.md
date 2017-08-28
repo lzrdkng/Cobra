@@ -9,14 +9,15 @@ work with version 1.0.0 or the latest 2.0.5, it should works.
 Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) work too.
 
 ## Build library
-To **build** the shared library, simply type **make** in the project directory.
+To **build** the shared library, use **make all**.
 
 ## Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.
 
-To **run** tests, simply type **make tests** in the project directory.
+To **run** tests, use **make tests**.
 
 To **create** tests, you simply have to create a file named **test-*.cpp** under the directory **tests/src**. 
+
 It's very important that your file start with **test-**. If you don't, the makefile won't include
 your test in the dependencies.
 
@@ -24,6 +25,8 @@ your test in the dependencies.
 ## Documentation
 
 **Cobra** uses [Doxygen](http://www.stack.nl/~dimitri/doxygen/) to generate documentation.
+
+To **generate** documentaion, use **make doc**.
 
 To make **Cobra** easier to use, every class wrapper use the (almost) same 
 documentation provided by the SDL's [wiki](https://wiki.libsdl.org/).

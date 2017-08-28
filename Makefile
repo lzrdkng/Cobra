@@ -11,6 +11,7 @@ BUILDDIR    := obj
 TARGETDIR   := lib
 RESDIR      := res
 TESTSDIR    := tests
+DOCDIR      := doc
 SRCEXT      := cpp
 DEPEXT      := d
 OBJEXT      := o
@@ -43,7 +44,7 @@ clean:
 	@$(RM) -rf $(BUILDDIR)
 
 #Full Clean, Objects and Binaries
-cleaner: clean clean-tests
+cleaner: clean clean-tests clean-doc
 	@$(RM) -rf $(TARGETDIR)
 
 #Pull in dependency info for *existing* .o files
@@ -64,7 +65,7 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 
 #Non-File Targets
-.PHONY: all remake clean cleaner resources tests clean-tests
+.PHONY: all remake clean cleaner resources tests clean-tests doc clean-doc
 
 
 # Testing
@@ -73,3 +74,10 @@ tests:
 
 clean-tests:
 	make -C $(TESTSDIR) cleaner
+
+# Documentation
+doc:
+	doxygen doc.config
+
+clean-doc:
+	@$(RM) -rf $(DOCDIR)

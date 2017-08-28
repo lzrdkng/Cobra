@@ -8,12 +8,13 @@
 work with version 1.0.0 or the latest 2.0.5, it should works.
 Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) work too.
 
+## Build library
+Simply run make in the project directory.
+
 ## Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.
 
-To **run** tests, simply type **make** in the tests directory. The Makefile will build depencies for you and run the 
-tests automatically. You can however run the tests later by running the executable in the
-binary directory.
+To **run** tests, simply type **make** in the tests directory. The Makefile will build depencies for you can then run the executable in the binary directory.
 
 To **build** tests, you simply have to create a file named **test-*.cpp**. 
 It's very important that your file start with **test-**. If you don't, the makefile won't include
@@ -71,7 +72,8 @@ Every **Object** instance :
 
 ## Usage
 
-~~~
+~~~C++
+
 #include <Cobra/SDL.hpp>
 #include <Cobra/Application.hpp>
 #include <Cobra/Window.hpp>
@@ -94,5 +96,6 @@ int main()
   return 0;
 
 } // Out of scope. Destruction of root result in destruction of its child renderer.
+
 ~~~
 

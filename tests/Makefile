@@ -7,6 +7,7 @@ TARGET      := tests
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
 INCDIR      := ../inc
+LIBDIR      := ../lib
 BUILDDIR    := obj
 TARGETDIR   := bin
 RESDIR      := res
@@ -16,7 +17,7 @@ OBJEXT      := o
 
 #Flags, Libraries and Includes
 CFLAGS      := -fopenmp -Wall -g -std=gnu++11
-LIB         := -L/usr/local/lib -lSDL2
+LIB         := -L${LIBDIR} -lCobra
 INC         := -I$(INCDIR) -I/usr/local/include
 INCDEP      := -I$(INCDIR)
 
@@ -50,7 +51,7 @@ cleaner: clean
 
 #Link
 $(TARGET): $(OBJECTS)
-	$(CC) -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
+	$(CC) -Wl,-rpath=$(PWD)/../lib -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
 
 #Compile
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)

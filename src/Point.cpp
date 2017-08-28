@@ -78,3 +78,8 @@ bool Point::operator ==(const Point& comp) const
 {
     return (getX() == comp.getX() && getY() == comp.getY());
 }
+
+bool Point::operator !=(const Point& comp) const
+{
+    return !(*this == comp);
+}

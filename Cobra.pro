@@ -1,37 +1,24 @@
 # Created by and for Qt Creator. This file was created for editing the project sources only.
 # You may attempt to use it for building too, by modifying this file here.
 
-TARGET = Cobra
-
-DESTDIR = bin
+TEMPLATE = lib
+DESTDIR = lib
 
 OBJECTS_DIR = obj
 MOC_DIR = obj
 
-HEADERS = \
-   $$PWD/inc/Application.hpp \
-   $$PWD/inc/Color.hpp \
-   $$PWD/inc/Object.hpp \
-   $$PWD/inc/Pair.hpp \
-   $$PWD/inc/Point.hpp \
-   $$PWD/inc/Rect.hpp \
-   $$PWD/inc/Renderer.hpp \
-   $$PWD/inc/Texture.hpp \
-   $$PWD/inc/Window.hpp \
-   $$PWD/inc/SDL.hpp \
-   $$PWD/inc/Object.hpp
+HEADERS = inc/*.hpp
+SOURCES = src/*.cpp
 
-SOURCES = \
-   $$PWD/src/main.cpp \
-   $$PWD/src/Point.cpp \
-   $$PWD/src/Rect.cpp \
-   $$PWD/src/Renderer.cpp \
-   $$PWD/src/Texture.cpp \
-   $$PWD/src/Window.cpp \
-    src/Object.cpp
+INCLUDEPATH += inc
 
-INCLUDEPATH += $$PWD/inc
+QMAKE_CXXFLAGS = -std=gnu++11
 
-QMAKE_CXXFLAGS = -std=gnu++0x
+QT     -= gui core
+LIBS   -= -lQtGui -lQtCore
 
-unix:!macx: LIBS += -lSDL2 -lSDL2_image
+LIBS += -lSDL2 -lSDL2_image
+
+DISTFILES += \
+    README.md \
+    LICENSE.txt

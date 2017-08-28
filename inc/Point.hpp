@@ -33,11 +33,11 @@
 #include <SDL2/SDL_rect.h>
 
 namespace SDL
-{    
+{
 
-class Point {   
+class Point {
 public:
-    
+
     static Point fromSDL(const SDL_Point& point)
     {
         Point newPoint(point.x, point.y);
@@ -49,13 +49,17 @@ public:
       SDL::Point point(x, y);
       return point;
     }
-    
+
+    bool operator ==(const Point& comp) const;
+
+    bool operator !=(const Point& comp) const;
+
     explicit Point(int x=0, int y=0);
-    
+
     Point(const Point& orig);
-    
+
     virtual ~Point();
-    
+
     // get methods
     
     int getX() const;
@@ -69,10 +73,7 @@ public:
     // other methods
     
     const SDL_Point* toSDL() const;
-    
-    // operator methods
-    
-    bool operator==(const Point& comp) const;
+
     
 private:
 

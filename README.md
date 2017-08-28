@@ -8,6 +8,9 @@
 work with version 1.0.0 or the latest 2.0.5, it should works.
 Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) work too.
 
+### Generate library
+To generate the library, simply use the command make.
+
 ### Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.
 
@@ -69,6 +72,7 @@ Every **Object** instance :
 ### Usage
 
 ~~~C++
+
 #include <Cobra/SDL.hpp>
 #include <Cobra/Application.hpp>
 #include <Cobra/Window.hpp>
@@ -91,4 +95,5 @@ int main()
   return 0;
 
 } // Out of scope. Destruction of root result in destruction of its child renderer.
+
 ~~~

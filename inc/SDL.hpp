@@ -3,11 +3,9 @@
 
 #include <SDL2/SDL.h>
 
-#include "Color.hpp"
-#include "Object.hpp"
-#include "Pair.hpp"
-#include "Point.hpp"
-#include "Rect.hpp"
+#define OPERATOR_OR(TYPE, CAST) \
+    inline  InitFlags operator |(TYPE x, TYPE y) { return static_cast<TYPE>(static_cast<CAST>(x) | static_cast<CAST>(y)); }
+
 
 namespace SDL
 {
@@ -29,13 +27,10 @@ namespace SDL
         InitNoparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
     };
 
+    OPERATOR_OR(InitFlags, Uint32)
     /**< Flags to initialize subsytems. */
 
 
-    inline InitFlags operator |(InitFlags x, InitFlags y)
-    {
-        return static_cast<InitFlags>(static_cast<Uint32>(x) | static_cast<Uint32>(y));
-    }
 
 
     enum WindowFlags
@@ -62,10 +57,7 @@ namespace SDL
         WindowPopupMenu         = SDL_WINDOW_POPUP_MENU
     };
 
-    inline WindowFlags operator |(WindowFlags x, WindowFlags y)
-    {
-        return static_cast<WindowFlags>(static_cast<Uint32>(x) | static_cast<Uint32>(y));
-    }
+    OPERATOR_OR(WindowFlags, Uint32)
 
 
     enum RendererFlags
@@ -78,12 +70,9 @@ namespace SDL
 
     };
 
+    OPERATOR_OR(RendererFlags, Uint32)
     /**< Flags to create renderer. */
 
-    inline RendererFlags operator |(RendererFlags x, RendererFlags y)
-    {
-        return static_cast<RendererFlags>(static_cast<Uint32>(x) | static_cast<Uint32>(y));
-    }
 
 
     enum TextureAccess
@@ -94,10 +83,7 @@ namespace SDL
         TextureAccessTarget    = SDL_TEXTUREACCESS_TARGET
     };
 
-    inline TextureAccess operator |(TextureAccess x, TextureAccess y)
-    {
-        return static_cast<TextureAccess>(static_cast<int>(x) | static_cast<int>(y));
-    }
+    OPERATOR_OR(TextureAccess, int)
 
 
     enum PixelFormats
@@ -147,10 +133,8 @@ namespace SDL
 
     };
 
-    inline PixelFormats operator |(PixelFormats x, PixelFormats y)
-    {
-        return static_cast<PixelFormats>(static_cast<Uint32>(x) | static_cast<Uint32>(y));
-    }
+    OPERATOR_OR(PixelFormats, Uint32)
+
 
     enum WindowPositions
     {

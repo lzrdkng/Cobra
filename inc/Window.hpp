@@ -34,6 +34,9 @@
 #include <string>
 
 #include "SDL.hpp"
+#include "Object.hpp"
+#include "Pair.hpp"
+#include "Point.hpp"
 
 namespace SDL
 {
@@ -249,13 +252,6 @@ public:
     Window& warpMouse(int x, int y);
     
     
-
-public:
-
-    virtual void paintEvent()
-    {
-        Object::paintEvent();
-    }
 
 private:
     

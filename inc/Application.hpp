@@ -83,16 +83,16 @@ public:
         if (SDL_InitSubSystem(flags) != 0)
             throw;
     }
-    
-    
+
+
 private:
-    
-    
+
+
     Application(Uint32 flags) : Object()
     {
         SDL_Init(flags);
     }
-    
+
     Application(const Application&);
     void operator=(const Application& app);
 
@@ -105,4 +105,3 @@ public:
 }
 
 #endif /* APPLICATION_HPP */
-

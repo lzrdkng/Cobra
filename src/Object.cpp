@@ -13,9 +13,9 @@
 
 using namespace SDL;
 
-Object::Object(Object* parent)
+Object::Object(Object* parent) : m_parent(nullptr)
 {
-    m_parent = parent;
+    joinParent(parent);
 }
 
 
@@ -55,7 +55,8 @@ void Object::joinParent(Object* parent)
     while (ancestor != nullptr)
     {
         if (ancestor == this)
-            throw std::runtime_error("NO RESPECT OF FAMILY HIERARCHY");
+            throw SDL::Error("No Respect Of Tree Hierarchy");
+
         ancestor = ancestor->m_parent;
     }
 
@@ -67,7 +68,6 @@ void Object::joinParent(Object* parent)
 
 void Object::quitParent()
 {
-
     if (m_parent != nullptr)
     {
         m_parent->removeChild(this);

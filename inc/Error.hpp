@@ -22,7 +22,7 @@
 
 
 /*
- * File:   Exception.hpp
+ * File:   Error.hpp
  * Author: olivier
  *
  * Created on August 28, 2017, 9:41 AM
@@ -37,12 +37,14 @@
 namespace SDL
 {
 
-class Exception : public std::runtime_error
+class Error : public std::runtime_error
 {
 
-    Exception(const char* message) : std::runtime_error(message) {}
+public:
 
-    virtual ~Exception() {}
+    Error(const char* message) : std::runtime_error(message) {}
+
+    virtual ~Error() {}
 
 };
 

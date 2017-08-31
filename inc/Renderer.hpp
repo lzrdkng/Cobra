@@ -31,7 +31,12 @@
 #define RENDERER_HPP
 
 #include "SDL.hpp"
+#include "Error.hpp"
 
+#include "Rect.hpp"
+#include "Color.hpp"
+#include "Object.hpp"
+#include "Pair.hpp"
 #include "Window.hpp"
 #include "Texture.hpp"
 
@@ -49,6 +54,9 @@ class Renderer : public Object
 {
 public:
     
+
+    // constructors/destructor
+
     /**
      * @brief Explicit constructor for Class SDL::Renderer.
      *
@@ -58,21 +66,31 @@ public:
      * @param flags SDL::RendererFlags
      * @param index the index of the rendering driver to initiliaze,
      * or -1 to initialize the first one supporting the requested flags
-     * @throw std::runtime_error if there was an error
+     * @throw SDL::Error if there was an error
+     * @sa SDL::Renderer:~Renderer
      */
-    explicit Renderer(Window& window,
-                      SDL::RendererFlags flags = SDL::RendererNull, // Equivalent to NULL
+    explicit Renderer(Window* window,
+                      SDL::RendererFlags flags = SDL::RendererNull,
                       int index = -1);
 
 
-    
+    // rules of five
+    Renderer(const Renderer& orig)             = delete;
+    Renderer(Renderer&& orig)                  = delete;
+    Renderer& operator =(const Renderer& orig) = delete;
+    Renderer& operator =(Renderer&& orig)      = delete;
+
+
     /**
      * @brief Destructor of class SDL::Renderer
      * Will call **SDL_DestroyRenderer**
+     *
+     * @sa SDL::Renderer::Renderer
      */
     virtual ~Renderer();
     
 
+    // get methods
     
     /**
      * @brief Return a clip rectangle of the renderer.
@@ -86,7 +104,7 @@ public:
     /**
      * @brief Return the current blend mode of the renderer
      * @return SDL::BlendModes
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      * @sa SDL::Renderer::setDrawBlendMode
      */
     BlendModes getDrawBlendMode() const;
@@ -95,7 +113,7 @@ public:
     /**
      * @brief Return the color used for drawing operations (Rect, Line and Clear).
      * @return SDL::Color
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      * @sa SDL::Renderer::setDrawColor
      */
     Color getDrawColor() const;
@@ -104,7 +122,7 @@ public:
     /**
      * @brief Return informations about the renderer.
      * @return SDL::RendererInfo
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      */
     bool getInfo(SDL_RendererInfo& info) const;
 
@@ -175,7 +193,7 @@ public:
      * @brief Set the clip rectangle for the renderer's target.
      * @param rect The clip area
      * @return SDL::Renderer&
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      * @sa SDL::Renderer::getClipRect
      * @sa SDL::Renderer::isClipEnabled
      */
@@ -186,7 +204,7 @@ public:
      * @brief Set wheter to force integer scale for resolution-independent rendering.
      * @param enable
      * @return SDL::Renderer&
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      * @note This method restrict the logical viewport to integer values -
      * that is, when a resolution is between two multiples of a logical size,
      * the viewport size is rounded down to the lower multiple.
@@ -204,7 +222,7 @@ public:
      * @param w
      * @param h
      * @return SDL::Renderer&
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      * @version **SDL2.0.0**
      * @sa SDL::Renderer::getLogicalSize
      */
@@ -216,7 +234,7 @@ public:
      * @param scaleX
      * @param scaleY
      * @return SDL::Renderer&
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      * @note The drawing coordinates are scaled by the x/y scaling factors before they are
      * used by the renderer. This allows resolution independent drawing with a single
      *  coordinate system. <br> If this results in scaling or subpixel drawing by the
@@ -242,7 +260,7 @@ public:
      * @brief Set the renderer's drawing area.
      * @param rect
      * @return SDL::Renderer&
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      * @note When the window is resized, the current viewport is automatically centered
      * within the new window size.
      * @sa SDL::Renderer::getViewport
@@ -267,7 +285,7 @@ public:
     /**
      * @brief Clear the renderer with its drawing color.
      * @return SDL::Renderer&
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      * @note This method clears the entire renderer, ignoring the viewport
      * and the clip rectangle.
      * @version **SDL2.0.0**
@@ -334,15 +352,14 @@ public:
 
     virtual void paintEvent()
     {
-        Object::paintEvent();
-
         this->clear();
         this->present();
     }
 
 private:
 
-    SDL_Renderer* m_renderer;
+    SDL_Renderer* m_renderer; // wrapped object
+
 };
 
 }

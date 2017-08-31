@@ -65,3 +65,9 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 
 #Non-File Targets
 .PHONY: all remake clean cleaner resources
+
+
+minimal:
+
+	g++ -Wl,-rpath=../lib/ minimal-app.cpp -L ../lib/ -lCobra -lSDL2 -I ../inc/ -std=c++11 && ./a.out && rm a.out
+

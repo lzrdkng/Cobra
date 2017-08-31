@@ -31,7 +31,8 @@
 #define OBJECT_HPP
 
 #include <unordered_set>
-#include <stdexcept>
+
+#include "Error.hpp"
 
 namespace SDL
 {
@@ -74,7 +75,9 @@ class Object
 
 public:
 
-    explicit Object(Object* parent = nullptr);
+    explicit Object() { m_parent = nullptr; }
+
+    explicit Object(Object* parent);
 
     virtual ~Object();
 

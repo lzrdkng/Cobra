@@ -27,22 +27,21 @@
  * Created on August 12, 2017, 9:01 PM
  */
 
-#include <stdexcept>
-
 #include "Renderer.hpp"
-#include "Point.hpp"
-#include "Window.hpp"
 
-#include <iostream>
 
 using namespace SDL;
 
-Renderer::Renderer(SDL::Window& window, SDL::RendererFlags flags, int index) : Object()
+
+// constructors/destructor
+
+Renderer::Renderer(SDL::Window* window, SDL::RendererFlags flags, int index) : Object(window), m_renderer(nullptr)
 {
-    m_renderer = SDL_CreateRenderer(window.toSDL(), index, flags);
+    m_renderer = SDL_CreateRenderer(window->toSDL(), index, flags);
+
+    if (m_renderer == nullptr)
+        throw Error(SDL_GetError());
 }
-
-
 
 Renderer::~Renderer()
 {
@@ -52,6 +51,8 @@ Renderer::~Renderer()
     m_renderer = nullptr;
 }
 
+
+// get methods
 
 Rect Renderer::getClipRect() const
 {
@@ -68,7 +69,8 @@ BlendModes Renderer::getDrawBlendMode() const
 
     if (SDL_GetRenderDrawBlendMode(m_renderer, &blendMode) == 0)
         return static_cast<SDL::BlendModes>(blendMode);
-    throw std::runtime_error(SDL_GetError());
+
+    throw SDL::Error(SDL_GetError());
 }
 
 Color Renderer::getDrawColor() const
@@ -77,7 +79,8 @@ Color Renderer::getDrawColor() const
 
     if (SDL_GetRenderDrawColor(m_renderer, &r, &g, &b, &a) == 0)
         return Color::fromRGBA(r, g, b, a);
-    throw std::runtime_error(SDL_GetError());
+
+    throw SDL::Error(SDL_GetError());
 }
 
 bool Renderer::getInfo(SDL_RendererInfo& info) const
@@ -111,7 +114,7 @@ Pair<int> Renderer::getOutputSize() const
     int w, h;
 
     if (SDL_GetRendererOutputSize(m_renderer, &w, &h) != 0)
-        throw std::runtime_error(SDL_GetError());
+        throw SDL::Error(SDL_GetError());
 
     Pair<int> size(w, h);
 
@@ -132,7 +135,7 @@ Pair<float> Renderer::getScale() const
 
 SDL_Texture* Renderer::getTarget() const
 {
-
+    return nullptr;
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -151,7 +154,7 @@ Renderer& Renderer::setClipRect(const Rect& rect)
 {
     if (SDL_RenderSetClipRect(m_renderer, rect.toSDL()) == 0)
         return *this;
-    throw std::runtime_error(SDL_GetError());
+    throw SDL::Error(SDL_GetError());
 }
 
 
@@ -164,7 +167,7 @@ Renderer& Renderer::setIntegerScale(bool enable)
         e = SDL_TRUE;
     
     if (SDL_RenderSetIntegerScale(m_renderer, e) != 0)
-        throw;
+        throw SDL::Error(SDL_GetError());
     
     return *this;
 }
@@ -175,21 +178,24 @@ Renderer& Renderer::setLogicalSize(int w, int h)
 {
     if (SDL_RenderSetLogicalSize(m_renderer, w, h) == 0)
         return *this;
-    throw std::runtime_error(SDL_GetError());
+
+    throw SDL::Error(SDL_GetError());
 }
 
 Renderer& Renderer::setScale(float scaleX, float scaleY)
 {
     if (SDL_RenderSetScale(m_renderer, scaleX, scaleY) == 0)
         return *this;
-    throw std::runtime_error(SDL_GetError());
+
+    throw SDL::Error(SDL_GetError());
 }
 
 Renderer& Renderer::setViewport(const Rect& rect)
 {
     if (SDL_RenderSetViewport(m_renderer, rect.toSDL()) == 0)
         return *this;            
-    throw std::runtime_error(SDL_GetError());
+
+    throw SDL::Error(SDL_GetError());
 }
 
 Renderer& Renderer::setTarget(Texture &texture)
@@ -205,7 +211,8 @@ Renderer& Renderer::clear()
 {
     if (SDL_RenderClear(m_renderer) == 0)
         return *this;
-    throw std::runtime_error(SDL_GetError());
+
+    throw SDL::Error(SDL_GetError());
 }
 #endif
 
@@ -219,12 +226,13 @@ bool Renderer::isClipEnabled() const
 Renderer& Renderer::present()
 {
     SDL_RenderPresent(m_renderer); 
+
     return *this;
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 bool Renderer::targetSupported() const
 {
-    return SDL_RenderTargetSupported(m_renderer) == SDL_TRUE ? true:false;
+    return SDL_RenderTargetSupported(m_renderer) == SDL_TRUE;
 }
 #endif

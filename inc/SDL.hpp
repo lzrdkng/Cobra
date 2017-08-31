@@ -3,9 +3,11 @@
 
 #include <SDL2/SDL.h>
 
-#define OPERATOR_OR(TYPE, CAST) \
-    inline  InitFlags operator |(TYPE x, TYPE y) { return static_cast<TYPE>(static_cast<CAST>(x) | static_cast<CAST>(y)); }
-
+template<typename T, typename C>
+inline T operator |(T x, T y)
+{
+    return static_cast<T>(static_cast<C>(x) | static_cast<C>(y));
+}
 
 namespace SDL
 {
@@ -27,9 +29,7 @@ namespace SDL
         InitNoparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
     };
 
-    OPERATOR_OR(InitFlags, Uint32)
     /**< Flags to initialize subsytems. */
-
 
 
 
@@ -57,7 +57,11 @@ namespace SDL
         WindowPopupMenu         = SDL_WINDOW_POPUP_MENU
     };
 
-    OPERATOR_OR(WindowFlags, Uint32)
+
+    inline WindowFlags operator |(WindowFlags x, WindowFlags y)
+    {
+        return static_cast<WindowFlags>(static_cast<Uint32>(x) | static_cast<Uint32>(y));
+    }
 
 
     enum RendererFlags
@@ -70,7 +74,6 @@ namespace SDL
 
     };
 
-    OPERATOR_OR(RendererFlags, Uint32)
     /**< Flags to create renderer. */
 
 
@@ -82,8 +85,6 @@ namespace SDL
         TextureAccessStreaming = SDL_TEXTUREACCESS_STREAMING,
         TextureAccessTarget    = SDL_TEXTUREACCESS_TARGET
     };
-
-    OPERATOR_OR(TextureAccess, int)
 
 
     enum PixelFormats
@@ -132,8 +133,6 @@ namespace SDL
         PixelFormatIndexNV21        = SDL_PIXELFORMAT_NV21
 
     };
-
-    OPERATOR_OR(PixelFormats, Uint32)
 
 
     enum WindowPositions

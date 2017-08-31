@@ -41,7 +41,7 @@ Window::Window(const char* title,
                int y,
                int width,
                int height,
-               SDL::WindowFlags flags) : Object()
+               SDL::WindowFlags flags) : Object(), m_window(nullptr)
 {
     m_window = SDL_CreateWindow(title,
                                 x,

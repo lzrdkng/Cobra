@@ -4,8 +4,7 @@
 
 
 ## Dependencies
-**Cobra** is intend to work with all **SDL** major version. Which means that wether you
-work with version 1.0.0 or the latest 2.0.5, it should works.
+**Cobra** is intend to work with all **SDL2** major version.
 Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) work too.
 
 ## Build library
@@ -16,11 +15,7 @@ To **build** the shared library, use **make all**.
 
 To **run** tests, use **make tests**.
 
-To **create** tests, you simply have to create a file named **test-*.cpp** under the directory **tests/src**. 
-
-It's very important that your file start with **test-**. If you don't, the makefile won't include
-your test in the dependencies.
-
+To **create** tests, you simply have to create a **.cpp** file under the directory **tests/src**. 
 
 ## Documentation
 
@@ -67,10 +62,8 @@ Every **Object** instance :
 
 - As zero or one parent
 - As zero or more child
-- Can not be its own parent
-- Can not be parent of one of its ancestor
-- Destroy its children when destroyed
-
+- Can not be parent of one of its ancestor, nor itself
+- On destruction, give its children to its parent
 
 
 ## Usage
@@ -88,17 +81,17 @@ int main()
   SDL::Application::init(SDL::InitVideo);
   
   // Create a resizable window at position (0,0) of size (250, 250)
-  SDL::Window root("Usage testing", 0, 0, 250, 250, SDL::WindowResizable);
+  SDL::Window root("Minimal app", 0, 0, 250, 250, SDL::WindowResizable);
 
   // Create a hardware accelerated renderer. Renderer as now root as parent.
-  SDL::Renderer* renderer = new SDL::Renderer(root, SDL::RenderAccelerated);
+  SDL::Renderer renderer(root, SDL::RenderAccelerated);
 
   // Main application loop
   SDL::Application::run(root);
 
   return 0;
 
-} // Out of scope. Destruction of root result in destruction of its child renderer.
+}
 
 ~~~
 

@@ -13,7 +13,7 @@
 
 using namespace SDL;
 
-Object::Object(Object* parent) : m_parent(nullptr)
+Object::Object(Object* parent) :  m_children(), m_parent(nullptr)
 {
     joinParent(parent);
 }
@@ -21,12 +21,14 @@ Object::Object(Object* parent) : m_parent(nullptr)
 
 Object::~Object()
 {
-    quitParent();
+    std::unordered_set<Object*> temp(m_children);
 
-    while (!m_children.empty())
+    for (std::unordered_set<Object*>::iterator it=temp.begin(); it!=temp.end(); ++it)
     {
-        delete *(m_children.begin());
+        (*it)->joinParent(m_parent);
     }
+
+    quitParent();
 }
 
 
@@ -50,6 +52,7 @@ void Object::paintEvent()
 void Object::joinParent(Object* parent)
 {
 
+
     Object* ancestor = parent;
 
     while (ancestor != nullptr)
@@ -62,7 +65,9 @@ void Object::joinParent(Object* parent)
 
     quitParent();
     m_parent = parent;
-    m_parent->addChild(this);
+
+    if (m_parent != nullptr)
+        m_parent->addChild(this);
 }
 
 

@@ -75,7 +75,7 @@ class Object
 
 public:
 
-    explicit Object() { m_parent = nullptr; }
+    Object() : m_children(), m_parent(nullptr) { }
 
     explicit Object(Object* parent);
 

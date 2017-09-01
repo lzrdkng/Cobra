@@ -40,6 +40,7 @@ Texture::Texture(SDL_Renderer* renderer,
                    int height,
                    int access,
                    Uint32 format)
+
 : m_format(format), m_access(access), m_width(width), m_height(height)
 {
     m_renderer = renderer;

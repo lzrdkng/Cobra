@@ -6,8 +6,8 @@ TARGET      := tests
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
-INCDIR      := $(PWD)/inc
-LIBDIR      := $(PWD)/lib
+INCDIR      := ../inc
+LIBDIR      := ../lib
 BUILDDIR    := obj
 TARGETDIR   := bin
 RESDIR      := res
@@ -17,14 +17,14 @@ OBJEXT      := o
 
 #Flags, Libraries and Includes
 CFLAGS      := -fopenmp -Wall -g -std=gnu++11
-LIB         := -L${LIBDIR} -lCobra
+LIB         := -L${LIBDIR} -lCobra -lSDL2
 INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)
 
 #---------------------------------------------------------------------------------
 #DO NOT EDIT BELOW THIS LINE
 #---------------------------------------------------------------------------------
-SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+SOURCES     := $(shell echo $(SRCDIR)/*.$(SRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 #Defauilt Make
@@ -68,6 +68,5 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 
 
 minimal:
-
 	g++ -Wl,-rpath=../lib/ minimal-app.cpp -L ../lib/ -lCobra -lSDL2 -I ../inc/ -std=c++11 && ./a.out && rm a.out
 

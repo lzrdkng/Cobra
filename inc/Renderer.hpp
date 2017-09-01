@@ -69,7 +69,7 @@ public:
      * @throw SDL::Error if there was an error
      * @sa SDL::Renderer:~Renderer
      */
-    explicit Renderer(Window* window,
+    explicit Renderer(Window& window,
                       SDL::RendererFlags flags = SDL::RendererNull,
                       int index = -1);
 

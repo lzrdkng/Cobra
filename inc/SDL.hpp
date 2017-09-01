@@ -3,11 +3,9 @@
 
 #include <SDL2/SDL.h>
 
-template<typename T, typename C>
-inline T operator |(T x, T y)
-{
-    return static_cast<T>(static_cast<C>(x) | static_cast<C>(y));
-}
+#define OPERATOR_OR(TYPE, CAST) \
+    inline TYPE operator |(TYPE x, TYPE y) { return static_cast<TYPE>(static_cast<CAST>(x) | static_cast<CAST>(y));}
+
 
 namespace SDL
 {
@@ -32,6 +30,7 @@ namespace SDL
     /**< Flags to initialize subsytems. */
 
 
+    OPERATOR_OR(InitFlags, Uint32)
 
     enum WindowFlags
     {
@@ -166,5 +165,5 @@ namespace SDL
 
 }
 
-#endif // COBRA_HPP
+#endif // SDL_HPP
 

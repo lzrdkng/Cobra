@@ -35,9 +35,9 @@ using namespace SDL;
 
 // constructors/destructor
 
-Renderer::Renderer(SDL::Window* window, SDL::RendererFlags flags, int index) : Object(window), m_renderer(nullptr)
+Renderer::Renderer(Window& window, SDL::RendererFlags flags, int index) : Object(&window), m_renderer(nullptr)
 {
-    m_renderer = SDL_CreateRenderer(window->toSDL(), index, flags);
+    m_renderer = SDL_CreateRenderer(window.toSDL(), index, flags);
 
     if (m_renderer == nullptr)
         throw Error(SDL_GetError());

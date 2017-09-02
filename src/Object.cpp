@@ -1,13 +1,12 @@
 #include "Object.hpp"
 
-#include <iostream>
 #include <stack>
 
 #define ITERATE_SET(TYPE, BEGIN, END, DO) \
     for (std::unordered_set<TYPE>::const_iterator it=BEGIN; it!=END; ++it) \
     { DO }
 
-#define ITERATE_CHILD(DO) \
+#define DESCANDANT(DO) \
         ITERATE_SET(Object*, m_children.begin(), m_children.end(), DO)
 
 
@@ -21,11 +20,9 @@ Object::Object(Object* parent) :  m_children(), m_parent(nullptr)
 
 Object::~Object()
 {
-    std::unordered_set<Object*> temp(m_children);
-
-    for (std::unordered_set<Object*>::iterator it=temp.begin(); it!=temp.end(); ++it)
+    while(!m_children.empty())
     {
-        (*it)->joinParent(m_parent);
+        (*m_children.begin())->quitParent();
     }
 
     quitParent();
@@ -45,14 +42,32 @@ const Object* Object::getParent() const
 
 void Object::paintEvent()
 {
-    ITERATE_CHILD((*it)->paintEvent();)
+    /*
+    std::stack<Object*> stack = {this};
+
+    Object* node;
+
+    while (!stack.empty())
+    {
+        node = stack.top();
+        stack.pop();
+
+        stack.push(node->children());
+
+
+    }*/
+
+    DESCANDANT((*it)->paintEvent();)
 }
 
 
+std::unordered_set<Object*> Object::children() const
+{
+    return m_children;
+}
+
 void Object::joinParent(Object* parent)
 {
-
-
     Object* ancestor = parent;
 
     while (ancestor != nullptr)

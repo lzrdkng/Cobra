@@ -20,6 +20,6 @@ TEST_CASE("Test inheritance of object")
     delete child;
     child = nullptr;
 
-    REQUIRE(root.getNumberOfChild() == 1);
-    REQUIRE(descandant.getParent() == &root);
+    REQUIRE(root.getNumberOfChild() == 0);
+    REQUIRE(descandant.getParent() == nullptr);
 }

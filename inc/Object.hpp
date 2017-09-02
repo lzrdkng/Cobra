@@ -87,7 +87,10 @@ public:
 
     const Object* getParent() const;
 
+
 protected:
+
+    std::unordered_set<Object*> children() const;
 
     void joinParent(Object* parent);
 

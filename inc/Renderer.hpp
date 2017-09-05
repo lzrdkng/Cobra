@@ -270,15 +270,30 @@ public:
     
     // other methods
     
+    /**
+     * @brief Draw a line on the renderer.
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return SDL::Renderer&
+     * @throw SDL::Error on failure
+     */
+    Renderer& drawLine(int x1, int y1, int x2, int y2);
 
-    //CRenderer& drawLine(int x1, int y1, int x2, int y2);
-    //CRenderer& drawLines(const CPoint* points, int count);
-    //CRenderer& drawPoint(int x, int y);
-    //CRenderer& drawPoints(const CPoint* points, int count);
-    //CRenderer& drawRect(const CRect& rect);
-    //CRenderer& drawRects(const CRect* rects, int count);
-    //CRenderer& fillRect(const CRect& rect);
-    //CRenderer& fillRects(const CRect* rects, int count);
+//    Renderer& drawLines(const CPoint* points, int count);
+
+    Renderer& drawPoint(int x, int y);
+
+  //  Renderer& drawPoints(const CPoint* points, int count);
+
+    Renderer& drawRect(const CRect& rect);
+
+   // Renderer& drawRects(const CRect* rects, int count);
+
+    Renderer& fillRect(const CRect& rect);
+
+    //Renderer& fillRects(const CRect* rects, int count);
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)

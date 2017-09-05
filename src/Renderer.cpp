@@ -236,3 +236,25 @@ bool Renderer::targetSupported() const
     return SDL_RenderTargetSupported(m_renderer) == SDL_TRUE;
 }
 #endif
+
+
+Renderer& Renderer::drawLine(int x1, int y1, int x2, int y2)
+{
+    if (SDL_RenderDrawLine(m_renderer, x1, y1, x2, y2) != 0)
+        throw SDL::Error(SDL_GetError());
+    return *this;
+}
+
+Renderer& Renderer::drawPoint(int x, int y)
+{
+    if (SDL_RenderDrawPoint(m_renderer, x, y) != 0)
+        throw SDL::Error(SDL_GetError());
+    return *this;
+}
+
+Renderer& Renderer::drawRect(const Rect &rect)
+{
+    if (SDL_RenderDrawRect(m_renderer, rect.toSDL()) != 0)
+        throw SDL::Error(SDL_GetError());
+    return *this;
+}

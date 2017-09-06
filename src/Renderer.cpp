@@ -204,6 +204,7 @@ Renderer& Renderer::setTarget(Texture &texture)
 }
 #endif
 
+
 // other methods
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -245,6 +246,34 @@ Renderer& Renderer::drawLine(int x1, int y1, int x2, int y2)
     return *this;
 }
 
+Renderer& Renderer::drawLine(const Point& p, const Point& q)
+{
+    return this->drawLine(p.getX(), p.getY(), q.getX(), q.getY());
+}
+
+Renderer& Renderer::drawLine(const Pair<Point> &points)
+{
+    return this->drawLine(points.getLeftValue(), points.getRightValue());
+}
+
+Renderer& Renderer::drawLines(const std::vector<Pair<Point>>& points)
+{
+
+    for (std::vector<Pair<Point>>::const_iterator it=points.begin(); it!=points.end(); ++it)
+    {
+        try
+        {
+            this->drawLine(*it);
+        }
+        catch (SDL::Error& error)
+        {
+            error.what();
+        }
+    }
+
+    return *this;
+}
+
 Renderer& Renderer::drawPoint(int x, int y)
 {
     if (SDL_RenderDrawPoint(m_renderer, x, y) != 0)
@@ -252,9 +281,83 @@ Renderer& Renderer::drawPoint(int x, int y)
     return *this;
 }
 
-Renderer& Renderer::drawRect(const Rect &rect)
+Renderer& Renderer::drawPoint(const Point& p)
+{
+    return this->drawPoint(p.getX(), p.getY());
+}
+
+Renderer& Renderer::drawPoints(const std::vector<Point> points)
+{
+    for (std::vector<Point>::const_iterator it=points.begin(); it!=points.end(); ++it)
+    {
+        try
+        {
+            this->drawPoint(*it);
+        }
+        catch (SDL::Error& error)
+        {
+            error.what();
+        }
+    }
+
+    return *this;
+}
+
+Renderer& Renderer::drawRect(const Rect& rect)
 {
     if (SDL_RenderDrawRect(m_renderer, rect.toSDL()) != 0)
         throw SDL::Error(SDL_GetError());
     return *this;
+}
+
+Renderer& Renderer::drawRects(const std::vector<Rect>& rects)
+{
+    for (std::vector<Rect>::const_iterator it=rects.begin(); it!=rects.end(); ++it)
+    {
+        try
+        {
+            this->drawRect(*it);
+        }
+        catch (SDL::Error& error)
+        {
+            error.what();
+        }
+    }
+
+    return *this;
+}
+
+Renderer& Renderer::fillRect(const Rect &rect)
+{
+    if (SDL_RenderFillRect(m_renderer, rect.toSDL()) != 0)
+        throw SDL::Error(SDL_GetError());
+    return *this;
+}
+Renderer& Renderer::fillRects(const std::vector<Rect>& rects)
+{
+    for (std::vector<Rect>::const_iterator it=rects.begin(); it!=rects.end(); ++it)
+    {
+        try
+        {
+            this->fillRect(*it);
+        }
+        catch (SDL::Error& error)
+        {
+            error.what();
+        }
+    }
+
+    return *this;
+}
+
+Renderer& Renderer::readPixels(const Rect& rect, PixelFormats format, void* pixels, int pitch)
+{
+    if (SDL_RenderReadPixels(m_renderer, rect.toSDL(), format, pixels, pitch) != 0)
+        throw SDL::Error(SDL_GetError());
+    return *this;
+}
+
+const SDL_Renderer* Renderer::toSDL() const
+{
+    return m_renderer;
 }

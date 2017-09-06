@@ -102,8 +102,7 @@ int Point::getY() const
 
 Point& Point::setValues(int x, int y)
 {
-    setX(x);
-    setY(y);
+    return setX(x).setY(y);
 }
 
 Point& Point::setX(int x)

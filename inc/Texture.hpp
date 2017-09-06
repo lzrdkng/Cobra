@@ -43,13 +43,14 @@ namespace SDL
 class Texture {
 public:
     
-    explicit Texture(SDL_Renderer* renderer,
-                      int width,
-                      int height,
-                      int access=SDL_TEXTUREACCESS_TARGET,
-                      Uint32 format=SDL_PIXELFORMAT_UNKNOWN);
+    explicit Texture(Renderer& renderer,
+                     int width,
+                     int height,
+                     TextureAccess access=TextureAccessTarget,
+                     PixelFormats format=PixelFormatUnknown);
     
-    Texture(const Texture& orig);
+    Texture(const Texture& orig)             = delete;
+    Texture& operator =(const Texture& orig) = delete;
     
     virtual ~Texture();
     
@@ -88,7 +89,6 @@ private:
     // Members
     
     SDL_Texture*  m_texture;
-    SDL_Renderer* m_renderer;
 
     Uint32 m_format;
     int m_access;

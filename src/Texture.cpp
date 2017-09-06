@@ -35,20 +35,18 @@ using namespace SDL;
 
 /* Constructor/destructor */
 
-Texture::Texture(SDL_Renderer* renderer,
-                   int width,
-                   int height,
-                   int access,
-                   Uint32 format)
+Texture::Texture(Renderer& renderer,
+                 int width,
+                 int height,
+                 TextureAccess access,
+                 PixelFormats format)
 
 : m_format(format), m_access(access), m_width(width), m_height(height)
 {
-    m_renderer = renderer;
-    m_texture  = SDL_CreateTexture(renderer, format, access, width, height);
-}
+    m_texture  = SDL_CreateTexture(renderer.toSDL(), format, access, width, height);
 
-Texture::Texture(const Texture& orig) 
-{
+    if (m_texture == nullptr)
+        throw Error(SDL_GetError());
 }
 
 Texture::~Texture() 

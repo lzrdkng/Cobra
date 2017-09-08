@@ -28,6 +28,7 @@
  */
 
 #include "Texture.hpp"
+#include "Renderer.hpp"
 
 using namespace SDL;
 
@@ -41,9 +42,9 @@ Texture::Texture(Renderer& renderer,
                  TextureAccess access,
                  PixelFormats format)
 
-: m_format(format), m_access(access), m_width(width), m_height(height)
+: m_texture(nullptr)
 {
-    m_texture  = SDL_CreateTexture(renderer.toSDL(), format, access, width, height);
+    m_texture = SDL_CreateTexture(renderer.toSDL(), format, access, width, height);
 
     if (m_texture == nullptr)
         throw Error(SDL_GetError());
@@ -52,15 +53,17 @@ Texture::Texture(Renderer& renderer,
 Texture::~Texture() 
 {
     free();
-    
-    m_renderer = nullptr;
 }
 
 /* get methods */
 
-int Texture::getAccess() const
+TextureAccess Texture::getAccess() const
 {
-    return m_access;
+    int access;
+
+    if (SDL_QueryTexture(m_texture, NULL, &access, NULL, NULL) != 0)
+        throw Error(SDL_GetError());
+    return static_cast<TextureAccess>(access);
 }
 
 
@@ -73,49 +76,57 @@ Uint8 Texture::getAlphaMod() const
     return alpha;
 }
 
-SDL_BlendMode Texture::getBlendMode() const
+BlendModes Texture::getBlendMode() const
 {
-    SDL_BlendMode blendMode;
+    SDL_BlendMode blendMode = SDL_BLENDMODE_NONE;
     
-    SDL_GetTextureBlendMode(m_texture, &blendMode);
-    
-    return blendMode;
+    if (SDL_GetTextureBlendMode(m_texture, &blendMode) != 0)
+        throw Error(SDL_GetError());
+
+    return static_cast<BlendModes>(blendMode);
 }
 
 Color Texture::getColorMod() const
-{
-    Color color;
-    
+{ 
     Uint8 r,g,b;
     
-    int code = SDL_GetTextureColorMod(m_texture, &r, &g, &b);
+    if (SDL_GetTextureColorMod(m_texture, &r, &g, &b) != 0)
+        throw Error(SDL_GetError());
     
-    if (code == 0)
-    {
-        /*
-        color.setBlue(b);
-        color.setGreen(g);
-        color.setRed(r);*/
-    }
-    
-    return color;   
+    return Color::fromRGB(r, g ,b);
 }
 
-Uint32 Texture::getFormat() const
+
+PixelFormats Texture::getFormat() const
 {
-    return m_format;
+    Uint32 format = 0;
+
+    if (SDL_QueryTexture(m_texture, &format, NULL, NULL, NULL) != 0)
+        throw Error(SDL_GetError());
+
+    return static_cast<PixelFormats>(format);
 }
 
 
 int Texture::getHeight() const 
 {
-    return m_height;
+    int height = 0;
+
+    if (SDL_QueryTexture(m_texture, NULL, NULL, NULL, &height) != 0)
+        throw Error(SDL_GetError());
+
+    return height;
 }
 
 
 int Texture::getWidth() const 
 {
-    return m_width;
+    int width = 0;
+
+    if (SDL_QueryTexture(m_texture, NULL, NULL, &width, NULL) != 0)
+        throw Error(SDL_GetError());
+
+    return width;
 }
 
 
@@ -127,31 +138,30 @@ Texture& Texture::setAlphaMod(Uint8 alpha)
     return *this;
 }
 
-Texture& Texture::setBlendMode(SDL_BlendMode blendMode)
+Texture& Texture::setBlendMode(BlendModes blendMode)
 {
-    SDL_SetTextureBlendMode(m_texture, blendMode);
+    SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(blendMode));
     return *this;
 }
 
 Texture& Texture::setColorMod(const Color& color)
 {
-    SDL_SetTextureColorMod(m_texture,
-                           color.getRed(),
-                           color.getGreen(),
-                           color.getBlue());
+    if (SDL_SetTextureColorMod(m_texture, color.getRed(), color.getGreen(), color.getBlue()) != 0)
+            throw Error(SDL_GetError());
+
     return *this;
 }
 
 /* other methods */
 
-bool Texture::copyToRender(const Rect& source, const Rect& destination)
+bool Texture::copyToRender(const Renderer& renderer, const Rect& source, const Rect& destination)
 {
     return SDL_RenderCopy(
-                          m_renderer,
+                          renderer.toSDL(),
                           m_texture,
                           source.toSDL(),
                           destination.toSDL()
-                         ) == 0 ? true:false;
+                         ) == 0;
 }
 
 /*
@@ -233,7 +243,4 @@ void Texture::free()
         SDL_DestroyTexture(m_texture);
         m_texture = nullptr;
     }
-    
-    m_width  = 0;
-    m_height = 0;
 }

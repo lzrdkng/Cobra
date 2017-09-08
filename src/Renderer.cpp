@@ -357,7 +357,7 @@ Renderer& Renderer::readPixels(const Rect& rect, PixelFormats format, void* pixe
     return *this;
 }
 
-const SDL_Renderer* Renderer::toSDL() const
+SDL_Renderer* Renderer::toSDL() const
 {
     return m_renderer;
 }

@@ -387,7 +387,7 @@ public:
      * @return const SDL_Renderer*
      * @warning Uses with caution
      */
-    const SDL_Renderer* toSDL() const;
+    SDL_Renderer* toSDL() const;
 
     virtual void paintEvent()
     {

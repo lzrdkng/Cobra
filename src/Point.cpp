@@ -104,6 +104,7 @@ Point& Point::setValues(int x, int y)
 {
     setX(x);
     setY(y);
+    return *this;
 }
 
 Point& Point::setX(int x)

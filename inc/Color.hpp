@@ -43,6 +43,9 @@ class Color
 {
 public:
     
+
+    // static methods
+
     /**
      * @brief static method to create Color object from rgb.
      * @param r Red component in range 0-255.
@@ -63,16 +66,30 @@ public:
     static Color fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
 
+    // operator methods
+
     /**
      * @brief Assign Color operator.
      * @param orig The Color assign.
      */
     void operator =(const Color& orig);
 
+    /**
+     * @brief operator ==
+     * @param comp
+     * @return bool
+     */
     bool operator ==(const Color& comp) const;
 
+    /**
+     * @brief operator !=
+     * @param comp
+     * @return bool
+     */
     bool operator !=(const Color& comp) const;
 
+
+    // constructors/destructor
 
     /**
      * @brief Explicit constructor of class Color.
@@ -87,7 +104,6 @@ public:
                    Uint8 b=0,
                    Uint8 a=255);
 
-
     /**
      * @brief Copy constructor of class Color.
      * @param orig The orignal color.
@@ -99,6 +115,8 @@ public:
      */
     virtual ~Color();
     
+
+    // get methods
 
     /**
      * @brief Return the Color's alpha component.
@@ -126,13 +144,14 @@ public:
     Uint8 getRed() const;
     
 
+    // set methods
+
     /**
      * @brief Set the Color's alpha component.
      * @param alpha The alpha component in range 0-255.
      * @return SDL::Color&
      */
     Color& setAlpha(Uint8 alpha);
-
 
     /**
      * @brief Set the Color's blue component.
@@ -147,7 +166,6 @@ public:
      * @return SDL::Color&
      */
     Color& setGreen(Uint8 green);
-
 
     /**
      * @brief Set the Color's red component.
@@ -179,6 +197,9 @@ public:
                    Uint8 g=0,
                    Uint8 b=0,
                    Uint8 a=255);
+
+
+    // other methods
 
     /**
      * @brief Return the wrapped object.

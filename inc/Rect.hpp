@@ -43,6 +43,7 @@ class Rect
 {
 public:
 
+
     // static methods
 
     /**

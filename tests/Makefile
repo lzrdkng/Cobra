@@ -24,7 +24,7 @@ INCDEP      := -I$(INCDIR)
 #---------------------------------------------------------------------------------
 #DO NOT EDIT BELOW THIS LINE
 #---------------------------------------------------------------------------------
-SOURCES     := $(shell echo $(SRCDIR)/*.$(SRCEXT))
+SOURCES     := $(shell echo $(SRCDIR)/test-*.$(SRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 #Defauilt Make
@@ -68,5 +68,5 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 
 
 minimal:
-	g++ -Wl,-rpath=../lib/ minimal-app.cpp -L ../lib/ -lCobra -lSDL2 -I ../inc/ -std=c++11 && ./a.out && rm a.out
+	g++ -Wl,-rpath=../lib/ src/minimal-app.cpp -L ../lib/ -lCobra -lSDL2 -I ../inc/ -std=c++11 && ./a.out && rm a.out
 

@@ -20,12 +20,12 @@ Object::Object(Object* parent) :  m_children(), m_parent(nullptr)
 
 Object::~Object()
 {
+    quitParent();
+
     while(!m_children.empty())
     {
         (*m_children.begin())->quitParent();
     }
-
-    quitParent();
 }
 
 

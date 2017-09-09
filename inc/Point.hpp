@@ -44,6 +44,8 @@ class Point
 public:
 
 
+    // static methods
+
     /**
      * @brief static method returning a SDL::Point instance
      * created from two integers.
@@ -61,6 +63,8 @@ public:
      */
     static Point fromSDL(const SDL_Point& point);
 
+
+    // operator methods
 
     /**
      * @brief operator =
@@ -82,6 +86,8 @@ public:
      */
     bool operator !=(const Point& comp) const;
 
+
+    // constructors/destructor
 
     /**
      * @brief Explicit SDL::Point constructor.

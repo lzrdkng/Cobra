@@ -154,6 +154,7 @@ Color& Color::setRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     return *this;
 }
 
+
 // other methods
 
 const SDL_Color* Color::toSDL() const

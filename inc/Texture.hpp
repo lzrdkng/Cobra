@@ -30,9 +30,10 @@
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 
+#include <string>
 #include "SDL.hpp"
 
-#include <string>
+#include "Pair.hpp"
 #include "Point.hpp"
 #include "Color.hpp"
 #include "Rect.hpp"
@@ -40,32 +41,52 @@
 namespace SDL
 {
 
+class Renderer;
+
 class Texture {
 public:
     
-    explicit Texture(SDL_Renderer* renderer,
-                      int width,
-                      int height,
-                      int access=SDL_TEXTUREACCESS_TARGET,
-                      Uint32 format=SDL_PIXELFORMAT_UNKNOWN);
+    explicit Texture(Renderer& renderer,
+                     int width,
+                     int height,
+                     TextureAccess access=TextureAccessTarget,
+                     PixelFormats format=PixelFormatUnknown);
     
-    Texture(const Texture& orig);
+    Texture(const Texture& orig)             = delete;
+    Texture(Texture&& orig)                  = delete;
+    Texture& operator =(const Texture& orig) = delete;
+    Texture& operator =(Texture&& orig)      = delete;
     
     virtual ~Texture();
     
-    int           getAccess()    const;
-    Uint8         getAlphaMod()  const;
-    SDL_BlendMode getBlendMode() const;
-    Color         getColorMod()  const;
-    Uint32        getFormat()    const;
-    int           getHeight()    const;
-    int           getWidth()     const;
+    TextureAccess getAccess() const;
+
+    Uint8 getAlphaMod() const;
+
+    BlendModes getBlendMode() const;
+
+    Color getColorMod() const;
+
+    PixelFormats getFormat() const;
+
+    int getHeight() const;
+
+    int getWidth() const;
     
     Texture& setAlphaMod(Uint8 alpha);
-    Texture& setBlendMode(SDL_BlendMode blendMode);
-    Texture& setColorMod(const SDL::Color& color);
-    
-    bool copyToRender(const Rect& src, const Rect& dst);
+
+    /**
+     * @brief Set the blend mode of the texture.
+     * @param blendMode
+     * @return SDL::Texture&
+     * @throw SDL::Error on failure.
+     */
+    Texture& setBlendMode(BlendModes blendMode);
+
+
+    Texture& setColorMod(const Color& color);
+
+    bool copyToRender(const Renderer& renderer, const Rect& src, const Rect& dst);
     /*bool copyToRenderEx(const CRect& src,
                         const CRect& dst,
                         const double angle,
@@ -88,12 +109,6 @@ private:
     // Members
     
     SDL_Texture*  m_texture;
-    SDL_Renderer* m_renderer;
-
-    Uint32 m_format;
-    int m_access;
-    int m_width;
-    int m_height;
     
     // Methods
     

@@ -30,6 +30,8 @@
 #ifndef RENDERER_HPP
 #define RENDERER_HPP
 
+#include <vector>
+
 #include "SDL.hpp"
 #include "Error.hpp"
 
@@ -270,15 +272,36 @@ public:
     
     // other methods
     
+    /**
+     * @brief Draw a line on the renderer.
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return SDL::Renderer&
+     * @throw SDL::Error on failure
+     */
+    Renderer& drawLine(int x1, int y1, int x2, int y2);
 
-    //CRenderer& drawLine(int x1, int y1, int x2, int y2);
-    //CRenderer& drawLines(const CPoint* points, int count);
-    //CRenderer& drawPoint(int x, int y);
-    //CRenderer& drawPoints(const CPoint* points, int count);
-    //CRenderer& drawRect(const CRect& rect);
-    //CRenderer& drawRects(const CRect* rects, int count);
-    //CRenderer& fillRect(const CRect& rect);
-    //CRenderer& fillRects(const CRect* rects, int count);
+    Renderer& drawLine(const Point& p, const Point& q);
+
+    Renderer& drawLine(const Pair<Point>& points);
+
+    Renderer& drawLines(const std::vector<Pair<Point>>& points);
+
+    Renderer& drawPoint(int x, int y);
+
+    Renderer& drawPoint(const Point& p);
+
+    Renderer& drawPoints(const std::vector<Point> points);
+
+    Renderer& drawRect(const Rect& rect);
+
+    Renderer& drawRects(const std::vector<Rect>& rects);
+
+    Renderer& fillRect(const Rect& rect);
+
+    Renderer& fillRects(const std::vector<Rect>& rects);
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -335,8 +358,17 @@ public:
      */
     Renderer& present();
 
-
-  //bool      readPixels(const SDL_Rect& rect, Uint32 format)
+    /**
+     * @brief Read pixels from the renderer.
+     * @param rect the area to read
+     * @param format the desired format of the pixel data
+     * @param pixels pointer filled with the pixel data
+     * @param pitch the pitch of the pixels parameter
+     * @return SDL::Renderer&
+     * @throw SDL::Error on failure
+     * @remark This is a very slow operation, and should not be used frequently.
+     */
+    Renderer& readPixels(const Rect& rect, SDL::PixelFormats format, void* pixels, int pitch); // Need to be change in the future
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -346,9 +378,16 @@ public:
      * @version **SDL2.0.0**
      * @sa SDL::Renderer::setTarget
      */
-    bool      targetSupported() const;
+    bool targetSupported() const;
 #endif
     
+
+    /**
+     * @brief Return the wrapped SDL_Renderer
+     * @return const SDL_Renderer*
+     * @warning Uses with caution
+     */
+    SDL_Renderer* toSDL() const;
 
     virtual void paintEvent()
     {

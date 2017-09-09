@@ -63,7 +63,7 @@ Every **Object** instance :
 - As zero or one parent
 - As zero or more child
 - Can not be parent of one of its ancestor, nor itself
-- On destruction, give its children to its parent
+- On destruction, quit its parent and abandon its children
 
 
 ## Usage

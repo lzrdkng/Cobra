@@ -50,6 +50,13 @@ Surface& Surface::blit(Surface &dst, Rect &dstRect)
     return *this;
 }
 
+Surface& Surface::blit(Surface& dst)
+{
+    if (SDL_BlitSurface(m_surface, NULL, dst.toSDL(), NULL) != 0)
+        throw Error(SDL_GetError());
+    return *this;
+}
+
 Surface& Surface::fillRect(const Rect& rect, Uint32 color)
 {
     if (SDL_FillRect(m_surface, rect.toSDL(), color) != 0)
@@ -64,6 +71,18 @@ Surface& Surface::fillRect(Uint32 color)
     return *this;
 }
 
+Surface& Surface::loadBMP(const char* path)
+{
+  SDL_Surface* temp = SDL_LoadBMP(path);
+
+  if (temp == NULL)
+     throw Error(SDL_GetError());
+
+  this->free();
+  m_surface = temp;
+  return *this;
+}
+
 const SDL_Surface* Surface::toSDL() const
 {
     return m_surface;
@@ -73,3 +92,15 @@ SDL_Surface* Surface::toSDL()
 {
     return m_surface;
 }
+
+
+void Surface::free()
+{
+
+  if (m_surface != nullptr)
+  {
+      SDL_FreeSurface(m_surface);
+      m_surface = nullptr;
+  }
+}
+

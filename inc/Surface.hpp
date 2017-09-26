@@ -81,6 +81,8 @@ public:
      */
     Surface& blit(SDL::Surface& dst, SDL::Rect& dstRect);
 
+    Surface& blit(SDL::Surface& dst);
+
     /**
      * @brief Use this method to perform a fast fill of a rectangle with a specified color.
      * @param rect the rectangle to fill
@@ -91,6 +93,8 @@ public:
     Surface& fillRect(const SDL::Rect& rect, Uint32 color);
 
     Surface& fillRect(Uint32 color);
+
+    Surface& loadBMP(const char* path);
 
     /**
      * @brief Return the C pointer of the wrapped SDL_Surface.
@@ -105,6 +109,8 @@ public:
 protected:
 
     SDL_Surface* m_surface; // wrapped object
+
+    void free();
 
 };
 

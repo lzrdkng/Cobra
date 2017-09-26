@@ -156,3 +156,8 @@ const SDL_Rect* Rect::toSDL() const
 {
     return &m_rect;
 }
+
+SDL_Rect* Rect::toSDL()
+{
+    return &m_rect;
+}

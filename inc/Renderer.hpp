@@ -37,10 +37,9 @@
 
 #include "Rect.hpp"
 #include "Color.hpp"
-#include "Object.hpp"
 #include "Pair.hpp"
-#include "Window.hpp"
 #include "Texture.hpp"
+#include "Window.hpp"
 
 
 namespace SDL
@@ -52,7 +51,7 @@ namespace SDL
  * **SDL 2.0.0**
  */
 
-class Renderer : public Object
+class Renderer
 {
 public:
     
@@ -175,7 +174,7 @@ public:
      * @brief Return the current renderer's target.
      * @return SDL_Texture*
      * @note Return NULL for the default renderer's target
-     * @warning Use with caution
+     * @warning Use with caution.
      */
     SDL_Texture* getTarget() const;
 
@@ -293,7 +292,7 @@ public:
 
     Renderer& drawPoint(const Point& p);
 
-    Renderer& drawPoints(const std::vector<Point> points);
+    Renderer& drawPoints(const std::vector<Point>& points);
 
     Renderer& drawRect(const Rect& rect);
 

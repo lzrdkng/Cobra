@@ -30,11 +30,9 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <stdexcept>
 #include <string>
 
 #include "SDL.hpp"
-#include "Object.hpp"
 #include "Pair.hpp"
 #include "Point.hpp"
 
@@ -47,7 +45,7 @@ namespace SDL
  * **SDL 2.0.0**
  */
 
-class Window : public Object
+class Window
 {
 public:
 
@@ -251,7 +249,12 @@ public:
      */
     Window& warpMouse(int x, int y);
     
-    
+    /**
+     * @brief Use this method to copy the window surface to the screen.
+     * @return SDL::Window&
+     * @throw SDL::Error on failure.
+     */
+    Window& update();
 
 private:
     

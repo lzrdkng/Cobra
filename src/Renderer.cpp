@@ -35,7 +35,7 @@ using namespace SDL;
 
 // constructors/destructor
 
-Renderer::Renderer(Window& window, SDL::RendererFlags flags, int index) : Object(&window), m_renderer(nullptr)
+Renderer::Renderer(Window& window, SDL::RendererFlags flags, int index) : m_renderer(nullptr)
 {
     m_renderer = SDL_CreateRenderer(window.toSDL(), index, flags);
 
@@ -135,7 +135,7 @@ Pair<float> Renderer::getScale() const
 
 SDL_Texture* Renderer::getTarget() const
 {
-    return nullptr;
+    return SDL_GetRenderTarget(m_renderer);
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -152,22 +152,19 @@ Rect Renderer::getViewport() const
 
 Renderer& Renderer::setClipRect(const Rect& rect)
 {
-    if (SDL_RenderSetClipRect(m_renderer, rect.toSDL()) == 0)
-        return *this;
-    throw SDL::Error(SDL_GetError());
+    if (SDL_RenderSetClipRect(m_renderer, rect.toSDL()) != 0)
+        throw Error(SDL_GetError());
+
+    return *this;
 }
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
 Renderer& Renderer::setIntegerScale(bool enable)
 {
-    SDL_bool e = SDL_FALSE;
-    
-    if (enable)
-        e = SDL_TRUE;
-    
-    if (SDL_RenderSetIntegerScale(m_renderer, e) != 0)
-        throw SDL::Error(SDL_GetError());
+
+    if (SDL_RenderSetIntegerScale(m_renderer, static_cast<SDL_bool>(enable)) != 0)
+        throw Error(SDL_GetError());
     
     return *this;
 }
@@ -176,29 +173,29 @@ Renderer& Renderer::setIntegerScale(bool enable)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 Renderer& Renderer::setLogicalSize(int w, int h)
 {
-    if (SDL_RenderSetLogicalSize(m_renderer, w, h) == 0)
-        return *this;
+    if (SDL_RenderSetLogicalSize(m_renderer, w, h) != 0)
+        throw Error(SDL_GetError());
 
-    throw SDL::Error(SDL_GetError());
+    return *this;
 }
 
 Renderer& Renderer::setScale(float scaleX, float scaleY)
 {
-    if (SDL_RenderSetScale(m_renderer, scaleX, scaleY) == 0)
-        return *this;
+    if (SDL_RenderSetScale(m_renderer, scaleX, scaleY) != 0)
+        throw Error(SDL_GetError());
 
-    throw SDL::Error(SDL_GetError());
+    return *this;
 }
 
 Renderer& Renderer::setViewport(const Rect& rect)
 {
-    if (SDL_RenderSetViewport(m_renderer, rect.toSDL()) == 0)
-        return *this;            
+    if (SDL_RenderSetViewport(m_renderer, rect.toSDL()) != 0)
+        throw Error(SDL_GetError());
 
-    throw SDL::Error(SDL_GetError());
+    return *this;
 }
 
-Renderer& Renderer::setTarget(Texture &texture)
+Renderer& Renderer::setTarget(Texture& texture)
 {
     return *this;
 }
@@ -210,10 +207,10 @@ Renderer& Renderer::setTarget(Texture &texture)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 Renderer& Renderer::clear()
 {
-    if (SDL_RenderClear(m_renderer) == 0)
-        return *this;
+    if (SDL_RenderClear(m_renderer) != 0)
+        throw Error(SDL_GetError());
 
-    throw SDL::Error(SDL_GetError());
+    return *this;
 }
 #endif
 
@@ -234,7 +231,7 @@ Renderer& Renderer::present()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 bool Renderer::targetSupported() const
 {
-    return SDL_RenderTargetSupported(m_renderer) == SDL_TRUE;
+    return SDL_RenderTargetSupported(m_renderer);
 }
 #endif
 
@@ -243,6 +240,7 @@ Renderer& Renderer::drawLine(int x1, int y1, int x2, int y2)
 {
     if (SDL_RenderDrawLine(m_renderer, x1, y1, x2, y2) != 0)
         throw SDL::Error(SDL_GetError());
+
     return *this;
 }
 
@@ -278,6 +276,7 @@ Renderer& Renderer::drawPoint(int x, int y)
 {
     if (SDL_RenderDrawPoint(m_renderer, x, y) != 0)
         throw SDL::Error(SDL_GetError());
+
     return *this;
 }
 
@@ -286,7 +285,7 @@ Renderer& Renderer::drawPoint(const Point& p)
     return this->drawPoint(p.getX(), p.getY());
 }
 
-Renderer& Renderer::drawPoints(const std::vector<Point> points)
+Renderer& Renderer::drawPoints(const std::vector<Point>& points)
 {
     for (std::vector<Point>::const_iterator it=points.begin(); it!=points.end(); ++it)
     {
@@ -307,6 +306,7 @@ Renderer& Renderer::drawRect(const Rect& rect)
 {
     if (SDL_RenderDrawRect(m_renderer, rect.toSDL()) != 0)
         throw SDL::Error(SDL_GetError());
+
     return *this;
 }
 
@@ -331,8 +331,10 @@ Renderer& Renderer::fillRect(const Rect &rect)
 {
     if (SDL_RenderFillRect(m_renderer, rect.toSDL()) != 0)
         throw SDL::Error(SDL_GetError());
+
     return *this;
 }
+
 Renderer& Renderer::fillRects(const std::vector<Rect>& rects)
 {
     for (std::vector<Rect>::const_iterator it=rects.begin(); it!=rects.end(); ++it)
@@ -354,6 +356,7 @@ Renderer& Renderer::readPixels(const Rect& rect, PixelFormats format, void* pixe
 {
     if (SDL_RenderReadPixels(m_renderer, rect.toSDL(), format, pixels, pitch) != 0)
         throw SDL::Error(SDL_GetError());
+
     return *this;
 }
 

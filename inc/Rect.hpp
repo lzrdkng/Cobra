@@ -62,6 +62,8 @@ public:
      * @return
      */
     static Rect fromSDL(const SDL_Rect& sdl_rect);
+
+    static Rect nullRect();
     
 
     // operator methods
@@ -183,7 +185,9 @@ public:
      * @return SDL_Rect*
      * @warning Use with caution.
      */
-    const SDL_Rect* toSDL() const;
+     const SDL_Rect* toSDL() const;
+
+     SDL_Rect* toSDL();
     
     
 private:

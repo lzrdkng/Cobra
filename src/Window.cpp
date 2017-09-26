@@ -41,7 +41,7 @@ Window::Window(const char* title,
                int y,
                int width,
                int height,
-               SDL::WindowFlags flags) : Object(), m_window(nullptr)
+               SDL::WindowFlags flags) : m_window(nullptr)
 {
     m_window = SDL_CreateWindow(title,
                                 x,
@@ -284,3 +284,9 @@ Window& Window::warpMouse(int x, int y)
     return *this;
 }
 
+Window& Window::update()
+{
+    if (SDL_UpdateWindowSurface(m_window) != 0)
+        throw Error(SDL_GetError());
+    return *this;
+}

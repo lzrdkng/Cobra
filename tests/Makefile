@@ -16,7 +16,7 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fopenmp -Wall -g -std=gnu++11
+CFLAGS      := -fopenmp -Wall -g -std=gnu++14
 LIB         := -L${LIBDIR} -lCobra -lSDL2
 INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)
@@ -51,7 +51,7 @@ cleaner: clean
 
 #Link
 $(TARGET): $(OBJECTS)
-	$(CC) -Wl,-rpath=$(LIBDIR) -o $(TARGETDIR)/$(TARGET) $^ $(LIB) && ./bin/tests
+	$(CC) -Wl,-rpath=$(LIBDIR),-rpath=/usr/local/lib -o $(TARGETDIR)/$(TARGET) $^ $(LIB) && ./bin/tests
 
 #Compile
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)

@@ -162,6 +162,8 @@ namespace SDL
          */
     };
 
+    SDL::Color getRGB(Uint32, SDL::PixelFormat);
+
 }
 
 #endif // SDL_HPP

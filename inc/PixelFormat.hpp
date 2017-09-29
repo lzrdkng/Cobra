@@ -1,0 +1,6 @@
+#ifndef PIXELFORMAT_HPP
+#define PIXELFORMAT_HPP
+
+
+
+#endif // PIXELFORMAT_HPP

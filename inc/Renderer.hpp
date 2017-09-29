@@ -188,8 +188,8 @@ public:
      */
     Rect getViewport() const;
 #endif
-    
-    
+
+
     /**
      * @brief Set the clip rectangle for the renderer's target.
      * @param rect The clip area
@@ -199,6 +199,15 @@ public:
      * @sa SDL::Renderer::isClipEnabled
      */
     Renderer& setClipRect(const Rect& rect);
+
+
+    /**
+     * @brief Set the color for drawing operation.
+     * @param c the color
+     * @return SDL::Renderer&
+     * @throw SDL::Error on failure.
+     */
+    Renderer& setDrawColor(Color c);
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
     /**

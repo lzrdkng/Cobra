@@ -1,4 +1,5 @@
 #include "SDL.hpp"
+#include "Color.hpp"
 
 using namespace SDL;
 

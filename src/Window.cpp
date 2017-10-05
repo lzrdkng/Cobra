@@ -37,10 +37,10 @@
 using namespace SDL;
 
 Window::Window(const char* title,
-               int x,
-               int y,
                int width,
                int height,
+               int x,
+               int y,
                SDL::WindowFlags flags) : m_window(nullptr)
 {
     m_window = SDL_CreateWindow(title,

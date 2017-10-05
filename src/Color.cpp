@@ -37,7 +37,7 @@ using namespace SDL;
 
 Color Color::fromRGB(Uint8 r, Uint8 g, Uint8 b)
 {
-    return Color::fromRGBA(r, g, b, 255);
+    return Color::fromRGBA(r, g, b, 0xFF);
 }
 
 Color Color::fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)

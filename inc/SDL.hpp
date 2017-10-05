@@ -1,5 +1,5 @@
-#ifndef COBRA_HPP
-#define COBRA_HPP
+#ifndef SDL_HPP
+#define SDL_HPP
 
 #include <SDL2/SDL.h>
 
@@ -163,7 +163,7 @@ class Color;
          */
     };
 
-    SDL::Color getRGB(Uint32, SDL::PixelFormat);
+    Color getRGB(Uint32 color, SDL_PixelFormat* format);
 
 }
 

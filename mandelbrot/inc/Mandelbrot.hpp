@@ -8,7 +8,7 @@
 #include "Window.hpp"
 #include "Renderer.hpp"
 
-typedef std::complex<double> Complex;
+typedef std::complex<long double> Complex;
 
 class Mandelbrot
 {
@@ -19,44 +19,46 @@ public:
   virtual ~Mandelbrot();
 
 
-  double getZoom() const;
+  long double getZoom() const;
 
-  double getEpsilon() const;
+  long double getEpsilon() const;
 
   Complex getCenter() const;
 
-  unsigned getWidth() const;
+  double getWidth() const;
 
-  unsigned getHeight() const;
+  double getHeight() const;
 
   Mandelbrot& renderImage();
   
-protected:
-
-  double iterate(Complex c) const;
-
-  Mandelbrot& zoomIn(unsigned factor);
+  Mandelbrot& zoomIn(long double factor);
 
   Mandelbrot& moveFrom(Complex c);
 
   Mandelbrot& moveTo(Complex c);
 
-  Complex screenToCartesian(unsigned x, unsigned y) const;  
+protected:
 
-  Mandelbrot& renderPixel(unsigned x, unsigned y, Uint32 color);
+  long double iterate(Complex c) const;
+
+  Complex screenToCartesian(unsigned x, unsigned y) const;
+
+  Mandelbrot& renderPixel(unsigned x, unsigned y, long double color);
 
 
 private:
 
   SDL::Renderer m_renderer;
 
-  double m_zoom;
+  SDL_PixelFormat* m_format;
+
+  long double m_zoom;
  
   Complex m_center;
 
-  unsigned m_width;
+  double m_width;
 
-  unsigned m_height;
+  double m_height;
 
   unsigned m_maxIteration;
 

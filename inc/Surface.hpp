@@ -24,6 +24,8 @@ public:
 
     explicit Surface(SDL_Surface* surface);
 
+    Surface(const char* path, const Surface* const stretch = nullptr);
+
     virtual ~Surface();
 
 
@@ -81,7 +83,26 @@ public:
      */
     Surface& blit(SDL::Surface& dst, SDL::Rect& dstRect);
 
+    Surface& blit(const SDL::Rect& srcRect, SDL::Surface& dst);
+
     Surface& blit(SDL::Surface& dst);
+
+
+    /**
+     * @brief Use this method to perfom a scaled surface copy to a destination surface.
+     * @param srcRect
+     * @param dst
+     * @param dstRect
+     * @return SDL::Surface&
+     * @throw SDL::Error on failure.
+     */
+    Surface& blitScaled(const SDL::Rect& srcRect, SDL::Surface& dst, SDL::Rect& dstRect);
+
+    Surface& blitScaled(SDL::Surface& dst, SDL::Rect& dstRect);
+
+    Surface& blitScaled(const SDL::Rect& srcRect, SDL::Surface& dst);
+
+    Surface& blitScaled(SDL::Surface& dst);
 
     /**
      * @brief Use this method to perform a fast fill of a rectangle with a specified color.

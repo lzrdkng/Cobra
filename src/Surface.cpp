@@ -8,6 +8,32 @@ Surface::Surface(SDL_Surface* surface) : m_surface(surface)
 
 }
 
+Surface::Surface(const char* path, const Surface* const stretch) : m_surface(nullptr)
+{
+
+    if (stretch == nullptr)
+    {
+        this->loadBMP(path);
+        return;
+    }
+
+    SDL_Surface* loadedSurface = SDL_LoadBMP(path);
+
+    if (loadedSurface == nullptr)
+    {
+        throw Error(SDL_GetError());
+    }
+
+    m_surface = SDL_ConvertSurface(loadedSurface, stretch->toSDL()->format, 0);
+
+    SDL_FreeSurface(loadedSurface);
+
+    if (m_surface == nullptr)
+    {
+        throw Error(SDL_GetError());
+    }
+}
+
 Surface::~Surface()
 {
     if (m_surface != nullptr)
@@ -50,9 +76,44 @@ Surface& Surface::blit(Surface &dst, Rect &dstRect)
     return *this;
 }
 
+Surface& Surface::blit(const Rect& srcRect, Surface& dst)
+{
+    if (SDL_BlitSurface(m_surface, srcRect.toSDL(), dst.toSDL(), NULL) != 0)
+        throw Error(SDL_GetError());
+    return *this;
+}
+
 Surface& Surface::blit(Surface& dst)
 {
     if (SDL_BlitSurface(m_surface, NULL, dst.toSDL(), NULL) != 0)
+        throw Error(SDL_GetError());
+    return *this;
+}
+
+Surface& Surface::blitScaled(const Rect& srcRect, Surface& dst, Rect& dstRect)
+{
+    if (SDL_BlitScaled(m_surface, srcRect.toSDL(), dst.toSDL(), dstRect.toSDL()) != 0)
+        throw Error(SDL_GetError());
+    return *this;
+}
+
+Surface& Surface::blitScaled(Surface& dst, Rect& dstRect)
+{
+    if (SDL_BlitScaled(m_surface, NULL, dst.toSDL(), dstRect.toSDL()) != 0)
+        throw Error(SDL_GetError());
+    return *this;
+}
+
+Surface& Surface::blitScaled(const  Rect& srcRect, Surface& dst)
+{
+    if (SDL_BlitScaled(m_surface, srcRect.toSDL(), dst.toSDL(), NULL) != 0)
+        throw Error(SDL_GetError());
+    return *this;
+}
+
+Surface& Surface::blitScaled(Surface& dst)
+{
+    if (SDL_BlitScaled(m_surface, NULL, dst.toSDL(), NULL) != 0)
         throw Error(SDL_GetError());
     return *this;
 }

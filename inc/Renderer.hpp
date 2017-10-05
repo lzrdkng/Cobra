@@ -207,7 +207,8 @@ public:
      * @return SDL::Renderer&
      * @throw SDL::Error on failure.
      */
-    Renderer& setDrawColor(Color c);
+    Renderer& setDrawColor(Color color);
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
     /**

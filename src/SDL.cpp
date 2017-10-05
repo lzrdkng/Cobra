@@ -1,13 +1,11 @@
 #include "SDL.hpp"
 #include "Color.hpp"
 
-using namespace SDL;
-
-Color getRGB(Uint32 pixel, PixelFormat& format)
+SDL::Color SDL::getRGB(Uint32 color, SDL_PixelFormat* format)
 {
-  Uint8 r, g, b = 0, 0, 0;
+  Uint8 r = 0, g = 0, b = 0;
 
-  SDL_GetRGB(pixel, format.toSDL(), &r, &g, &b);
+  SDL_GetRGB(color, format, &r, &g, &b);
 
-  return Color::fromRGB(r, g, b);
+  return SDL::Color::fromRGB(r, g, b);
 }

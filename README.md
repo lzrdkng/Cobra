@@ -8,7 +8,7 @@
 Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) work too.
 
 ## Build library
-To **build** the shared library, use **make all**.
+To **build** the shared library, use **make**.
 
 ## Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.
@@ -54,18 +54,6 @@ Constants have also been re-written in **enum**.
 **SDL_WINDOW_FULLSCREEN** -> **SDL::WindowFlags::WindowFullScreen**
 
 
-## Parent tree
-
-Every class, wrapper or not, derived from based class **Object**. 
-
-Every **Object** instance :
-
-- As zero or one parent
-- As zero or more child
-- Can not be parent of one of its ancestor, nor itself
-- On destruction, quit its parent and abandon its children
-
-
 ## Usage
 
 ~~~C++
@@ -86,8 +74,21 @@ int main()
   // Create a hardware accelerated renderer. Renderer as now root as parent.
   SDL::Renderer renderer(root, SDL::RenderAccelerated);
 
-  // Main application loop
-  SDL::Application::run(root);
+  bool quit = false;
+
+  SDL_Event event;
+
+  while (!quit)
+  {
+    while (SDL_PollEvent(&event) != 0)
+    {
+      if (event.type == SDL_QUIT)
+       quit = true;
+      // handle other events here
+    }
+
+    // do stuff here
+  }
 
   return 0;
 
@@ -95,3 +96,9 @@ int main()
 
 ~~~
 
+## Mandelbrot set
+
+I also made a little program to see the mandelbrot set.
+I'll keep updating it whenever **Cobra** advances.
+To build the **mandelbrot**, use make in the *mandelbrot*
+directory.

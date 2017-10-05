@@ -158,6 +158,16 @@ Renderer& Renderer::setClipRect(const Rect& rect)
     return *this;
 }
 
+Renderer& Renderer::setDrawColor(Color color)
+{
+    if (SDL_SetRenderDrawColor(m_renderer,
+                               color.getRed(),
+                               color.getGreen(),
+                               color.getBlue(),
+                               color.getAlpha()) != 0) throw Error(SDL_GetError());
+    return *this;
+}
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
 Renderer& Renderer::setIntegerScale(bool enable)

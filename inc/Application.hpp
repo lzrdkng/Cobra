@@ -12,6 +12,11 @@ public:
 
     static void init(SDL::InitFlags flags);
 
+#ifdef _SDL_IMAGE_H
+    static void initImage(SDL::ImageInitFlags flags);
+#endif
+
+
     /**
      * @brief Pause the application for a specified number of milliseconds.
      * @param ms the number of milliseconds to delay

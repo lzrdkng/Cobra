@@ -17,7 +17,7 @@ OBJEXT      := o
 
 #Flags, Libraries and Includes
 CFLAGS      := -fopenmp -Wall -g -std=gnu++14
-LIB         := -L${LIBDIR} -lCobra -lSDL2
+LIB         := -L${LIBDIR} -lCobra -lSDL2 -lSDL2_image
 INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)
 

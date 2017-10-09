@@ -18,6 +18,7 @@
 
 TEST_CASE("Creating a window", "[window, tutorial")
 {
+
     SDL::Application::init(SDL::InitVideo);
 
     SDL::Window window("SDL Tutorial");
@@ -39,7 +40,7 @@ TEST_CASE("Getting an image on the screen", "[image, tutorial]")
 
     SDL::WindowSurface screenSurface(window);
 
-    SDL::Surface imageSurface("media/hello_world.bmp");
+    SDL::Surface imageSurface("media/hello_world.bmp", &screenSurface);
 
     imageSurface.blit(screenSurface);
 
@@ -196,9 +197,22 @@ TEST_CASE("Optimized surface loading and soft stretching", "[surface, stretch, t
 #ifdef _SDL_IMAGE_H
 TEST_CASE("Extension libraries and loading other image formats", "[SDL_image, lib, image, tutorial]")
 {
+
     SDL::Application::init(SDL::InitVideo);
 
+    SDL::Application::initImage(SDL::ImageInitPNG);
+
     SDL::Window window("SDL Tutorial");
+
+    SDL::WindowSurface windowSurface(window);
+
+    SDL::Surface pngSurface("media/loaded.png", &windowSurface);
+
+    pngSurface.blit(windowSurface);
+
+    window.update();
+
+    SDL::Application::delay(200);
 
 
 }

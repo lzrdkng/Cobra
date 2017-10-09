@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+#include <SDL2/SDL_image.h> // REMOVE IF YOU DON'T NEED SDL_image
+
 #include "Error.hpp"
 
 #define OPERATOR_OR(TYPE, CAST) \
@@ -162,6 +164,15 @@ class Color;
          * dstA = dstA
          */
     };
+
+#ifdef _SDL_IMAGE_H
+    enum ImageInitFlags
+    {
+        ImageInitJPG = IMG_INIT_JPG,
+        ImageInitPNG = IMG_INIT_PNG,
+        ImageInitTIF = IMG_INIT_TIF
+    };
+#endif
 
     Color getRGB(Uint32 color, SDL_PixelFormat* format);
 

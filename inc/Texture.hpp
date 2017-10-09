@@ -94,7 +94,7 @@ public:
                         SDL::RendererFlip flip);*/
 
 #ifdef _SDL_IMAGE_H
-    bool loadFromFile(std::string path, int hexaRGB = -1);
+    bool loadFromFile(std::string path, SDL::Renderer& renderer, int hexaRGB = -1);
 #endif
 
     //bool lock(const CRectangle& rect, void** pixels, int* pitch);

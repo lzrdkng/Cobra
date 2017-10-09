@@ -182,14 +182,14 @@ bool CTexture::copyToRenderEx(const CRect& src,
 
 
 #ifdef _SDL_IMAGE_H
-bool Texture::loadFromFile(std::string path, int hexaRGB)
+bool Texture::loadFromFile(std::string path, Renderer& renderer, int hexaRGB)
 {
     
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
     
     if (loadedSurface == nullptr)
     {
-        // exception
+        throw Error(IMG_GetError());
     }
     else
     {
@@ -207,16 +207,11 @@ bool Texture::loadFromFile(std::string path, int hexaRGB)
                                       )
                             );
         
-        m_texture = SDL_CreateTextureFromSurface(m_renderer, loadedSurface);
+        m_texture = SDL_CreateTextureFromSurface(renderer.toSDL(), loadedSurface);
         
         if (m_texture == nullptr)
         {
-            //exception
-        }
-        else
-        {
-            m_width  = loadedSurface->w;
-            m_height = loadedSurface->h;
+            throw Error(SDL_GetError());
         }
     }
     

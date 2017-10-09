@@ -32,6 +32,7 @@
 #include "catch.hpp"
 #include "Color.hpp"
 #include "SDL.hpp"
+#include "Application.hpp"
 
 SCENARIO( "class SDL::Color", "[Color]" )
 {

@@ -11,28 +11,43 @@ Surface::Surface(SDL_Surface* surface) : m_surface(surface)
 Surface::Surface(const char* path, const Surface* const stretch) : m_surface(nullptr)
 {
 
-    if (stretch == nullptr)
-    {
-        this->loadBMP(path);
-        return;
-    }
 
+#ifndef _SDL_IMAGE_H
     SDL_Surface* loadedSurface = SDL_LoadBMP(path);
+#endif
+#ifdef _SDL_IMAGE_H
+    SDL_Surface* loadedSurface = IMG_Load(path);
+#endif
 
     if (loadedSurface == nullptr)
     {
+#ifndef _SDL_IMAGE_H
         throw Error(SDL_GetError());
+#endif
+#ifdef _SDL_IMAGE_H
+        throw Error(IMG_GetError());
+#endif
     }
 
-    m_surface = SDL_ConvertSurface(loadedSurface, stretch->toSDL()->format, 0);
-
-    SDL_FreeSurface(loadedSurface);
-
-    if (m_surface == nullptr)
+    if (stretch == nullptr)
     {
-        throw Error(SDL_GetError());
+        m_surface = loadedSurface;
+        return;
     }
+    else
+    {
+        m_surface = SDL_ConvertSurface(loadedSurface, stretch->toSDL()->format, 0);
+
+        SDL_FreeSurface(loadedSurface);
+
+        if (m_surface == nullptr)
+        {
+            throw Error(SDL_GetError());
+        }
+    }
+
 }
+
 
 Surface::~Surface()
 {

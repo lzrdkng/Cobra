@@ -21,6 +21,14 @@ void Application::init(InitFlags flags)
     }
 }
 
+#ifdef _SDL_IMAGE_H
+void Application::initImage(ImageInitFlags flags)
+{
+    if ((IMG_Init(flags) & flags) != flags)
+        throw Error(IMG_GetError());
+}
+#endif
+
 void Application::delay(Uint32 ms)
 {
     SDL_Delay(ms);
@@ -28,6 +36,10 @@ void Application::delay(Uint32 ms)
 
 Application::~Application()
 {
+#ifdef _SDL_IMAGE_H
+    IMG_Quit();
+#endif
+
     SDL_QuitSubSystem(SDL_WasInit(0));
     SDL_Quit();
 }

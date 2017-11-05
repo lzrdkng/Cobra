@@ -5,7 +5,7 @@
 ## Dependencies
 **Cobra** is intend to work with all **SDL2** major version.
 Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/),
-[SDL_ttf] (https://www.libsdl.org/projects/SDL_ttf/) work too.
+[SDL_ttf](https://www.libsdl.org/projects/SDL_ttf/) work too.
 
 ## Build library
 To **build** the shared library, use **make**.
@@ -106,3 +106,4 @@ int main()
 
 ## Others examples
 
+To see others examples, see my other repo [Cobra-Examples](https://github.com/lzrdkng/Cobra-Examples)

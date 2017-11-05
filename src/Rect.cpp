@@ -29,36 +29,41 @@
 
 #include "Rect.hpp"
 
-using namespace SDL;
+namespace SDL
+{
 
 // static methods
 
 Rect Rect::fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
 {
-    Rect rect(x, y, w, h);
-    return rect;
+    return Rect {x, y, w, h};
+}
+
+Rect Rect::fromPoints(const Point& a, const Point& b)
+{
+    return Rect {a, b};
 }
 
 Rect Rect::fromSDL(const SDL_Rect& sdl_rect)
 {
-    Rect rect(sdl_rect);
-    return rect;
+    return Rect {sdl_rect};
 }
 
 
 // operator methods
 
-void Rect::operator =(const Rect& orig)
+Rect& Rect::operator =(const Rect& orig)
 {
     setValues(orig.getX(), orig.getY(), orig.getWidth(), orig.getHeight());
+    return *this;
 }
 
 bool Rect::operator ==(const Rect& comp) const
 {
-    return ( getX()      == comp.getX()     &&
-             getY()      == comp.getY()     &&
-             getWidth()  == comp.getWidth() &&
-             getHeight() == comp.getHeight()
+    return ( m_rect.x == comp.getX()     &&
+             m_rect.y == comp.getY()     &&
+             m_rect.w == comp.getWidth() &&
+             m_rect.h == comp.getHeight()
             );
 }
 
@@ -70,25 +75,34 @@ bool Rect::operator !=(const Rect& comp) const
 
 // Constructors/destructor
 
-Rect::Rect(Sint16 x, Sint16 y, Uint16 w, Uint16 h) : m_rect {x, y, w ,h}
+Rect::Rect()
+: m_rect {0, 0, 0, 0}
 {
 
 }
 
-Rect::Rect(const Rect& orig) 
+Rect::Rect(const Rect& orig)
+: m_rect {orig.getX(), orig.getY(), orig.getWidth(), orig.getHeight()}
 {
-    setX(orig.getX()).
-    setY(orig.getY()).
-    setWidth(orig.getWidth()).
-    setHeight(orig.getHeight());
+
 }
 
-Rect::Rect(const SDL_Rect& orig)
+Rect::Rect(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
+: m_rect {x, y, w ,h}
 {
-    setX(orig.x).
-    setY(orig.y).
-    setWidth(orig.w).
-    setHeight(orig.h);
+
+}
+
+Rect::Rect(const Point& a, const Point& b)
+: m_rect {a.getX(), a.getY(), b.getX() - a.getX(), b.getY() - a.getY()}
+{
+
+}
+
+Rect::Rect(const SDL_Rect& sdl_rect)
+    : m_rect (sdl_rect)
+{
+
 }
 
 Rect::~Rect()
@@ -152,6 +166,9 @@ Rect& Rect::setY(Sint16 y)
     return *this;
 }
 
+
+// other methods
+
 const SDL_Rect* Rect::toSDL() const
 {
     return &m_rect;
@@ -160,4 +177,6 @@ const SDL_Rect* Rect::toSDL() const
 SDL_Rect* Rect::toSDL()
 {
     return &m_rect;
+}
+
 }

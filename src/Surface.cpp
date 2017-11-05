@@ -1,7 +1,7 @@
 #include "Surface.hpp"
 
-using namespace SDL;
-
+namespace SDL
+{
 
 Surface::Surface(SDL_Surface* surface) : m_surface(surface)
 {
@@ -12,27 +12,24 @@ Surface::Surface(const char* path, const Surface* const stretch) : m_surface(nul
 {
 
 
-#ifndef _SDL_IMAGE_H
+    #ifndef _SDL_IMAGE_H
     SDL_Surface* loadedSurface = SDL_LoadBMP(path);
-#endif
-#ifdef _SDL_IMAGE_H
+    #else
     SDL_Surface* loadedSurface = IMG_Load(path);
-#endif
+    #endif
 
     if (loadedSurface == nullptr)
     {
-#ifndef _SDL_IMAGE_H
+        #ifndef _SDL_IMAGE_H
         throw Error(SDL_GetError());
-#endif
-#ifdef _SDL_IMAGE_H
+        #else
         throw Error(IMG_GetError());
-#endif
+        #endif
     }
 
     if (stretch == nullptr)
     {
         m_surface = loadedSurface;
-        return;
     }
     else
     {
@@ -45,7 +42,6 @@ Surface::Surface(const char* path, const Surface* const stretch) : m_surface(nul
             throw Error(SDL_GetError());
         }
     }
-
 }
 
 
@@ -180,3 +176,4 @@ void Surface::free()
   }
 }
 
+}

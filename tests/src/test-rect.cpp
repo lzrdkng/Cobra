@@ -31,7 +31,6 @@
 #include "catch.hpp"
 #include "Rect.hpp"
 
-
 SCENARIO("clas SDL::Rect", "[Rect]")
 {
     GIVEN("A Rect instance N with values (0, 0, 0, 0) and a Rect"
@@ -115,3 +114,4 @@ SCENARIO("clas SDL::Rect", "[Rect]")
         }
     }
 }
+

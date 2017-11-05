@@ -55,6 +55,8 @@ public:
      */
     static Color fromRGB(Uint8 r, Uint8 g, Uint8 b);
 
+    static Color fromHexa(uint code);
+
     /**
      * @brief static method to create Color object from rgba.
      * @param r Red component in range 0-255.
@@ -91,6 +93,12 @@ public:
 
     // constructors/destructor
 
+    Color();
+
+    Color(uint x);
+
+    Color(Uint8 r, Uint8 g, Uint8 b);
+
     /**
      * @brief Explicit constructor of class Color.
      * @param r Red component in range 0-255.
@@ -99,10 +107,10 @@ public:
      * @param a Alpha component in range 0-255.
      * @note The compiler will truncate value over 255.
      */
-    explicit Color(Uint8 r=0,
-                   Uint8 g=0,
-                   Uint8 b=0,
-                   Uint8 a=255);
+     Color(Uint8 r,
+           Uint8 g,
+           Uint8 b,
+           Uint8 a);
 
     /**
      * @brief Copy constructor of class Color.

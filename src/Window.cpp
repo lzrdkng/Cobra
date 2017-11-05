@@ -28,20 +28,19 @@
  */
 
 
-#include <iostream>
-
 #include "Window.hpp"
 
 // Public interface
 
-using namespace SDL;
+namespace SDL
+{
 
 Window::Window(const char* title,
                int width,
                int height,
+               SDL::WindowFlags flags,
                int x,
-               int y,
-               SDL::WindowFlags flags) : m_window(nullptr)
+               int y) : m_window(nullptr)
 {
     m_window = SDL_CreateWindow(title,
                                 x,
@@ -51,7 +50,7 @@ Window::Window(const char* title,
                                 flags);
         
     if (m_window == nullptr)
-        throw std::runtime_error(SDL_GetError());
+        throw Error(SDL_GetError());
 }
 
 
@@ -66,12 +65,12 @@ Window::Window(const Window& orig)
     m_window = SDL_CreateWindow(orig.getTitle().c_str(),
                                 pos.getX(),
                                 pos.getY(),
-                                size.getLeftValue(),
-                                size.getRightValue(),
+                                size.getFirst(),
+                                size.getSecond(),
                                 flags);
 
     if (m_window == nullptr)
-        throw std::runtime_error(SDL_GetError());
+        throw Error(SDL_GetError());
 
 
 
@@ -102,9 +101,9 @@ bool Window::getGrab() const
 Uint32 Window::getID() const
 {
     Uint32 ID = SDL_GetWindowID(m_window);
-    
+
     if (ID == 0)
-        throw std::runtime_error(SDL_GetError());
+        throw Error(SDL_GetError());
     
     return ID;
 }
@@ -131,13 +130,20 @@ Pair<int> Window::getMinimumSize() const
     
     return minimumSize;
 }
-/* Current version of SDL2 on Ubuntu 16.04 doesn't support 
-float CWindow::getOpacity() const
+
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+float Window::getOpacity() const
 {
     float opacity;
     
-    return SDL_GetWindowOpacity(m_window, &opacity) == 0 ? opacity : -1.0;
-}*/
+    if (SDL_GetWindowOpacity(m_window, &opacity) != 0)
+    {
+        throw Error(SDL_GetError());
+    }
+
+    return opacity;
+}
+#endif
 
 Point Window::getPosition() const
 {
@@ -171,16 +177,19 @@ std::string Window::getTitle() const
     return SDL_GetWindowTitle(m_window);
 }
 
-/*
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 SDL_SysWMinfo Window::getWMInfo() const
 {
     SDL_SysWMinfo info;
+
+    SDL_VERSION(&info.version);
     
     if (SDL_GetWindowWMInfo(m_window, &info) == SDL_FALSE)
-        throw std::runtime_error(SDL_GetError());
+        throw Error(SDL_GetError());
     
     return info;
-}*/
+}
+#endif
 
 
 
@@ -188,7 +197,7 @@ Window& Window::setFullscreen(SDL::WindowFlags flags)
 {
     if (SDL_SetWindowFullscreen(m_window, flags) == 0)
         return *this;
-    throw std::runtime_error(SDL_GetError());
+    throw Error(SDL_GetError());
 }
 
 Window& Window::setGrab(bool grabbed)
@@ -212,28 +221,31 @@ Window& Window::setMinimumSize(int w, int h)
     return *this;
 }
 
-/* Current version of SDL2 on Ubuntu 16.04 doesn't support 
+#if SDL_VERSION_ATLEAST(2, 0, 5)
 Window& Window::setOpacity(float opacity)
 {
-    if (SDL_SetWindowOpacity(m_window, opacity) == 0)
-        return *this;
+    if (SDL_SetWindowOpacity(m_window, opacity) != 0)
+    {
+        throw Error(SDL_GetError());
+    }
  
-   throw
-}*/
+   return *this;
+}
+#endif
 
 Window& Window::setPosition(int x, int y)
 {
     SDL_SetWindowPosition(m_window, x, y);
     return *this;
 }
-/* Current version of SDL2 on Ubuntu 16.04 doesn't support 
-void CWindow::setResizable(bool resizable)
+
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+Window& Window::setResizable(bool resizable)
 {
-    if (resizable)
-        SDL_SetWindowResizable(m_window, SDL_TRUE);
-    else
-        SDL_SetWindowResizable(m_window, SDL_FALSE);
-} */
+    SDL_SetWindowResizable(m_window, static_cast<SDL_bool>(resizable));
+    return *this;
+}
+#endif
 
 Window& Window::setSize(int w, int h)
 {
@@ -289,4 +301,6 @@ Window& Window::update()
     if (SDL_UpdateWindowSurface(m_window) != 0)
         throw Error(SDL_GetError());
     return *this;
+}
+
 }

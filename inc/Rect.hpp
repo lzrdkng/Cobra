@@ -32,6 +32,8 @@
 
 #include <SDL2/SDL_rect.h>
 
+#include "Point.hpp"
+
 namespace SDL
 {
 
@@ -47,62 +49,96 @@ public:
     // static methods
 
     /**
-     * @brief Return a Rect instance created from integers.
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @return Rect
+     * @brief Rect factory. Create a Rect object from 4 integers.
+     * @param x Top-left x value
+     * @param y Top-left y value
+     * @param w Width
+     * @param h Height
+     * @return SDL::Rect
      */
     static Rect fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h);
 
     /**
-     * @brief Return a Rect instanced created from SDL_Rect.
-     * @param sdl_rect
-     * @return
+     * @brief Rect factory. Create a Rect object from two SDL::Point instances.
+     * @param a Top-left point
+     * @param b Bottom-right point
+     * @return SDL::Rect
+     */
+    static Rect fromPoints(const Point& a, const Point& b);
+
+    /**
+     * @brief Rect factory. Create a Rect object from a SDL_Rect structure.
+     * @param sdl_rect The SDL_Rect structure.
+     * @return SDL::Rect
      */
     static Rect fromSDL(const SDL_Rect& sdl_rect);
 
-    static Rect nullRect();
-    
 
     // operator methods
 
-    void operator =(const Rect& orig);
+    /**
+     * @brief Assignation operator. Copy the original Rect into a new one.
+     * @param orig The original Rect
+     * @return SDL::Rect
+     */
+    Rect& operator =(const Rect& orig);
 
+    /**
+     * @brief Equality operator. Determine if two Rect are equivalent.
+     * @param comp The Rect to compare
+     * @return bool
+     */
     bool operator ==(const Rect& comp) const;
 
+    /**
+     * @brief Inequality operator. Determine if two Rect are not equivalent.
+     * @param comp The Rect to compare
+     * @return bool
+     */
     bool operator !=(const Rect& comp) const;
 
 
     // constructors/destructor
 
     /**
-     * @brief Explicit constructor of class SDL::Rect
-     * @param x
-     * @param y
-     * @param w
-     * @param h
+     * @brief Default constructor. SDL_Rect struct intialize to {0, 0, 0, 0}.
      */
-    explicit Rect(Sint16 x=0,
-                  Sint16 y=0,
-                  Uint16 w=0,
-                  Uint16 h=0);
+    Rect();
 
     /**
-     * @brief Copy constructor of class SDL::Rect.
-     * @param orig
+     * @brief Copy constructor.
+     * @param orig Rect to copy
      */
     Rect(const Rect& orig);
 
     /**
-     * @brief Implicit constructor of class SDL::Rect.
-     * @param orig
+     * @brief Constructor from 4 integers.
+     * @param x Top-left x value
+     * @param y Top-left y value
+     * @param w Width
+     * @param h Height
      */
-    Rect(const SDL_Rect& orig);
+    Rect(Sint16 x,
+         Sint16 y,
+         Uint16 w,
+         Uint16 h);
+
+    /**
+     * @brief Constructor from two SDL::Point instances.
+     * @param a Top-left point
+     * @param b Bottom-right point
+     * @return SDL::Rect
+     */
+    Rect(const Point& a, const Point& b);
+
+    /**
+     * @brief Create a Rect object from a SDL_Rect structure.
+     * @param sdl_rect The SDL_Rect structure.
+     */
+    Rect(const SDL_Rect& sdl_rect);
     
     /**
-     * @brief Destructor of class SDL::Rect
+     * @brief Destructor
      */
     virtual ~Rect();
     
@@ -138,17 +174,17 @@ public:
 
     /**
      * @brief Set rect's height.
-     * @param h
+     * @param h Height
      * @return SDL::Rect&
      */
     Rect& setHeight(Uint16 h);
 
     /**
      * @brief Set all rect's values.
-     * @param x
-     * @param y
-     * @param w
-     * @param h
+     * @param x Top-left x value
+     * @param y Top-left y value
+     * @param w Width
+     * @param h Height
      * @return SDL::Rect&
      */
     Rect& setValues(Sint16 x,
@@ -158,21 +194,21 @@ public:
 
     /**
      * @brief Set rect's width.
-     * @param w
+     * @param w Width
      * @return SDL::Rect&
      */
     Rect& setWidth(Uint16 w);
 
     /**
      * @brief Set rect's x value.
-     * @param x
+     * @param x Top-left x value
      * @return SDL::Rect&
      */
     Rect& setX(Sint16 x);
 
     /**
      * @brief Set rect's y value.
-     * @param y
+     * @param y Top-left y value
      * @return SDL::Rect&
      */
     Rect& setY(Sint16 y);
@@ -181,18 +217,23 @@ public:
     // other methods
 
     /**
-     * @brief Return wrapped object.
+     * @brief Return constante wrapped structure.
      * @return SDL_Rect*
      * @warning Use with caution.
      */
      const SDL_Rect* toSDL() const;
 
+     /**
+      * @brief Return wrapped structure.
+      * @return SDL_Rect*
+      * @warning Use with **extreme** caution.
+      */
      SDL_Rect* toSDL();
     
     
 private:
     
-    SDL_Rect m_rect; // wrapped object
+    SDL_Rect m_rect; // wrapped structure
 
 };
 

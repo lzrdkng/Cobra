@@ -29,9 +29,8 @@
 
 #include "Renderer.hpp"
 
-
-using namespace SDL;
-
+namespace SDL
+{
 
 // constructors/destructor
 
@@ -60,7 +59,7 @@ Rect Renderer::getClipRect() const
 
     SDL_RenderGetClipRect(m_renderer, &sdl_rect);
 
-    return Rect::fromSDL(sdl_rect);
+    return Rect {sdl_rect};
 }
 
 BlendModes Renderer::getDrawBlendMode() const
@@ -104,7 +103,7 @@ Pair<int> Renderer::getLogicalSize() const
 
     SDL_RenderGetLogicalSize(m_renderer, &w, &h);
 
-    Pair<int> size(w, h);
+    Pair<int> size {w, h};
 
     return size;
 }
@@ -116,7 +115,7 @@ Pair<int> Renderer::getOutputSize() const
     if (SDL_GetRendererOutputSize(m_renderer, &w, &h) != 0)
         throw SDL::Error(SDL_GetError());
 
-    Pair<int> size(w, h);
+    Pair<int> size {w, h};
 
     return size;
 }
@@ -127,7 +126,7 @@ Pair<float> Renderer::getScale() const
 
     SDL_RenderGetScale(m_renderer, &x, &y);
 
-    Pair<float> scale(x, y);
+    Pair<float> scale {x, y};
 
     return scale;
 }
@@ -261,7 +260,7 @@ Renderer& Renderer::drawLine(const Point& p, const Point& q)
 
 Renderer& Renderer::drawLine(const Pair<Point> &points)
 {
-    return this->drawLine(points.getLeftValue(), points.getRightValue());
+    return this->drawLine(points.getFirst(), points.getSecond());
 }
 
 Renderer& Renderer::drawLines(const std::vector<Pair<Point>>& points)
@@ -373,4 +372,6 @@ Renderer& Renderer::readPixels(const Rect& rect, PixelFormats format, void* pixe
 SDL_Renderer* Renderer::toSDL() const
 {
     return m_renderer;
+}
+
 }

@@ -29,30 +29,30 @@
 
 #include "Point.hpp"
 
-using namespace SDL;
-
+namespace SDL
+{
 
 // static methods
 
 Point Point::fromInt(int x, int y)
 {
-    SDL::Point point(x, y);
-    return point;
+    return Point {x, y};
 }
 
-Point Point::fromSDL(const SDL_Point &point)
+Point Point::fromSDL(const SDL_Point& point)
 {
-    Point newPoint(point.x, point.y);
-    return newPoint;
+    return Point {point.x, point.y};
 }
 
 
 // operator methods
 
-void Point::operator =(const Point& copy)
+Point& Point::operator =(const Point& copy)
 {
     setX(copy.getX());
     setY(copy.getY());
+
+    return *this;
 }
 
 bool Point::operator ==(const Point& comp) const
@@ -67,6 +67,11 @@ bool Point::operator !=(const Point& comp) const
 
 
 // constructors/destructor
+
+Point::Point() : m_point {0, 0}
+{
+
+}
 
 Point::Point(int x, int y) : m_point {x ,y}
 {
@@ -123,4 +128,11 @@ Point& Point::setY(int y)
 const SDL_Point* Point::toSDL() const
 {
     return &m_point;
+}
+
+SDL_Point* Point::toSDL()
+{
+    return &m_point;
+}
+
 }

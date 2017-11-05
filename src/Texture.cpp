@@ -30,7 +30,8 @@
 #include "Texture.hpp"
 #include "Renderer.hpp"
 
-using namespace SDL;
+namespace SDL
+{
 
 // Public methods of class CTexture
 
@@ -238,4 +239,6 @@ void Texture::free()
         SDL_DestroyTexture(m_texture);
         m_texture = nullptr;
     }
+}
+
 }

@@ -39,102 +39,120 @@ class Pair {
 public:
     
 
-    explicit Pair(const T& lValue, const U& rValue);
+    Pair(const T& lValue, const U& rValue);
     
     Pair(const Pair<T, U>& orig);
+    Pair(Pair<T, U>&& move);
+
+    Pair<T, U>& operator =(const Pair<T, U>& orig);
+    Pair<T, U>& operator =(Pair<T, U>&& move);
+
     
     virtual ~Pair() {}
     
     // get methods
     
-    T getLeftValue()  const;
-    U getRightValue() const;
+    T getFirst()  const;
+    U getSecond() const;
     
     // set methods
     
-    Pair<T, U>& setLeftValue(const T& value);
-    Pair<T, U>& setRightValue(const U& value);
-    Pair<T, U>& setValues(const T& lValue, const U& rValue);
+    Pair<T, U>& setFirst(const T& value);
+    Pair<T, U>& setSecond(const U& value);
+    Pair<T, U>& setValues(const T& firstValue, const U& secondValue);
     
     // operator method
-    
-    void operator=(const Pair<T, U>& orig);
     bool operator==(const Pair<T, U>& comp);
     bool operator!=(const Pair<T, U>& comp);
     
     
 private:
     
-    T m_lValue;
-    U m_rValue;
+    T m_first;
+    U m_second;
 
 };
 
 template <typename T, typename U>
 Pair<T, U>::Pair(const T& lValue, const U& rValue)
+: m_first {lValue}, m_second {rValue}
 {
-    m_lValue = lValue;
-    m_rValue = rValue;
 }
 
 template <typename T, typename U>
 Pair<T, U>::Pair(const Pair<T, U>& orig)
+: m_first {orig.getFirst()}, m_second {orig.getSecond()}
 {
-    this->setLeftValue(orig.getLeftValue());
-    this->setRightValue(orig.getRightValue());
+
+}
+
+template <typename T, typename U>
+Pair<T, U>::Pair(Pair<T, U>&& move)
+: m_first {move.getFirst()}, m_second {move.getSecond()}
+{
+
 }
 
 template<typename T, typename U>
-T Pair<T, U>::getLeftValue() const
+T Pair<T, U>::getFirst() const
 {
-    return m_lValue;
+    return m_first;
 }
 
 template<typename T, typename U>
-U Pair<T, U>::getRightValue() const
+U Pair<T, U>::getSecond() const
 {
-    return m_rValue;
+    return m_second;
 }
 
 template<typename T, typename U>
-Pair<T, U>& Pair<T, U>::setLeftValue(const T& value)
+Pair<T, U>& Pair<T, U>::setFirst(const T& value)
 {
-    m_lValue= value;
+    m_first= value;
     return *this;
 }
 
 template<typename T, typename U>
-Pair<T, U>& Pair<T, U>::setRightValue(const U& value)
+Pair<T, U>& Pair<T, U>::setSecond(const U& value)
 {
-    m_rValue = value;
+    m_second = value;
     return *this;
 }
 
 template<typename T, typename U>
 Pair<T, U>& Pair<T, U>::setValues(const T& lValue, const U& rValue)
 {
-    m_lValue = lValue;
-    m_rValue = rValue;
+    m_first  = lValue;
+    m_second = rValue;
     return *this;
 }
 
 template<typename T, typename U>
-void Pair<T, U>::operator=(const Pair<T,U>& orig)
+Pair<T, U>& Pair<T, U>::operator=(const Pair<T,U>& orig)
 {
-    m_lValue = orig.getLeftValue();
-    m_rValue = orig.getRightValue();
+    m_first  = orig.getFirst();
+    m_second = orig.getSecond();
+    return *this;
+}
+
+template<typename T, typename U>
+Pair<T, U>& Pair<T, U>::operator =(Pair<T,U>&& move)
+{
+    m_first  = move.getFirst();
+    m_second = move.getSecond();
+    return *this;
 }
 
 template<typename T, typename U>
 bool Pair<T, U>::operator==(const Pair<T,U>& comp)
 {
-    return m_lValue == comp.getLeftValue() && m_rValue == comp.getRightValue();
+    return m_first == comp.getFirst() && m_second == comp.getSecond();
 }
 
 template<typename T, typename U>
 bool Pair<T, U>::operator!=(const Pair<T,U>& comp)
 {
-    return !(this->operator ==(comp));
+    return !(*this == comp);
 }
 
 }

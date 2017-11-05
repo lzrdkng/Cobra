@@ -1,18 +1,22 @@
 #ifndef SDL_HPP
 #define SDL_HPP
 
+#include <complex>
+
 #include <SDL2/SDL.h>
 
 #include <SDL2/SDL_image.h> // REMOVE IF YOU DON'T NEED SDL_image
 
 #include "Error.hpp"
 
+
 #define OPERATOR_OR(TYPE, CAST) \
         inline TYPE operator |(TYPE x, TYPE y) { return static_cast<TYPE>(static_cast<CAST>(x) | static_cast<CAST>(y));}
 
-
 namespace SDL
 {
+
+typedef std::complex<double> Coord;
 
 class Color;
 
@@ -174,7 +178,54 @@ class Color;
     };
 #endif
 
+    void init(InitFlags flags);
+
+    /**
+     * @brief Return a mask of the specified subsystems initialized.
+     * @param flags
+     * @return If flags is SDL::InitNull it returns a mask of all initiliazed
+     * subsystems, otherwise it returns the initialization status of the
+     * specified subsystems. The return value does not include
+     * SDL::InitNoparachute
+     * @sa SDL::InitFlags
+     */
+    Uint32 wasInit(InitFlags flags);
+
+    /**
+     * @brief Clean up all initialized subsystems.
+     */
+    void quit();
+
+#ifdef _SDL_IMAGE_H
+    void initImage(ImageInitFlags flags);
+
+    void quitImage();
+#endif
+
+    /**
+     * @brief Pause the application for a specified number of milliseconds.
+     * @param ms the number of milliseconds to delay
+     * @remark This method waits a specified number of milliseconds before
+     * returning. It waits a least the specified time, but possible longer
+     * due to OS scheduling.
+     * @sa https://wiki.libsdl.org/SDL_Delay
+     */
+    void delay(Uint32 ms);
+
     Color getRGB(Uint32 color, SDL_PixelFormat* format);
+
+
+    Coord screenToCartesian(const Coord& screenCoord,
+                            uint width,
+                            uint height,
+                            const Coord& offset = {0.0, 0.0},
+                            double scale = 1.0);
+
+    Coord cartesianToScreen(const Coord& cartesianCoord,
+                            uint width,
+                            uint height,
+                            const Coord& offset = {0.0, 0.0},
+                            double scale = 1.0);
 
 }
 

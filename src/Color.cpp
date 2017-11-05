@@ -30,20 +30,24 @@
 
 #include "Color.hpp"
 
-using namespace SDL;
-
+namespace SDL
+{
 
 // static methods
 
 Color Color::fromRGB(Uint8 r, Uint8 g, Uint8 b)
 {
-    return Color::fromRGBA(r, g, b, 0xFF);
+    return Color {r, g, b};
+}
+
+Color Color::fromHexa(uint code)
+{
+    return Color {code >> 24, code >> 16 & 255, code >> 8 & 255, code & 255};
 }
 
 Color Color::fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-    Color color(r, g, b, a);
-    return color;
+    return Color {r,g,b,a};
 }
 
 
@@ -73,6 +77,22 @@ bool Color::operator !=(const Color& comp) const
 
 
 // constructors/destructor
+
+Color::Color() : m_color {0, 0, 0, 0}
+{
+
+}
+
+Color::Color(uint x)
+: m_color {x >> 24, x >> 16 & 255, x >> 8 & 255, x & 255}
+{
+
+}
+
+Color::Color(Uint8 r, Uint8 g, Uint8 b) : m_color {r, g, b, 0xFF}
+{
+
+}
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) : m_color {r, g, b, a}
 {
@@ -162,4 +182,4 @@ const SDL_Color* Color::toSDL() const
     return &m_color;
 }
 
-
+}

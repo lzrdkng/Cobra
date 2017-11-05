@@ -30,8 +30,11 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+// std imports
 #include <string>
-
+// C SDL imports
+#include <SDL2/SDL_syswm.h>
+// lib imports
 #include "SDL.hpp"
 #include "Pair.hpp"
 #include "Point.hpp"
@@ -63,7 +66,7 @@ public:
      * @param flags SDL::WindowFlags
      *
      *
-     * @throw std::runtime_error
+     * @throw SDL::Error
      *
      * If SDL failed to create the window.
      *
@@ -71,9 +74,9 @@ public:
     explicit Window(const char* title,
                     int width = 640,
                     int height = 480,
+                    SDL::WindowFlags flags = SDL::WindowShown,
                     int x = SDL::WindowPositionUndefined,
-                    int y = SDL::WindowPositionUndefined,
-                    SDL::WindowFlags flags = SDL::WindowShown);
+                    int y = SDL::WindowPositionUndefined);
 
 
 
@@ -107,35 +110,43 @@ public:
      */
     bool getGrab() const;
 
-    /**
+    /*
      * Return the window's ID.
      * @return Uint32
-     * @throw std::runtime_error on failure
+     * @throw SDL::Error on failure
      */
     Uint32 getID() const;
 
     /** Return the window's maximum size.
-     *  @return Pair<int>
-     *  @sa Pair
+     *  @return SDL::Pair<int>
+     *  @sa SDL::Pair
      */
     Pair<int> getMaximumSize() const;
 
     /** Return the window's minimum size.
-     *  @return Pair<int>
-     *  @sa Pair
+     *  @return SDL::Pair<int>
+     *  @sa SDL::Pair
      */
     Pair<int> getMinimumSize() const;
 
 
-    //float          getOpacity()     const;
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+    /**
+     * @brief Return the window' opacity
+     * @return float
+     * @throw SDL::Error on failure
+     */
+    float getOpacity() const;
+#endif
 
     /** Return the window's position.
-     *  @return Point
+     *  @return SDL::Point
      */
     Point getPosition() const;
 
 
-    /** Return the window's rendering context on **success** or **NULL** on **failure**.
+    /** Return the window's rendering context on **success**
+     * or **NULL** on **failure**.
      * @return SDL_Renderer*
      * @warning Use with caution
      * @sa @link https://wiki.libsdl.org/SDL_Renderer
@@ -154,50 +165,84 @@ public:
      */
     std::string getTitle() const;
 
-    //SDL_SysWMinfo  getWMInfo()      const;
-    
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    /**
+     * @brief Get the driver specific information about the window.
+     * @return SDL_SysWMInfo structure
+     * @throw SDL::Error if information could not be retrieved.
+     */
+    SDL_SysWMinfo getWMInfo() const;
+#endif
     
     /** Set the window's fullscreen state.
      * @param Uint32 flags
-     * @return Window&
-     * @throw std::runtime_error on failure.
+     * @return SDL::Window&
+     * @throw SDL::Error on failure.
      */
     Window& setFullscreen(SDL::WindowFlags flags);
 
     /** Set the window's input grab mode.
      * @param bool grabbed
-     * @return Window&
+     * @return SDL::Window&
      */
     Window& setGrab(bool grabbed);
 
     /** Set the window's maximum size.
      * @param int width
      * @param int height
-     * @return Window&
-     * @note Values **under** 0 or **overflow** of **int size** will result in value 0.
+     * @return SDL::Window&
+     * @note Values **under** 0 or **overflow** of **int size**
+     * will result in value 0.
      */
     Window& setMaximumSize(int w, int h);
 
     /** Set the window's minimum size
      * @param int width
      * @param int height
-     * @return Window&
-     * @note Values **under** 0 or **overflow** of **int size** wil result in value 0.
+     * @return SDL::Window&
+     * @note Values **under** 0 or **overflow** of **int size**
+     * wil result in value 0.
      */
     Window& setMinimumSize(int w, int h);
 
-  //Window& setOpacity(float opacity);
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+    /**
+     * @brief Set the opacity of the window.
+     * @param opacity the opacity value [0, 1] == [transparent -> opaque]
+     * @return SDL::Window&
+     * @throw SDL::Error on failure
+     * @remark The parameter **opacity** will be clamped internally between
+     * 0.0f (transparent) and 1.0f (opaque). This function also returns -1 if
+     * setting the opacity isn't supported.
+     * This function is only supported on DirectFB, X11, Cocoa (Apple Mac OS X)
+     * and Microsoft Windows.
+     * @sa SDL::Window::getOpacity
+     */
+    Window& setOpacity(float opacity);
+#endif
 
     /** Set the window's position.
      * @param int x
      * @param int y
      * @return Window&
-     * @note Values **under** 0 or **overflow** of **int size** wil result in value 0.
+     * @note Values **under** 0 or **overflow** of **int size** wil
+     * result in value 0.
      */
     Window& setPosition(int x, int y);
 
-  //Window& setWindowResizable(bool resizable);
-
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+    /**
+     * @brief Set the user-resizable state of the window.
+     * @param resizable
+     * @return SDL::Window&
+     * @remark This will ad or remove the window's SDL::WindowResizable flags
+     * and allow/disallow user resizing of the window. This is a no-op if the
+     * window's resizable state already matches the requested state.
+     * @note You can't change the resizable state of a fullscreen window.
+     * @sa SDL::Window::getFlags
+     */
+    Window& setResizable(bool resizable);
+#endif
     /** Set the window's size.
      * @param int width
      * @param int height

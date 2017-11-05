@@ -70,7 +70,7 @@ public:
      * @brief operator =
      * @param copy
      */
-    void operator =(const Point& copy);
+    Point& operator =(const Point& copy);
 
     /**
      * @brief operator ==
@@ -89,12 +89,14 @@ public:
 
     // constructors/destructor
 
+    Point();
+
     /**
      * @brief Explicit SDL::Point constructor.
      * @param x
      * @param y
      */
-    explicit Point(int x=0, int y=0);
+    Point(int x, int y);
 
 
     /**
@@ -156,6 +158,8 @@ public:
      * @warning Use with caution.
      */
     const SDL_Point* toSDL() const;
+
+    SDL_Point* toSDL();
 
     
 private:

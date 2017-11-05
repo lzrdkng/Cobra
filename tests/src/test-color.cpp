@@ -31,21 +31,24 @@
 
 #include "catch.hpp"
 #include "Color.hpp"
-#include "SDL.hpp"
-#include "Application.hpp"
 
 SCENARIO( "class SDL::Color", "[Color]" )
 {
   GIVEN( "A black Color named B and a white color named W" )
   {
     SDL::Color B;
-    SDL::Color W(255, 255, 255, 255);
+    SDL::Color W {255, 255, 255, 255};
 
     // get methods
     REQUIRE( B.getRed() == 0 );
     REQUIRE( B.getGreen() == 0 );
     REQUIRE( B.getBlue() == 0 );
-    REQUIRE( B.getAlpha() == 255 );
+    REQUIRE( B.getAlpha() == 0 );
+
+    REQUIRE( W.getRed() == 255);
+    REQUIRE( W.getGreen() == 255);
+    REQUIRE( W.getBlue() == 255);
+    REQUIRE( W.getAlpha() == 255);
 
     WHEN( "Colors are compared" ) // operators == !=
     {

@@ -3,6 +3,9 @@ CC          := g++
 
 #The Target Binary Program
 TARGET      := libCobra.so
+ifeq ($(PREFIX),)
+	PREFIX := /usr/local
+endif
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
@@ -30,6 +33,12 @@ OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJE
 
 #Default Make
 all: directories $(TARGET)
+
+install:
+	mkdir -p $(PREFIX)/lib
+	mkdir -p $(PREFIX)/include/Cobra
+	install -m 557 $(TARGETDIR)/$(TARGET) $(PREFIX)/lib/
+	install -m 557 $(INCDIR)/*.hpp $(PREFIX)/include/Cobra
 
 #Remake
 remake: cleaner all
@@ -65,7 +74,7 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 
 #Non-File Targets
-.PHONY: all remake clean cleaner resources tests clean-tests doc clean-doc
+.PHONY: all remake clean cleaner resources tests clean-tests doc clean-doc install
 
 
 # Testing

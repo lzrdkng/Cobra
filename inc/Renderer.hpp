@@ -398,12 +398,6 @@ public:
      */
     SDL_Renderer* toSDL() const;
 
-    virtual void paintEvent()
-    {
-        this->clear();
-        this->present();
-    }
-
 private:
 
     SDL_Renderer* m_renderer; // wrapped object

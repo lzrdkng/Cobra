@@ -2,13 +2,20 @@
 
 ### A **C++** wrapper around [SDL](https://www.libsdl.org/) cross-platform development library.
 
-
 ## Dependencies
 **Cobra** is intend to work with all **SDL2** major version.
-Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/) work too.
+Other libraries such as [SDL_image](https://www.libsdl.org/projects/SDL_image/),
+[SDL_ttf](https://www.libsdl.org/projects/SDL_ttf/) work too.
 
 ## Build library
 To **build** the shared library, use **make**.
+
+## To install
+Use **sudo make install**.
+
+There's no configure file yet. If you don't want to use **SDL_image**
+1. In **SDL.hpp**, remove the **#include <SDL2/SDL_image.h>** macro.
+2. In **Makefile**, remove **lSDL2_image** of **LIBS**.
 
 ## Testings
  **Cobra** uses [Catch](https://github.com/philsquared/Catch) for its testing.
@@ -56,7 +63,7 @@ Constants have also been re-written in **enum**.
 
 ## Usage
 
-~~~C++
+~~~ C++
 
 #include <Cobra/SDL.hpp>
 #include <Cobra/Application.hpp>
@@ -66,39 +73,37 @@ Constants have also been re-written in **enum**.
 int main()
 {
   // Call to SDL_Init with flag SDL_INIT_VIDEO
-  SDL::Application::init(SDL::InitVideo);
+  SDL::init(SDL::InitVideo);
   
   // Create a resizable window at position (0,0) of size (250, 250)
-  SDL::Window root("Minimal app", 0, 0, 250, 250, SDL::WindowResizable);
+  SDL::Window root("Minimal app", 0, 0, SDL::WindowResizable, 250, 250);
 
   // Create a hardware accelerated renderer. Renderer as now root as parent.
   SDL::Renderer renderer(root, SDL::RenderAccelerated);
-
-  bool quit = false;
-
+  
   SDL_Event event;
 
-  while (!quit)
+  do
   {
-    while (SDL_PollEvent(&event) != 0)
+    SDL_PollEvent(&event);
+  
+    if (event.type == SDL_QUIT)
     {
-      if (event.type == SDL_QUIT)
-       quit = true;
-      // handle other events here
+       break;
     }
-
+   
     // do stuff here
-  }
+    
+  } while(true);
+
+  // Quit all subsystems
+  SDL::quit();
 
   return 0;
-
 }
 
 ~~~
 
-## Mandelbrot set
+## Others examples
 
-I also made a little program to see the mandelbrot set.
-I'll keep updating it whenever **Cobra** advances.
-To build the **mandelbrot**, use make in the *mandelbrot*
-directory.
+To see others examples, see my other repo [Cobra-Examples](https://github.com/lzrdkng/Cobra-Examples)

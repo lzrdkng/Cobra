@@ -260,7 +260,7 @@ Renderer& Renderer::drawLine(const Point& p, const Point& q)
 
 Renderer& Renderer::drawLine(const Pair<Point> &points)
 {
-    return this->drawLine(points.getFirst(), points.getSecond());
+    return this->drawLine(points.first, points.second);
 }
 
 Renderer& Renderer::drawLines(const std::vector<Pair<Point>>& points)
@@ -369,7 +369,12 @@ Renderer& Renderer::readPixels(const Rect& rect, PixelFormats format, void* pixe
     return *this;
 }
 
-SDL_Renderer* Renderer::toSDL() const
+const SDL_Renderer* Renderer::toSDL() const
+{
+    return m_renderer;
+}
+
+SDL_Renderer* Renderer::toSDL()
 {
     return m_renderer;
 }

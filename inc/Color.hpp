@@ -51,7 +51,7 @@ public:
      * @param r Red component in range 0-255.
      * @param g Green component in range 0-255.
      * @param b Blue component in range 0-255.
-     * @return Color
+     * @return SDL::Color
      */
     static Color fromRGB(Uint8 r, Uint8 g, Uint8 b);
 

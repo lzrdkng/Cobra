@@ -36,7 +36,7 @@
 #include <SDL2/SDL_syswm.h>
 // lib imports
 #include "SDL.hpp"
-#include "Pair.hpp"
+
 #include "Point.hpp"
 
 namespace SDL
@@ -110,21 +110,21 @@ public:
      */
     bool getGrab() const;
 
-    /*
-     * Return the window's ID.
+    /**
+     * @brief Return the window's ID.
      * @return Uint32
      * @throw SDL::Error on failure
      */
     Uint32 getID() const;
 
     /** Return the window's maximum size.
-     *  @return SDL::Pair<int>
+     *  @return std::pair<int, int>
      *  @sa SDL::Pair
      */
     Pair<int> getMaximumSize() const;
 
     /** Return the window's minimum size.
-     *  @return SDL::Pair<int>
+     *  @return std::pair<int, int>
      *  @sa SDL::Pair
      */
     Pair<int> getMinimumSize() const;
@@ -155,7 +155,7 @@ public:
 
 
     /** Return the window's size.
-     *  @return Pair<int>
+     *  @return Pair
      *  @sa Pair
      */
     Pair<int> getSize() const;
@@ -280,11 +280,19 @@ public:
      */
     Window& show();
 
-    /** Return the C pointer of the wrapped object.
-     * @return SDL_Window*
+    /**
+     * @brief Return the constant wrapped SDL_Window*.
+     * @return const SDL_Window*
      * @warning Use with caution.
      */
-    SDL_Window* toSDL() const;
+    const SDL_Window* toSDL() const;
+
+    /**
+     * @brief Return the wrapped SDL_Window*.
+     * @return SDL_Window*
+     * @warning Use with **extreme** caution.
+     */
+    SDL_Window* toSDL();
 
 
     /** Move the mouse to the given position relative to the window.

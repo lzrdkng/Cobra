@@ -68,20 +68,22 @@ bool Point::operator !=(const Point& comp) const
 
 // constructors/destructor
 
-Point::Point() : m_point {0, 0}
+Point::Point()
+: m_point {0, 0}
 {
 
 }
 
-Point::Point(int x, int y) : m_point {x ,y}
+Point::Point(int x, int y)
+: m_point {x ,y}
 {
 
 }
 
-Point::Point(const Point& orig) 
+Point::Point(const Point& orig)
+: m_point {orig.getX(), orig.getY()}
 {
-    setX(orig.getX());
-    setY(orig.getY());
+
 }
 
 Point::~Point() 

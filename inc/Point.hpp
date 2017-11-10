@@ -153,12 +153,17 @@ public:
     // other methods
     
     /**
-     * @brief Return wrapped object.
-     * @return SDL_Point*
+     * @brief Return constant wrapped object.
+     * @return const SDL_Point*
      * @warning Use with caution.
      */
     const SDL_Point* toSDL() const;
 
+    /**
+     * @brief Return wrapped object.
+     * @return SDL_Point*
+     * @warning Use with **extreme** caution.
+     */
     SDL_Point* toSDL();
 
     

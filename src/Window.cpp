@@ -65,8 +65,8 @@ Window::Window(const Window& orig)
     m_window = SDL_CreateWindow(orig.getTitle().c_str(),
                                 pos.getX(),
                                 pos.getY(),
-                                size.getFirst(),
-                                size.getSecond(),
+                                size.first,
+                                size.second,
                                 flags);
 
     if (m_window == nullptr)
@@ -115,7 +115,7 @@ Pair<int> Window::getMaximumSize() const
     
     SDL_GetWindowMaximumSize(m_window, &w, &h);
     
-    Pair<int> maximumSize(w, h);
+    Pair<int> maximumSize {w, h};
     
     return maximumSize;
 }
@@ -126,7 +126,7 @@ Pair<int> Window::getMinimumSize() const
     
     SDL_GetWindowMinimumSize(m_window, &w, &h);
     
-    Pair<int> minimumSize(w, h);
+    Pair<int> minimumSize {w, h};
     
     return minimumSize;
 }
@@ -167,7 +167,7 @@ Pair<int> Window::getSize() const
     
     SDL_GetWindowSize(m_window, &w, &h);
     
-    Pair<int> windowSize(w, h);
+    Pair<int> windowSize {w, h};
     
     return windowSize;
 }
@@ -285,7 +285,12 @@ Window& Window::show()
     return *this;
 }
 
-SDL_Window* Window::toSDL() const
+const SDL_Window* Window::toSDL() const
+{
+    return m_window;
+}
+
+SDL_Window* Window::toSDL()
 {
     return m_window;
 }

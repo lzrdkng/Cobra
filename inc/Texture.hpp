@@ -33,7 +33,7 @@
 #include <string>
 #include "SDL.hpp"
 
-#include "Pair.hpp"
+
 #include "Point.hpp"
 #include "Color.hpp"
 #include "Rect.hpp"
@@ -86,7 +86,7 @@ public:
 
     Texture& setColorMod(const Color& color);
 
-    bool copyToRender(const Renderer& renderer, const Rect& src, const Rect& dst);
+    bool copyToRender( Renderer& renderer, const Rect& src, const Rect& dst);
     /*bool copyToRenderEx(const CRect& src,
                         const CRect& dst,
                         const double angle,

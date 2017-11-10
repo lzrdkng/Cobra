@@ -9,7 +9,6 @@
 
 #include "Error.hpp"
 
-
 #define OPERATOR_OR(TYPE, CAST) \
         inline TYPE operator |(TYPE x, TYPE y) { return static_cast<TYPE>(static_cast<CAST>(x) | static_cast<CAST>(y));}
 
@@ -17,6 +16,9 @@ namespace SDL
 {
 
 typedef std::complex<double> Coord;
+
+template <typename T>
+using Pair = std::pair<T, T>;
 
 class Color;
 

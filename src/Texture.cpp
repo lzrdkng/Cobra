@@ -155,7 +155,7 @@ Texture& Texture::setColorMod(const Color& color)
 
 /* other methods */
 
-bool Texture::copyToRender(const Renderer& renderer, const Rect& source, const Rect& destination)
+bool Texture::copyToRender(Renderer& renderer, const Rect& source, const Rect& destination)
 {
     return SDL_RenderCopy(
                           renderer.toSDL(),

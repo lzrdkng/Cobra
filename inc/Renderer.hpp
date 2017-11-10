@@ -31,13 +31,13 @@
 #define RENDERER_HPP
 
 #include <vector>
+#include <utility>
 
 #include "SDL.hpp"
 #include "Error.hpp"
 
 #include "Rect.hpp"
 #include "Color.hpp"
-#include "Pair.hpp"
 #include "Texture.hpp"
 #include "Window.hpp"
 
@@ -142,10 +142,10 @@ public:
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     /**
      * @brief Return the device independent resolution for rendering.
-     * @return SDL::Pair<int>
+     * @return std::pair<int, int>
      * @remark If called on Renderer who never had its logical size set by
      * Renderer::setLogicalSize(),
-     * the SDL::Pair<int> returned will be **0, 0**.
+     * the std::pair<int, int> returned will be **0, 0**.
      * @version **SDL2.0.0**
      */
     Pair<int> getLogicalSize() const;
@@ -153,7 +153,7 @@ public:
 
     /**
      * @brief Return the output size in pixels of the renderer.
-     * @return SDL::Pair<int>
+     * @return std::pair<int, int>
      * @throw sdl::runtime_error on failure
      * @version **SDL2.0.0**
      * @sa SDL::Window::getRenderer
@@ -194,7 +194,7 @@ public:
      * @brief Set the clip rectangle for the renderer's target.
      * @param rect The clip area
      * @return SDL::Renderer&
-     * @throw SDL::Error on failure
+     * @throw SDL::Error on falure
      * @sa SDL::Renderer::getClipRect
      * @sa SDL::Renderer::isClipEnabled
      */
@@ -390,13 +390,20 @@ public:
     bool targetSupported() const;
 #endif
     
+    /**
+     * @brief Return the constant wrapped SDL_Renderer.
+     * @return const SDL_Renderer*
+     * @warning Uses with caution.
+     */
+    const SDL_Renderer* toSDL() const;
+
 
     /**
-     * @brief Return the wrapped SDL_Renderer
-     * @return const SDL_Renderer*
-     * @warning Uses with caution
+     * @brief Return the wrapped SDL_Renderer.
+     * @return SDL_Renderer*
+     * @warning Uses with **extreme** caution.
      */
-    SDL_Renderer* toSDL() const;
+    SDL_Renderer* toSDL();
 
 private:
 

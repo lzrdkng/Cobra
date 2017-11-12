@@ -118,10 +118,10 @@ public:
      * @param w Width
      * @param h Height
      */
-    Rect(Sint16 x,
-         Sint16 y,
-         Uint16 w,
-         Uint16 h);
+    constexpr Rect(Sint16 x,
+                   Sint16 y,
+                   Uint16 w,
+                   Uint16 h) : m_rect {x, y, w ,h} {}
 
     /**
      * @brief Constructor from two SDL::Point instances.

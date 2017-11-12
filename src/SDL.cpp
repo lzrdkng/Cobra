@@ -77,14 +77,12 @@ Color getRGB(Uint32 color, SDL_PixelFormat* format)
 Coord screenToCartesian(const Coord& screenCoord,
                         uint width,
                         uint height,
-                        const Coord& offset,
-                        double scale)
+                        double scale,
+                        const Coord& offset)
 {
-    Coord cartesianCoord(screenCoord);
+    Coord cartesianCoord(std::real(screenCoord) - width/2, height/2 -std::imag(screenCoord));
 
-    cartesianCoord += Coord {width/2, -height/2};
-
-    cartesianCoord *= Coord {scale, -scale};
+    cartesianCoord *= scale;
 
     cartesianCoord += offset;
 
@@ -100,13 +98,13 @@ Coord cartesianToScreen(const Coord& cartesianCoord,
                         double scale)
 {
 
-    Coord screenCoord(cartesianCoord);
+    Coord screenCoord(std::real(cartesianCoord) * scale + width/2, -std::imag(cartesianCoord) * scale + height/2);
 
-    screenCoord -= offset;
+    //screenCoord -= offset;
 
-    screenCoord *= Coord {scale, -scale};
+    //screenCoord *= scale;
 
-    screenCoord += Coord {width/2, height/2};
+    //screenCoord += Coord {width/2, height/2};
 
     return screenCoord;
 }

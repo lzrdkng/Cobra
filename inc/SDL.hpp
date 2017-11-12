@@ -24,7 +24,6 @@ class Color;
 
 /** @namespace SDL*/
 
-
     enum InitFlags
     {
         InitNull           = 0,                       /**< Equivalent to NULL */
@@ -220,8 +219,8 @@ class Color;
     Coord screenToCartesian(const Coord& screenCoord,
                             uint width,
                             uint height,
-                            const Coord& offset = {0.0, 0.0},
-                            double scale = 1.0);
+                            double scale = 1.0,
+                            const Coord& offset = {0.0, 0.0});
 
     Coord cartesianToScreen(const Coord& cartesianCoord,
                             uint width,

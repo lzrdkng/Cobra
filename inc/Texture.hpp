@@ -51,6 +51,11 @@ public:
                      int height,
                      TextureAccess access=TextureAccessTarget,
                      PixelFormats format=PixelFormatUnknown);
+
+    explicit Texture(Renderer& renderer,
+                     const char* file);
+
+
     
     Texture(const Texture& orig)             = delete;
     Texture(Texture&& orig)                  = delete;
@@ -86,7 +91,14 @@ public:
 
     Texture& setColorMod(const Color& color);
 
-    bool copyToRender( Renderer& renderer, const Rect& src, const Rect& dst);
+    Texture& copyToRender(Renderer& renderer,
+                          const Rect& src,
+                          const Rect& dst);
+
+    Texture& copyToRender(Renderer& renderer);
+
+
+
     /*bool copyToRenderEx(const CRect& src,
                         const CRect& dst,
                         const double angle,
@@ -94,7 +106,9 @@ public:
                         SDL::RendererFlip flip);*/
 
 #ifdef _SDL_IMAGE_H
-    bool loadFromFile(std::string path, SDL::Renderer& renderer, int hexaRGB = -1);
+    Texture& loadFromFile(const char* file,
+                          Renderer& renderer,
+                          int hexaRGB = -1);
 #endif
 
     //bool lock(const CRectangle& rect, void** pixels, int* pitch);

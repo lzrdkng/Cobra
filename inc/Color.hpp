@@ -97,7 +97,7 @@ public:
 
     Color(uint x);
 
-    Color(Uint8 r, Uint8 g, Uint8 b);
+    constexpr Color(Uint8 r, Uint8 g, Uint8 b) : m_color {r ,g ,b, 0xFF} {}
 
     /**
      * @brief Explicit constructor of class Color.
@@ -217,7 +217,7 @@ public:
     const SDL_Color* toSDL() const;
     
 private:
-    
+
     SDL_Color m_color; // wrapped value
 };
 

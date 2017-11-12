@@ -9,9 +9,9 @@
 #include "Window.hpp"
 #include "WindowSurface.hpp"
 #include "Rect.hpp"
+#include "Renderer.hpp"
 
-#define INTERACT 1 // Flip this bit if you want to interact with each tutorial
-
+const uint INTERACT = 16; // Tutorials interactions MASK
 
 /******************************************************************************
  * TODO list
@@ -78,7 +78,7 @@ TEST_CASE("Event driven programming", "[event, tutorial")
             imageSurface.blit(windowSurface);
             window.update();
         }
-    } while (INTERACT);
+    } while (INTERACT & 1);
 }
 
 TEST_CASE("Key presses", "[key, tutorial")
@@ -148,12 +148,11 @@ TEST_CASE("Key presses", "[key, tutorial")
             window.update();
         }
 
-    } while (INTERACT);
+    } while (INTERACT & 2);
 
     currentSurface = nullptr;
 
-    for (std::vector<SDL::Surface*>::iterator it = keyPressSurfaces.begin();
-         it != keyPressSurfaces.end(); ++it)
+    for (auto it=keyPressSurfaces.begin(); it!=keyPressSurfaces.end(); ++it)
     {
         delete *it;
     }
@@ -187,12 +186,12 @@ TEST_CASE("Optimized surface loading and soft stretching",
             break;
         }
 
-    }  while(INTERACT);
+    }  while(INTERACT & 4);
 }
 
 
 #ifdef _SDL_IMAGE_H
-TEST_CASE("Extension libraries and loading other image formats"
+TEST_CASE("Extension libraries and loading other image formats",
           "[SDL_image, lib, image, tutorial]")
 {
     SDL::Window window("Extension libraries and loading other image formats "
@@ -206,10 +205,85 @@ TEST_CASE("Extension libraries and loading other image formats"
 
     window.update();
 }
+
+TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
+{
+    SDL::Window window("Texture Loading and Rendering [7]");
+
+    SDL::Renderer render(window, SDL::RendererAccelerated);
+    render.setDrawColor(SDL::Color {0, 0, 0});
+
+    SDL::Texture loadedTexture(render, "media/texture.png");
+
+    SDL_Event event;
+
+    do
+    {
+        SDL_PollEvent(&event);
+
+        if (event.type == SDL_QUIT)
+        {
+            break;
+        }
+
+
+        render.clear();
+        loadedTexture.copyToRender(render);
+        render.present();
+
+    } while (INTERACT & 8);
+}
 #endif
 
-#ifdef _SDL_IMAGE_H
-#endif
+TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
+{
+    SDL::Window window("Geometry Rendering [8]");
+    window.setResizable(true);
+
+    SDL::Pair<int> size = window.getSize();
+
+    SDL::Renderer render(window, SDL::RendererAccelerated);
+
+    SDL_Event event;
+
+
+
+    do
+    {
+        SDL_PollEvent(&event);
+
+        if (event.type == SDL_QUIT)
+        {
+            break;
+        }
+
+        render.setDrawColor(0xFFFFFFFF);
+        render.clear();
+
+        render.setDrawColor({0xFF, 0, 0});
+        render.fillRect({size.first / 4, size.second / 4,
+                         size.first / 2, size.second / 2});
+
+        render.setDrawColor({0, 0xFF, 0});
+        render.drawRect({size.first / 6, size.second / 6,
+                         2*size.first/3, 2*size.second/3 });
+
+        render.setDrawColor({0, 0, 0xFF});
+        render.drawLine({{0, size.second / 2},
+                         {size.first, size.second / 2}});
+
+        render.setDrawColor({0xFF, 0xFF, 0});
+        for (auto i=0; i<size.first; i += 4)
+        {
+            render.drawPoint({size.first/2, i});
+        }
+
+        render.present();
+
+
+    } while(INTERACT & 16);
+}
+
 
 TEST_CASE("Quit all subsystem")
 {

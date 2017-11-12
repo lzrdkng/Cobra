@@ -87,12 +87,6 @@ Rect::Rect(const Rect& orig)
 
 }
 
-Rect::Rect(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
-: m_rect {x, y, w ,h}
-{
-
-}
-
 Rect::Rect(const Point& a, const Point& b)
 : m_rect {a.getX(), a.getY(), b.getX() - a.getX(), b.getY() - a.getY()}
 {

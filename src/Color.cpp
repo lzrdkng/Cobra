@@ -89,11 +89,6 @@ Color::Color(uint x)
 
 }
 
-Color::Color(Uint8 r, Uint8 g, Uint8 b) : m_color {r, g, b, 0xFF}
-{
-
-}
-
 Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) : m_color {r, g, b, a}
 {
 

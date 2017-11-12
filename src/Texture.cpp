@@ -45,10 +45,19 @@ Texture::Texture(Renderer& renderer,
 
 : m_texture(nullptr)
 {
-    m_texture = SDL_CreateTexture(renderer.toSDL(), format, access, width, height);
+    m_texture = SDL_CreateTexture(renderer.toSDL(),
+                                  format,
+                                  access,
+                                  width, height);
 
     if (m_texture == nullptr)
         throw Error(SDL_GetError());
+}
+
+Texture::Texture(Renderer& renderer, const char* file)
+: m_texture(nullptr)
+{
+    this->loadFromFile(file, renderer);
 }
 
 Texture::~Texture() 
@@ -155,14 +164,31 @@ Texture& Texture::setColorMod(const Color& color)
 
 /* other methods */
 
-bool Texture::copyToRender(Renderer& renderer, const Rect& source, const Rect& destination)
+Texture& Texture::copyToRender(Renderer& renderer,
+                               const Rect& src, const Rect& dst)
 {
-    return SDL_RenderCopy(
-                          renderer.toSDL(),
+     if ( SDL_RenderCopy(renderer.toSDL(),
                           m_texture,
-                          source.toSDL(),
-                          destination.toSDL()
-                         ) == 0;
+                          src.toSDL(),
+                          dst.toSDL()) != 0 )
+     {
+         throw Error(SDL_GetError());
+     }
+
+     return *this;
+}
+
+Texture& Texture::copyToRender(Renderer& renderer)
+{
+    if ( SDL_RenderCopy(renderer.toSDL(),
+                         m_texture,
+                         NULL,
+                         NULL) != 0 )
+    {
+        throw Error(SDL_GetError());
+    }
+
+    return *this;
 }
 
 /*
@@ -183,11 +209,13 @@ bool CTexture::copyToRenderEx(const CRect& src,
 
 
 #ifdef _SDL_IMAGE_H
-bool Texture::loadFromFile(std::string path, Renderer& renderer, int hexaRGB)
+Texture& Texture::loadFromFile(const char* file,
+                               Renderer& renderer,
+                               int hexaRGB)
 {
-    
-    SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-    
+
+    SDL_Surface* loadedSurface = IMG_Load(file);
+
     if (loadedSurface == nullptr)
     {
         throw Error(IMG_GetError());
@@ -195,31 +223,30 @@ bool Texture::loadFromFile(std::string path, Renderer& renderer, int hexaRGB)
     else
     {
         this->free();
-        
+
         if (hexaRGB > 0)
             SDL_SetColorKey(
                             loadedSurface,
                             SDL_TRUE,
                             SDL_MapRGB(
                                        loadedSurface->format,
+                                       (hexaRGB >> 24),
                                        (hexaRGB >> 16)&255,
-                                       (hexaRGB >>  8)&255,
-                                       (hexaRGB      )&255
+                                       (hexaRGB >> 8 )&255
                                       )
                             );
-        
-        m_texture = SDL_CreateTextureFromSurface(renderer.toSDL(), loadedSurface);
-        
+
+        m_texture = SDL_CreateTextureFromSurface(renderer.toSDL(),
+                                                 loadedSurface);
+        SDL_FreeSurface(loadedSurface);
+
         if (m_texture == nullptr)
         {
             throw Error(SDL_GetError());
         }
     }
-    
-    SDL_FreeSurface(loadedSurface);
-    
-    return m_texture != nullptr;
-    
+
+    return *this;
 }
 #endif
 

@@ -29,17 +29,25 @@ class Color;
         InitNull           = 0,                       /**< Equivalent to NULL */
         InitTimer          = SDL_INIT_TIMER,          /**< Timer subsystem */
         InitAudio          = SDL_INIT_AUDIO,          /**< Audio subsystem */
-        InitVideo          = SDL_INIT_VIDEO,          /**< Video subsystem. Automatically initializes the vents subsystem */
-        InitJoystick       = SDL_INIT_JOYSTICK,       /**< Joystick subsystem. Automatically initializes the vents subsystem */
+        InitVideo          = SDL_INIT_VIDEO,          /**< Video
+							 subsystem. Automatically
+							 initializes the vents
+							 subsystem */
+        InitJoystick       = SDL_INIT_JOYSTICK,       /**< Joystick
+							 subsystem. Automatically
+							 initializes the vents
+							 subsystem */
         InitHaptic         = SDL_INIT_HAPTIC,         /**< Haptic (force feedback) subsystem */
-        InitGamecontroller = SDL_INIT_GAMECONTROLLER, /**< Controller subsystem. Automatically initializes the joystick subsystem */
+        InitGamecontroller = SDL_INIT_GAMECONTROLLER, /**< Controller
+							 subsystem. Automatically
+							 initializes the
+							 joystick subsystem */
         InitEvents         = SDL_INIT_EVENTS,         /**< Events subsystem */
         InitEverything     = SDL_INIT_EVERYTHING,     /**< All subsystems */
         InitNoparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
     };
 
     /**< Flags to initialize subsytems. */
-
 
     OPERATOR_OR(InitFlags, Uint32)
 
@@ -73,10 +81,20 @@ class Color;
     enum RendererFlags
     {
         RendererNull          = 0,                          /**< Equivalent to NULL */
-        RendererSoftware      = SDL_RENDERER_SOFTWARE,      /**< The renderer is a software fallback */
-        RendererAccelerated   = SDL_RENDERER_ACCELERATED,   /**< The renderer uses hardware acceleration */
-        RendererPresentVSync  = SDL_RENDERER_PRESENTVSYNC,  /**< Present is synchronized with the refresh rate */
-        RendererTargetTexture = SDL_RENDERER_TARGETTEXTURE  /**< The renderer supports rendering texture */
+        RendererSoftware      = SDL_RENDERER_SOFTWARE,      /**< The renderer is
+							       a software
+							       fallback */
+        RendererAccelerated   = SDL_RENDERER_ACCELERATED,   /**< The renderer
+							       uses hardware
+							       acceleration */
+        RendererPresentVSync  = SDL_RENDERER_PRESENTVSYNC,  /**< Present is
+							       synchronized with
+							       the refresh
+							       rate */
+        RendererTargetTexture = SDL_RENDERER_TARGETTEXTURE  /**< The renderer
+							       supports
+							       rendering
+							       texture */
 
     };
 
@@ -149,25 +167,21 @@ class Color;
 
     enum BlendModes
     {
-        BlendModeNone  = SDL_BLENDMODE_NONE,
-        /**< No blending. <br>
-         * dstRGBA = srcRGBA
-         */
-        BlendModeBlend = SDL_BLENDMODE_BLEND,
-        /**< Alpha blending. <br>
-         * dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)) <br>
-         * dstA = srcA + (dstA * (1-srcA))
-         */
-        BlendModeAdd   = SDL_BLENDMODE_ADD,
-        /**< Additive blending. <br>
-         *  dstRGB = (srcRGB * srcA) + dstRGB <br>
-         *  dstA = dstA
-         */
-        BlendModeMod   = SDL_BLENDMODE_MOD,
-        /**< Color modulate. <br>
-         * dstRGB = srcRGB * dstRGB <br>
-         * dstA = dstA
-         */
+        BlendModeNone  = SDL_BLENDMODE_NONE,         /**< No blending. <br>
+						     	dstRGBA = srcRGBA */
+        BlendModeBlend = SDL_BLENDMODE_BLEND,        /**< Alpha blending. <br>
+					       	        dstRGB = (srcRGB * srcA)
+					       	        + (dstRGB * (1-srcA))
+					       	        <br> dstA = srcA + (dstA
+					       	        * (1-srcA)) */
+        BlendModeAdd   = SDL_BLENDMODE_ADD,          /**< Additive
+						        blending. <br> dstRGB =
+						        (srcRGB srcA) + dstRGB
+						        <br> dstA = dstA */
+        BlendModeMod   = SDL_BLENDMODE_MOD,         /**< Color modulate. <br>
+						       dstRGB = srcRGB * dstRGB
+						       <br> dstA = dstA */
+
     };
 
 #ifdef _SDL_IMAGE_H
@@ -212,6 +226,18 @@ class Color;
      * @sa https://wiki.libsdl.org/SDL_Delay
      */
     void delay(Uint32 ms);
+
+    /**
+     * @brief Use this function to set a hint with normal priority.
+     * @param name the hint to set; see the list of hints
+     * @return True on success, false otherwise.
+     * @remark Hints will not be set if there is an existing override
+     * hint or environment variable that takes precedence. You can use
+     * SDL::setHintWithPriority to set the hint with override priority
+     * instead.
+     */
+    bool setHint(const char* name, const char* value);
+
 
     Color getRGB(Uint32 color, SDL_PixelFormat* format);
 

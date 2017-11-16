@@ -3,6 +3,7 @@
 
 // catch import
 #include "catch.hpp"
+#include "config.hpp"
 
 // lib imports
 #include "SDL.hpp"
@@ -11,13 +12,14 @@
 #include "Rect.hpp"
 #include "Renderer.hpp"
 
-const uint INTERACT = 16; // Tutorials interactions MASK
+extern const uint INTERACT; // Tutorials interactions MASK
 
 /******************************************************************************
  * TODO list
  *
  * [2] : Implement wrapper around SDL_Event structure/union
  * [3] : Keys constants : https://wiki.libsdl.org/SDL_Keycode
+ * [4] : enum marcro : SDL_HINT_RENDER_SCALE_QUALITY
  ******************************************************************************
  */
 
@@ -246,8 +248,6 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 
     SDL_Event event;
 
-
-
     do
     {
         SDL_PollEvent(&event);
@@ -280,9 +280,53 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 
         render.present();
 
-
     } while(INTERACT & 16);
 }
+
+TEST_CASE("The Viewport", "[viewport]")
+{
+    SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"); // [4]
+
+    SDL::Window window("The Viewport [9]");
+    window.setResizable(true);
+
+    SDL::Pair<int> size = window.getSize();
+
+    SDL::Renderer render(window, SDL::RendererAccelerated);
+
+    SDL::Texture texture (render, "media/viewport.png");
+
+    SDL_Event event;
+
+    do
+    {
+        SDL_PollEvent(&event);
+
+        if (event.type == SDL_QUIT)
+        {
+            break;
+        }
+
+        size = window.getSize();
+
+        render.setDrawColor(UINT32_MAX);
+        render.clear();
+
+        render.setViewport({0, 0, size.first / 2, size.second / 2});
+        texture.copyToRender(render);
+
+        render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
+        texture.copyToRender(render);
+
+        render.setViewport({0, size.second/2, size.first, size.second/2});
+        texture.copyToRender(render);
+
+        render.present();
+
+
+    } while (INTERACT & 32);
+}
+
 
 
 TEST_CASE("Quit all subsystem")

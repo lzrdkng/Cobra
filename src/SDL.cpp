@@ -62,6 +62,10 @@ void delay(Uint32 ms)
     SDL_Delay(ms);
 }
 
+bool setHint(const char* name, const char* value)
+{
+    return static_cast<bool>(SDL_SetHint(name, value));
+}
 
 Color getRGB(Uint32 color, SDL_PixelFormat* format)
 {

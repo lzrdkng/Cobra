@@ -74,10 +74,11 @@ public:
     explicit Window(const char* title,
                     int width = 640,
                     int height = 480,
-                    SDL::WindowFlags flags = SDL::WindowShown,
+                    WindowFlags flags = SDL::WindowShown,
                     int x = SDL::WindowPositionUndefined,
                     int y = SDL::WindowPositionUndefined);
 
+    explicit Window(const char* title, WindowFlags flags);
 
 
     /**

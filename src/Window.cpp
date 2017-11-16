@@ -53,6 +53,20 @@ Window::Window(const char* title,
         throw Error(SDL_GetError());
 }
 
+Window::Window(const char* title, WindowFlags flags)
+: m_window(nullptr)
+{
+    m_window = SDL_CreateWindow(title,
+                                640,
+                                480,
+                                WindowPositionUndefined,
+                                WindowPositionUndefined,
+                                flags);
+
+    if (m_window == nullptr)
+            throw Error(SDL_GetError());
+}
+
 
 Window::Window(const Window& orig)
 {

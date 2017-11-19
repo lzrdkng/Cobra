@@ -25,167 +25,167 @@ extern const uint INTERACT; // Tutorials interactions MASK
 
 TEST_CASE("Init subsystems")
 {
-    SDL::init(SDL::InitEverything);
+  SDL::init(SDL::InitEverything);
 
 #ifdef _SDL_IMAGE_H
-    SDL::initImage(SDL::ImageInitPNG);
+  SDL::initImage(SDL::ImageInitPNG);
 #endif
 }
 
 TEST_CASE("Creating a window", "[window, tutorial]")
 {
-    SDL::Window window("Creating a window [1]");
+  SDL::Window window("Creating a window [1]");
 
-    SDL::WindowSurface screenSurface(window);
+  SDL::WindowSurface screenSurface(window);
 
-    screenSurface.fillRect(12000);
+  screenSurface.fillRect(12000);
 
-    window.update();
+  window.update();
 }
 
 TEST_CASE("Getting an image on the screen", "[image, tutorial]")
 {
-    SDL::Window window("Getting an image on the screen [2]");
+  SDL::Window window("Getting an image on the screen [2]");
 
-    SDL::WindowSurface screenSurface(window);
+  SDL::WindowSurface screenSurface(window);
 
-    SDL::Surface imageSurface("media/hello_world.bmp", &screenSurface);
+  SDL::Surface imageSurface("media/hello_world.bmp", &screenSurface);
 
-    imageSurface.blit(screenSurface);
+  imageSurface.blit(screenSurface);
 
-    window.update();
+  window.update();
 }
 
 TEST_CASE("Event driven programming", "[event, tutorial")
 {
-    SDL::Window window("Event driven programming [3]");
+  SDL::Window window("Event driven programming [3]");
 
-    SDL::WindowSurface windowSurface(window);
+  SDL::WindowSurface windowSurface(window);
 
-    SDL::Surface imageSurface("media/x.bmp");
+  SDL::Surface imageSurface("media/x.bmp");
 
-    SDL_Event event; // [2]
+  SDL_Event event; // [2]
 
-    // Main loop
-    do
+  // Main loop
+  do
     {
-        SDL_PollEvent(&event);
+      SDL_PollEvent(&event);
 
-        if (event.type == SDL_QUIT)
+      if (event.type == SDL_QUIT)
         {
-            break;
+	  break;
         }
-        else
+      else
         {
-            imageSurface.blit(windowSurface);
-            window.update();
+	  imageSurface.blit(windowSurface);
+	  window.update();
         }
     } while (INTERACT & 1);
 }
 
 TEST_CASE("Key presses", "[key, tutorial")
 {
-    enum KeyPressSurfaces
+  enum KeyPressSurfaces
+  {
+    KeyPressSurfaceDefault,
+    KeyPressSurfaceUp,
+    KeyPressSurfaceDown,
+    KeyPressSurfaceLeft,
+    KeyPressSurfaceRight,
+    KeyPressSurfaceTotal
+  };
+
+
+
+  SDL::Window window("Key presses [4]");
+
+  SDL::WindowSurface windowSurface(window);
+
+  std::vector<SDL::Surface*> keyPressSurfaces =
+
     {
-        KeyPressSurfaceDefault,
-        KeyPressSurfaceUp,
-        KeyPressSurfaceDown,
-        KeyPressSurfaceLeft,
-        KeyPressSurfaceRight,
-        KeyPressSurfaceTotal
+      new SDL::Surface("media/press.bmp"),
+      new SDL::Surface("media/up.bmp"),
+      new SDL::Surface("media/down.bmp"),
+      new SDL::Surface("media/left.bmp"),
+      new SDL::Surface("media/right.bmp")
     };
 
+  SDL::Surface* currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
 
+  SDL_Event event; // [2]
 
-    SDL::Window window("Key presses [4]");
-
-    SDL::WindowSurface windowSurface(window);
-
-    std::vector<SDL::Surface*> keyPressSurfaces =
-
-                                        {
-                                         new SDL::Surface("media/press.bmp"),
-                                         new SDL::Surface("media/up.bmp"),
-                                         new SDL::Surface("media/down.bmp"),
-                                         new SDL::Surface("media/left.bmp"),
-                                         new SDL::Surface("media/right.bmp")
-                                        };
-
-    SDL::Surface* currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
-
-    SDL_Event event; // [2]
-
-    // Main Loop
-    do
+  // Main Loop
+  do
     {
-        SDL_PollEvent(&event);
+      SDL_PollEvent(&event);
 
-        if (event.type == SDL_QUIT)
+      if (event.type == SDL_QUIT)
         {
-            break;
+	  break;
         }
-        else if (event.type == SDL_KEYDOWN) // [3]
+      else if (event.type == SDL_KEYDOWN) // [3]
         {
-            switch (event.key.keysym.sym)
+	  switch (event.key.keysym.sym)
             {
-                case SDLK_UP:
-                    currentSurface = keyPressSurfaces[KeyPressSurfaceUp];
-                    break;
-                case SDLK_DOWN:
-                    currentSurface = keyPressSurfaces[KeyPressSurfaceDown];
-                    break;
-                case SDLK_LEFT:
-                    currentSurface = keyPressSurfaces[KeyPressSurfaceLeft];
-                    break;
-                case SDLK_RIGHT:
-                    currentSurface = keyPressSurfaces[KeyPressSurfaceRight];
-                    break;
-                default:
-                    currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
+	    case SDLK_UP:
+	      currentSurface = keyPressSurfaces[KeyPressSurfaceUp];
+	      break;
+	    case SDLK_DOWN:
+	      currentSurface = keyPressSurfaces[KeyPressSurfaceDown];
+	      break;
+	    case SDLK_LEFT:
+	      currentSurface = keyPressSurfaces[KeyPressSurfaceLeft];
+	      break;
+	    case SDLK_RIGHT:
+	      currentSurface = keyPressSurfaces[KeyPressSurfaceRight];
+	      break;
+	    default:
+	      currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
             }
         }
-        else
+      else
         {
-            currentSurface->blit(windowSurface);
-            window.update();
+	  currentSurface->blit(windowSurface);
+	  window.update();
         }
 
     } while (INTERACT & 2);
 
-    currentSurface = nullptr;
+  currentSurface = nullptr;
 
-    for (auto it=keyPressSurfaces.begin(); it!=keyPressSurfaces.end(); ++it)
+  for (auto it=keyPressSurfaces.begin(); it!=keyPressSurfaces.end(); ++it)
     {
-        delete *it;
+      delete *it;
     }
-    keyPressSurfaces.clear();
+  keyPressSurfaces.clear();
 }
 
 TEST_CASE("Optimized surface loading and soft stretching",
           "[surface, stretch, tutorial]")
 {
-    SDL::Window window("Optimized surface loading and soft stretching [5]");
+  SDL::Window window("Optimized surface loading and soft stretching [5]");
 
-    SDL::WindowSurface windowSurface(window);
+  SDL::WindowSurface windowSurface(window);
 
-    SDL::Surface stretchedSurface("media/stretch.bmp", &windowSurface);
+  SDL::Surface stretchedSurface("media/stretch.bmp", &windowSurface);
 
-    SDL::Rect stretchRect(0, 0, 640, 480);
+  SDL::Rect stretchRect(0, 0, 640, 480);
 
-    stretchedSurface.blitScaled(windowSurface, stretchRect);
+  stretchedSurface.blitScaled(windowSurface, stretchRect);
 
-    window.update();
+  window.update();
 
-    SDL_Event event; // [2]
+  SDL_Event event; // [2]
 
-    // Main Loop
-    do
+  // Main Loop
+  do
     {
-        SDL_PollEvent(&event);
+      SDL_PollEvent(&event);
 
-        if (event.type == SDL_QUIT)
+      if (event.type == SDL_QUIT)
         {
-            break;
+	  break;
         }
 
     }  while(INTERACT & 4);
@@ -196,42 +196,42 @@ TEST_CASE("Optimized surface loading and soft stretching",
 TEST_CASE("Extension libraries and loading other image formats",
           "[SDL_image, lib, image, tutorial]")
 {
-    SDL::Window window("Extension libraries and loading other image formats "
-                       "[6]");
+  SDL::Window window("Extension libraries and loading other image formats "
+		     "[6]");
 
-    SDL::WindowSurface windowSurface(window);
+  SDL::WindowSurface windowSurface(window);
 
-    SDL::Surface pngSurface("media/loaded.png", &windowSurface);
+  SDL::Surface pngSurface("media/loaded.png", &windowSurface);
 
-    pngSurface.blit(windowSurface);
+  pngSurface.blit(windowSurface);
 
-    window.update();
+  window.update();
 }
 
 TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 {
-    SDL::Window window("Texture Loading and Rendering [7]");
+  SDL::Window window("Texture Loading and Rendering [7]");
 
-    SDL::Renderer render(window, SDL::RendererAccelerated);
-    render.setDrawColor(SDL::Color {0, 0, 0});
+  SDL::Renderer render(window, SDL::RendererAccelerated);
+  render.setDrawColor(SDL::Color {0, 0, 0});
 
-    SDL::Texture loadedTexture(render, "media/texture.png");
+  SDL::Texture loadedTexture(render, "media/texture.png");
 
-    SDL_Event event;
+  SDL_Event event;
 
-    do
+  do
     {
-        SDL_PollEvent(&event);
+      SDL_PollEvent(&event);
 
-        if (event.type == SDL_QUIT)
+      if (event.type == SDL_QUIT)
         {
-            break;
+	  break;
         }
 
 
-        render.clear();
-        loadedTexture.copyToRender(render);
-        render.present();
+      render.clear();
+      loadedTexture.copyToRender(render);
+      render.present();
 
     } while (INTERACT & 8);
 }
@@ -239,89 +239,107 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 
 TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 {
-    SDL::Window window("Geometry Rendering [8]");
-    window.setResizable(true);
+  SDL::Window window("Geometry Rendering [8]");
+  window.setResizable(true);
 
-    SDL::Pair<int> size = window.getSize();
+  SDL::Pair<int> size = window.getSize();
 
-    SDL::Renderer render(window, SDL::RendererAccelerated);
+  SDL::Renderer render(window, SDL::RendererAccelerated);
 
-    SDL_Event event;
+  SDL_Event event;
 
-    do
+  do
     {
-        SDL_PollEvent(&event);
+      SDL_PollEvent(&event);
 
-        if (event.type == SDL_QUIT)
+      if (event.type == SDL_QUIT)
         {
-            break;
+	  break;
+        }
+      else if (event.type == SDL_WINDOWEVENT)
+	{
+	  switch (event.window.event)
+	    {
+	    case SDL_WINDOWEVENT_RESIZED:
+	    case SDL_WINDOWEVENT_SIZE_CHANGED:
+	      size = window.getSize();
+	      break;
+	    default:
+	      break;
+	    }
+	}
+
+      render.setDrawColor(0);
+      render.clear();
+
+      render.setDrawColor({0xFF, 0, 0});
+      render.fillRect({size.first / 4, size.second / 4,
+	    size.first / 2, size.second / 2});
+
+      render.setDrawColor({0, 0xFF, 0});
+      render.drawRect({size.first / 6, size.second / 6,
+	    2*size.first/3, 2*size.second/3 });
+
+      render.setDrawColor({0, 0, 0xFF});
+      render.drawLine({{0, size.second / 2},
+	    {size.first, size.second / 2}});
+
+      render.setDrawColor({0, 0xFF, 0xFF});
+      render.drawCircle(size.first/2, size.second/2, 150);
+
+      render.setDrawColor({0xFF, 0, 0xFF});
+      render.fillCircle(size.first/2, size.second/2, 75);
+
+      render.setDrawColor({0xFF, 0xFF, 0});
+      for (auto i=0; i<size.first; i += 4)
+        {
+	  render.drawPoint({size.first/2, i});
         }
 
-        render.setDrawColor(0xFFFFFFFF);
-        render.clear();
-
-        render.setDrawColor({0xFF, 0, 0});
-        render.fillRect({size.first / 4, size.second / 4,
-                         size.first / 2, size.second / 2});
-
-        render.setDrawColor({0, 0xFF, 0});
-        render.drawRect({size.first / 6, size.second / 6,
-                         2*size.first/3, 2*size.second/3 });
-
-        render.setDrawColor({0, 0, 0xFF});
-        render.drawLine({{0, size.second / 2},
-                         {size.first, size.second / 2}});
-
-        render.setDrawColor({0xFF, 0xFF, 0});
-        for (auto i=0; i<size.first; i += 4)
-        {
-            render.drawPoint({size.first/2, i});
-        }
-
-        render.present();
+      render.present();
 
     } while(INTERACT & 16);
 }
 
 TEST_CASE("The Viewport", "[viewport]")
 {
-    SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"); // [4]
+  SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"); // [4]
 
-    SDL::Window window("The Viewport [9]");
-    window.setResizable(true);
+  SDL::Window window("The Viewport [9]");
+  window.setResizable(true);
 
-    SDL::Pair<int> size = window.getSize();
+  SDL::Pair<int> size = window.getSize();
 
-    SDL::Renderer render(window, SDL::RendererAccelerated);
+  SDL::Renderer render(window, SDL::RendererAccelerated);
 
-    SDL::Texture texture (render, "media/viewport.png");
+  SDL::Texture texture (render, "media/viewport.png");
 
-    SDL_Event event;
+  SDL_Event event;
 
-    do
+  do
     {
-        SDL_PollEvent(&event);
+      SDL_PollEvent(&event);
 
-        if (event.type == SDL_QUIT)
+      if (event.type == SDL_QUIT)
         {
-            break;
+	  break;
         }
 
-        size = window.getSize();
+      size = window.getSize();
 
-        render.setDrawColor(UINT32_MAX);
-        render.clear();
+      render.setDrawColor(UINT32_MAX);
+      render.clear();
 
-        render.setViewport({0, 0, size.first / 2, size.second / 2});
-        texture.copyToRender(render);
+      render.setViewport({0, 0, size.first / 2, size.second / 2});
+      texture.copyToRender(render);
 
-        render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
-        texture.copyToRender(render);
+      render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
+      texture.copyToRender(render);
 
-        render.setViewport({0, size.second/2, size.first, size.second/2});
-        texture.copyToRender(render);
+      render.setViewport({0, size.second/2, size.first, size.second/2});
+      texture.copyToRender(render);
 
-        render.present();
+      render.present();
 
 
     } while (INTERACT & 32);
@@ -331,5 +349,5 @@ TEST_CASE("The Viewport", "[viewport]")
 
 TEST_CASE("Quit all subsystem")
 {
-    SDL::quit();
+  SDL::quit();
 }

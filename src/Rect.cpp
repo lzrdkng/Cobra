@@ -32,145 +32,145 @@
 namespace SDL
 {
 
-// static methods
+  // static methods
 
-Rect Rect::fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
-{
+  Rect Rect::fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
+  {
     return Rect {x, y, w, h};
-}
+  }
 
-Rect Rect::fromPoints(const Point& a, const Point& b)
-{
+  Rect Rect::fromPoints(const Point& a, const Point& b)
+  {
     return Rect {a, b};
-}
+  }
 
-Rect Rect::fromSDL(const SDL_Rect& sdl_rect)
-{
+  Rect Rect::fromSDL(const SDL_Rect& sdl_rect)
+  {
     return Rect {sdl_rect};
-}
+  }
 
 
-// operator methods
+  // operator methods
 
-Rect& Rect::operator =(const Rect& orig)
-{
+  Rect& Rect::operator =(const Rect& orig)
+  {
     setValues(orig.getX(), orig.getY(), orig.getWidth(), orig.getHeight());
     return *this;
-}
+  }
 
-bool Rect::operator ==(const Rect& comp) const
-{
+  bool Rect::operator ==(const Rect& comp) const
+  {
     return ( m_rect.x == comp.getX()     &&
              m_rect.y == comp.getY()     &&
              m_rect.w == comp.getWidth() &&
              m_rect.h == comp.getHeight()
-            );
-}
+	     );
+  }
 
-bool Rect::operator !=(const Rect& comp) const
-{
+  bool Rect::operator !=(const Rect& comp) const
+  {
     return !(*this == comp);
-}
+  }
 
 
-// Constructors/destructor
+  // Constructors/destructor
 
-Rect::Rect()
-: m_rect {0, 0, 0, 0}
+  Rect::Rect()
+    : m_rect {0, 0, 0, 0}
 {
 
 }
 
-Rect::Rect(const Rect& orig)
-: m_rect {orig.getX(), orig.getY(), orig.getWidth(), orig.getHeight()}
+  Rect::Rect(const Rect& orig)
+    : m_rect {orig.getX(), orig.getY(), orig.getWidth(), orig.getHeight()}
 {
 
 }
 
-Rect::Rect(const Point& a, const Point& b)
-: m_rect {a.getX(), a.getY(), b.getX() - a.getX(), b.getY() - a.getY()}
+  Rect::Rect(const Point& a, const Point& b)
+    : m_rect {a.getX(), a.getY(), b.getX() - a.getX(), b.getY() - a.getY()}
 {
 
 }
 
-Rect::Rect(const SDL_Rect& sdl_rect)
+  Rect::Rect(const SDL_Rect& sdl_rect)
     : m_rect (sdl_rect)
-{
+  {
 
-}
+  }
 
-Rect::~Rect()
-{
+  Rect::~Rect()
+  {
 
-}
+  }
 
 
-// get methods
+  // get methods
 
-Uint16 Rect::getHeight() const
-{
+  Uint16 Rect::getHeight() const
+  {
     return m_rect.h;
-}
+  }
 
-Uint16 Rect::getWidth() const
-{
+  Uint16 Rect::getWidth() const
+  {
     return m_rect.w;
-}
+  }
 
-Sint16 Rect::getX() const
-{
+  Sint16 Rect::getX() const
+  {
     return m_rect.x;
-}
+  }
 
-Sint16 Rect::getY() const
-{
+  Sint16 Rect::getY() const
+  {
     return m_rect.y;
-}
+  }
 
 
-// set methods
+  // set methods
 
-Rect& Rect::setHeight(Uint16 h)
-{
+  Rect& Rect::setHeight(Uint16 h)
+  {
     m_rect.h = h;
     return *this;
-}
+  }
 
-Rect& Rect::setValues(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
-{
+  Rect& Rect::setValues(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
+  {
     setX(x).setY(y).setWidth(w).setHeight(h);
     return *this;
-}
+  }
 
-Rect& Rect::setWidth(Uint16 w)
-{
+  Rect& Rect::setWidth(Uint16 w)
+  {
     m_rect.w = w;
     return *this;
-}
+  }
 
-Rect& Rect::setX(Sint16 x)
-{
+  Rect& Rect::setX(Sint16 x)
+  {
     m_rect.x = x;
     return *this;
-}
+  }
 
-Rect& Rect::setY(Sint16 y)
-{
+  Rect& Rect::setY(Sint16 y)
+  {
     m_rect.y = y;
     return *this;
-}
+  }
 
 
-// other methods
+  // other methods
 
-const SDL_Rect* Rect::toSDL() const
-{
+  const SDL_Rect* Rect::toSDL() const
+  {
     return &m_rect;
-}
+  }
 
-SDL_Rect* Rect::toSDL()
-{
+  SDL_Rect* Rect::toSDL()
+  {
     return &m_rect;
-}
+  }
 
 }

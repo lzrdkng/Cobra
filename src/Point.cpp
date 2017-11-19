@@ -32,109 +32,109 @@
 namespace SDL
 {
 
-// static methods
+  // static methods
 
-Point Point::fromInt(int x, int y)
-{
+  Point Point::fromInt(int x, int y)
+  {
     return Point {x, y};
-}
+  }
 
-Point Point::fromSDL(const SDL_Point& point)
-{
+  Point Point::fromSDL(const SDL_Point& point)
+  {
     return Point {point.x, point.y};
-}
+  }
 
 
-// operator methods
+  // operator methods
 
-Point& Point::operator =(const Point& copy)
-{
+  Point& Point::operator =(const Point& copy)
+  {
     setX(copy.getX());
     setY(copy.getY());
 
     return *this;
-}
+  }
 
-bool Point::operator ==(const Point& comp) const
-{
+  bool Point::operator ==(const Point& comp) const
+  {
     return (getX() == comp.getX() && getY() == comp.getY());
-}
+  }
 
-bool Point::operator !=(const Point& comp) const
-{
+  bool Point::operator !=(const Point& comp) const
+  {
     return !(*this == comp);
-}
+  }
 
 
-// constructors/destructor
+  // constructors/destructor
 
-Point::Point()
-: m_point {0, 0}
+  Point::Point()
+    : m_point {0, 0}
 {
 
 }
 
-Point::Point(int x, int y)
-: m_point {x ,y}
+  Point::Point(int x, int y)
+    : m_point {x ,y}
 {
 
 }
 
-Point::Point(const Point& orig)
-: m_point {orig.getX(), orig.getY()}
+  Point::Point(const Point& orig)
+    : m_point {orig.getX(), orig.getY()}
 {
 
 }
 
-Point::~Point() 
-{
+  Point::~Point() 
+  {
 
-}
+  }
 
 
-// get methods
+  // get methods
 
-int Point::getX() const
-{
+  int Point::getX() const
+  {
     return m_point.x;
-}
+  }
 
-int Point::getY() const
-{
+  int Point::getY() const
+  {
     return m_point.y;
-}
+  }
 
 
-// set methods
+  // set methods
 
-Point& Point::setValues(int x, int y)
-{
+  Point& Point::setValues(int x, int y)
+  {
     return setX(x).setY(y);
-}
+  }
 
-Point& Point::setX(int x)
-{
+  Point& Point::setX(int x)
+  {
     m_point.x = x;
     return *this;
-}
+  }
 
-Point& Point::setY(int y)
-{
+  Point& Point::setY(int y)
+  {
     m_point.y = y;
     return *this;
-}
+  }
 
 
-// other methods
+  // other methods
 
-const SDL_Point* Point::toSDL() const
-{
+  const SDL_Point* Point::toSDL() const
+  {
     return &m_point;
-}
+  }
 
-SDL_Point* Point::toSDL()
-{
+  SDL_Point* Point::toSDL()
+  {
     return &m_point;
-}
+  }
 
 }

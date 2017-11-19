@@ -35,13 +35,13 @@
 namespace SDL
 {
 
-/**
- * @brief Wrapper class for **SDL_Color**
- */
+  /**
+   * @brief Wrapper class for **SDL_Color**
+   */
 
-class Color
-{
-public:
+  class Color
+  {
+  public:
     
 
     // static methods
@@ -107,10 +107,10 @@ public:
      * @param a Alpha component in range 0-255.
      * @note The compiler will truncate value over 255.
      */
-     Color(Uint8 r,
-           Uint8 g,
-           Uint8 b,
-           Uint8 a);
+    Color(Uint8 r,
+	  Uint8 g,
+	  Uint8 b,
+	  Uint8 a);
 
     /**
      * @brief Copy constructor of class Color.
@@ -216,10 +216,10 @@ public:
      */
     const SDL_Color* toSDL() const;
     
-private:
+  private:
 
     SDL_Color m_color; // wrapped value
-};
+  };
 
 }
 

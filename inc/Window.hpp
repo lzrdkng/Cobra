@@ -42,15 +42,15 @@
 namespace SDL
 {
 
-/**
- * @brief Wrapper class for **SDL_Window**.
- *
- * **SDL 2.0.0**
- */
+  /**
+   * @brief Wrapper class for **SDL_Window**.
+   *
+   * **SDL 2.0.0**
+   */
 
-class Window
-{
-public:
+  class Window
+  {
+  public:
 
     /**
      * @brief Explicit constructor for Class SDL::Window.
@@ -310,11 +310,11 @@ public:
      */
     Window& update();
 
-private:
+  private:
     
     SDL_Window*   m_window;  // wrapped object
 
-};
+  };
 
 }
 

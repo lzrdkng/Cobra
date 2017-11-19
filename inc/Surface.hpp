@@ -10,9 +10,9 @@
 namespace SDL
 {
 
-class Surface
-{
-public:
+  class Surface
+  {
+  public:
 
 
     Surface& operator =(const Surface& orig) = delete;
@@ -127,13 +127,13 @@ public:
     SDL_Surface* toSDL();
 
 
-protected:
+  protected:
 
     SDL_Surface* m_surface; // wrapped object
 
     void free();
 
-};
+  };
 
 }
 

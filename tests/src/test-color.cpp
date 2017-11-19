@@ -35,66 +35,66 @@
 SCENARIO( "class SDL::Color", "[Color]" )
 {
   GIVEN( "A black Color named B and a white color named W" )
-  {
-    SDL::Color B;
-    SDL::Color W {255, 255, 255, 255};
-
-    // get methods
-    REQUIRE( B.getRed() == 0 );
-    REQUIRE( B.getGreen() == 0 );
-    REQUIRE( B.getBlue() == 0 );
-    REQUIRE( B.getAlpha() == 0 );
-
-    REQUIRE( W.getRed() == 255);
-    REQUIRE( W.getGreen() == 255);
-    REQUIRE( W.getBlue() == 255);
-    REQUIRE( W.getAlpha() == 255);
-
-    WHEN( "Colors are compared" ) // operators == !=
     {
+      SDL::Color B;
+      SDL::Color W {255, 255, 255, 255};
 
-      THEN( "B equal B, W equal W, but W doesn't equal B" )
-      {
-        REQUIRE( B == B );
-        REQUIRE( W == W );
-        REQUIRE( B != W );
-      }
-    }
-    WHEN( "Color C is copied from Color W" ) // copy constructor
-    {
-      SDL::Color C(W);
+      // get methods
+      REQUIRE( B.getRed() == 0 );
+      REQUIRE( B.getGreen() == 0 );
+      REQUIRE( B.getBlue() == 0 );
+      REQUIRE( B.getAlpha() == 0 );
 
-      THEN( "C equal W" )
-      {
-        REQUIRE( C == W );
-      }
-    }
-    WHEN( "Color A is assigned Color W" ) // operator =
-    {
-      SDL::Color A = W;
+      REQUIRE( W.getRed() == 255);
+      REQUIRE( W.getGreen() == 255);
+      REQUIRE( W.getBlue() == 255);
+      REQUIRE( W.getAlpha() == 255);
 
-     THEN( "A equal W" )
-      {
-        REQUIRE( A == W );
-      }
-    }
-    WHEN( "Color S is created from class Color static method 'fromRGB' with same values as W" ) // static methods fromRGB fromRGBA
-    {
-      SDL::Color S = SDL::Color::fromRGB(255, 255, 255);
+      WHEN( "Colors are compared" ) // operators == !=
+	{
 
-      THEN( "S equal W" )
-      {
-        REQUIRE( S == W );
-      }
-    }
-    WHEN("Color B is set with values (255, 255, 255 ,255)") // set methods
-    {
-        B.setRGB(255, 255, 255);
+	  THEN( "B equal B, W equal W, but W doesn't equal B" )
+	    {
+	      REQUIRE( B == B );
+	      REQUIRE( W == W );
+	      REQUIRE( B != W );
+	    }
+	}
+      WHEN( "Color C is copied from Color W" ) // copy constructor
+	{
+	  SDL::Color C(W);
 
-        THEN("B == W")
-        {
-            REQUIRE(B == W);
-        }
+	  THEN( "C equal W" )
+	    {
+	      REQUIRE( C == W );
+	    }
+	}
+      WHEN( "Color A is assigned Color W" ) // operator =
+	{
+	  SDL::Color A = W;
+
+	  THEN( "A equal W" )
+	    {
+	      REQUIRE( A == W );
+	    }
+	}
+      WHEN( "Color S is created from class Color static method 'fromRGB' with same values as W" ) // static methods fromRGB fromRGBA
+	{
+	  SDL::Color S = SDL::Color::fromRGB(255, 255, 255);
+
+	  THEN( "S equal W" )
+	    {
+	      REQUIRE( S == W );
+	    }
+	}
+      WHEN("Color B is set with values (255, 255, 255 ,255)") // set methods
+	{
+	  B.setRGB(255, 255, 255);
+
+	  THEN("B == W")
+	    {
+	      REQUIRE(B == W);
+	    }
+	}
     }
-  }
 }

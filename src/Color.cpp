@@ -33,148 +33,148 @@
 namespace SDL
 {
 
-// static methods
+  // static methods
 
-Color Color::fromRGB(Uint8 r, Uint8 g, Uint8 b)
-{
+  Color Color::fromRGB(Uint8 r, Uint8 g, Uint8 b)
+  {
     return Color {r, g, b};
-}
+  }
 
-Color Color::fromHexa(uint code)
-{
+  Color Color::fromHexa(uint code)
+  {
     return Color {code >> 24, code >> 16 & 255, code >> 8 & 255, code & 255};
-}
+  }
 
-Color Color::fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
+  Color Color::fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+  {
     return Color {r,g,b,a};
-}
+  }
 
 
-// operator methods
+  // operator methods
 
-void Color::operator =(const Color& orig)
-{
+  void Color::operator =(const Color& orig)
+  {
     setRed(orig.getRed());
     setGreen(orig.getGreen());
     setBlue(orig.getBlue());
     setAlpha(orig.getAlpha());
-}
+  }
 
-bool Color::operator ==(const Color& comp) const
-{
+  bool Color::operator ==(const Color& comp) const
+  {
     return ( getRed()   == comp.getRed()   &&
              getGreen() == comp.getGreen() &&
              getBlue()  == comp.getBlue()  &&
              getAlpha() == comp.getAlpha()
-           );
-}
+	     );
+  }
 
-bool Color::operator !=(const Color& comp) const
-{
+  bool Color::operator !=(const Color& comp) const
+  {
     return !(*this == comp);
-}
+  }
 
 
-// constructors/destructor
+  // constructors/destructor
 
-Color::Color() : m_color {0, 0, 0, 0}
+  Color::Color() : m_color {0, 0, 0, 0}
 {
 
 }
 
-Color::Color(uint x)
-: m_color {x >> 24, x >> 16 & 255, x >> 8 & 255, x & 255}
+  Color::Color(uint x)
+    : m_color {x >> 24, x >> 16 & 255, x >> 8 & 255, x & 255}
 {
 
 }
 
-Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) : m_color {r, g, b, a}
+  Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) : m_color {r, g, b, a}
 {
 
 }
 
-Color::Color(const Color &orig)
-{
+  Color::Color(const Color &orig)
+  {
     setRed(orig.getRed());
     setGreen(orig.getGreen());
     setBlue(orig.getBlue());
     setAlpha(orig.getAlpha());
-}
+  }
 
-Color::~Color()
-{
+  Color::~Color()
+  {
 
-}
+  }
 
 
-// get methods
+  // get methods
 
-Uint8 Color::getAlpha() const
-{
+  Uint8 Color::getAlpha() const
+  {
     return m_color.a;
-}
+  }
 
-Uint8 Color::getBlue() const
-{
+  Uint8 Color::getBlue() const
+  {
     return m_color.b;
-}
+  }
 
-Uint8 Color::getGreen() const
-{
+  Uint8 Color::getGreen() const
+  {
     return m_color.g;
-}
+  }
 
-Uint8 Color::getRed() const
-{
+  Uint8 Color::getRed() const
+  {
     return m_color.r;
-}
+  }
 
 
-// set methods
+  // set methods
 
-Color& Color::setAlpha(Uint8 alpha)
-{
+  Color& Color::setAlpha(Uint8 alpha)
+  {
     m_color.a = alpha;
     return *this;
-}
+  }
 
-Color& Color::setBlue(Uint8 blue)
-{
+  Color& Color::setBlue(Uint8 blue)
+  {
     m_color.b = blue;
     return *this;
-}
+  }
 
-Color& Color::setGreen(Uint8 green)
-{
+  Color& Color::setGreen(Uint8 green)
+  {
     m_color.g = green;
     return *this;
-}
+  }
 
-Color& Color::setRed(Uint8 red)
-{
+  Color& Color::setRed(Uint8 red)
+  {
     m_color.r = red;
     return *this;
-}
+  }
 
-Color& Color::setRGB(Uint8 r, Uint8 g, Uint8 b)
-{
+  Color& Color::setRGB(Uint8 r, Uint8 g, Uint8 b)
+  {
     setRGBA(r, g, b, 255);
     return *this;
-}
+  }
 
-Color& Color::setRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
+  Color& Color::setRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+  {
     setRed(r).setGreen(g).setBlue(b).setAlpha(a);
     return *this;
-}
+  }
 
 
-// other methods
+  // other methods
 
-const SDL_Color* Color::toSDL() const
-{
+  const SDL_Color* Color::toSDL() const
+  {
     return &m_color;
-}
+  }
 
 }

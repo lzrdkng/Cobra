@@ -41,10 +41,10 @@
 namespace SDL
 {
 
-class Renderer;
+  class Renderer;
 
-class Texture {
-public:
+  class Texture {
+  public:
     
     explicit Texture(Renderer& renderer,
                      int width,
@@ -100,10 +100,10 @@ public:
 
 
     /*bool copyToRenderEx(const CRect& src,
-                        const CRect& dst,
-                        const double angle,
-                        const CPoint& center,
-                        SDL::RendererFlip flip);*/
+      const CRect& dst,
+      const double angle,
+      const CPoint& center,
+      SDL::RendererFlip flip);*/
 
 #ifdef _SDL_IMAGE_H
     Texture& loadFromFile(const char* file,
@@ -118,7 +118,7 @@ public:
     //bool unlock();
 
     
-private:
+  private:
     
     // Members
     
@@ -127,7 +127,7 @@ private:
     // Methods
     
     void free();
-};
+  };
 
 }
 

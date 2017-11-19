@@ -33,239 +33,239 @@
 namespace SDL
 {
 
-// Public methods of class CTexture
+  // Public methods of class CTexture
 
-/* Constructor/destructor */
+  /* Constructor/destructor */
 
-Texture::Texture(Renderer& renderer,
-                 int width,
-                 int height,
-                 TextureAccess access,
-                 PixelFormats format)
+  Texture::Texture(Renderer& renderer,
+		   int width,
+		   int height,
+		   TextureAccess access,
+		   PixelFormats format)
 
-: m_texture(nullptr)
-{
+    : m_texture(nullptr)
+  {
     m_texture = SDL_CreateTexture(renderer.toSDL(),
                                   format,
                                   access,
                                   width, height);
 
     if (m_texture == nullptr)
-        throw Error(SDL_GetError());
-}
+      throw Error(SDL_GetError());
+  }
 
-Texture::Texture(Renderer& renderer, const char* file)
-: m_texture(nullptr)
-{
+  Texture::Texture(Renderer& renderer, const char* file)
+    : m_texture(nullptr)
+  {
     this->loadFromFile(file, renderer);
-}
+  }
 
-Texture::~Texture() 
-{
+  Texture::~Texture() 
+  {
     free();
-}
+  }
 
-/* get methods */
+  /* get methods */
 
-TextureAccess Texture::getAccess() const
-{
+  TextureAccess Texture::getAccess() const
+  {
     int access;
 
     if (SDL_QueryTexture(m_texture, NULL, &access, NULL, NULL) != 0)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
     return static_cast<TextureAccess>(access);
-}
+  }
 
 
-Uint8 Texture::getAlphaMod() const
-{
+  Uint8 Texture::getAlphaMod() const
+  {
     Uint8 alpha = 0;
     
     SDL_GetTextureAlphaMod(m_texture, &alpha);
     
     return alpha;
-}
+  }
 
-BlendModes Texture::getBlendMode() const
-{
+  BlendModes Texture::getBlendMode() const
+  {
     SDL_BlendMode blendMode = SDL_BLENDMODE_NONE;
     
     if (SDL_GetTextureBlendMode(m_texture, &blendMode) != 0)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
 
     return static_cast<BlendModes>(blendMode);
-}
+  }
 
-Color Texture::getColorMod() const
-{ 
+  Color Texture::getColorMod() const
+  { 
     Uint8 r,g,b;
     
     if (SDL_GetTextureColorMod(m_texture, &r, &g, &b) != 0)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
     
     return Color::fromRGB(r, g ,b);
-}
+  }
 
 
-PixelFormats Texture::getFormat() const
-{
+  PixelFormats Texture::getFormat() const
+  {
     Uint32 format = 0;
 
     if (SDL_QueryTexture(m_texture, &format, NULL, NULL, NULL) != 0)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
 
     return static_cast<PixelFormats>(format);
-}
+  }
 
 
-int Texture::getHeight() const 
-{
+  int Texture::getHeight() const 
+  {
     int height = 0;
 
     if (SDL_QueryTexture(m_texture, NULL, NULL, NULL, &height) != 0)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
 
     return height;
-}
+  }
 
 
-int Texture::getWidth() const 
-{
+  int Texture::getWidth() const 
+  {
     int width = 0;
 
     if (SDL_QueryTexture(m_texture, NULL, NULL, &width, NULL) != 0)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
 
     return width;
-}
+  }
 
 
-/* set methods */
+  /* set methods */
 
-Texture& Texture::setAlphaMod(Uint8 alpha)
-{
+  Texture& Texture::setAlphaMod(Uint8 alpha)
+  {
     SDL_SetTextureAlphaMod(m_texture, alpha);
     return *this;
-}
+  }
 
-Texture& Texture::setBlendMode(BlendModes blendMode)
-{
+  Texture& Texture::setBlendMode(BlendModes blendMode)
+  {
     SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(blendMode));
     return *this;
-}
+  }
 
-Texture& Texture::setColorMod(const Color& color)
-{
+  Texture& Texture::setColorMod(const Color& color)
+  {
     if (SDL_SetTextureColorMod(m_texture, color.getRed(), color.getGreen(), color.getBlue()) != 0)
-            throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
 
     return *this;
-}
+  }
 
-/* other methods */
+  /* other methods */
 
-Texture& Texture::copyToRender(Renderer& renderer,
-                               const Rect& src, const Rect& dst)
-{
-     if ( SDL_RenderCopy(renderer.toSDL(),
-                          m_texture,
-                          src.toSDL(),
-                          dst.toSDL()) != 0 )
-     {
-         throw Error(SDL_GetError());
-     }
-
-     return *this;
-}
-
-Texture& Texture::copyToRender(Renderer& renderer)
-{
+  Texture& Texture::copyToRender(Renderer& renderer,
+				 const Rect& src, const Rect& dst)
+  {
     if ( SDL_RenderCopy(renderer.toSDL(),
-                         m_texture,
-                         NULL,
-                         NULL) != 0 )
-    {
-        throw Error(SDL_GetError());
-    }
+			m_texture,
+			src.toSDL(),
+			dst.toSDL()) != 0 )
+      {
+	throw Error(SDL_GetError());
+      }
 
     return *this;
-}
+  }
 
-/*
-bool CTexture::copyToRenderEx(const CRect& src,
-                              const CRect& dst,
-                              const double angle,
-                              const CPoint& center,
-                              SDL::RendererFlip flip) 
-{
+  Texture& Texture::copyToRender(Renderer& renderer)
+  {
+    if ( SDL_RenderCopy(renderer.toSDL(),
+			m_texture,
+			NULL,
+			NULL) != 0 )
+      {
+        throw Error(SDL_GetError());
+      }
+
+    return *this;
+  }
+
+  /*
+    bool CTexture::copyToRenderEx(const CRect& src,
+    const CRect& dst,
+    const double angle,
+    const CPoint& center,
+    SDL::RendererFlip flip) 
+    {
     return SDL_RenderCopyEx(m_renderer,
-                            m_texture,
-                            src.toSDL(),
-                            dst.toSDL(),
-                            angle,
-                            center.toSDL(),
-                            flip) == 0 ? true:false;
-}*/
+    m_texture,
+    src.toSDL(),
+    dst.toSDL(),
+    angle,
+    center.toSDL(),
+    flip) == 0 ? true:false;
+    }*/
 
 
 #ifdef _SDL_IMAGE_H
-Texture& Texture::loadFromFile(const char* file,
-                               Renderer& renderer,
-                               int hexaRGB)
-{
+  Texture& Texture::loadFromFile(const char* file,
+				 Renderer& renderer,
+				 int hexaRGB)
+  {
 
     SDL_Surface* loadedSurface = IMG_Load(file);
 
     if (loadedSurface == nullptr)
-    {
+      {
         throw Error(IMG_GetError());
-    }
+      }
     else
-    {
+      {
         this->free();
 
         if (hexaRGB > 0)
-            SDL_SetColorKey(
-                            loadedSurface,
-                            SDL_TRUE,
-                            SDL_MapRGB(
-                                       loadedSurface->format,
-                                       (hexaRGB >> 24),
-                                       (hexaRGB >> 16)&255,
-                                       (hexaRGB >> 8 )&255
-                                      )
-                            );
+	  SDL_SetColorKey(
+			  loadedSurface,
+			  SDL_TRUE,
+			  SDL_MapRGB(
+				     loadedSurface->format,
+				     (hexaRGB >> 24),
+				     (hexaRGB >> 16)&255,
+				     (hexaRGB >> 8 )&255
+				     )
+			  );
 
         m_texture = SDL_CreateTextureFromSurface(renderer.toSDL(),
                                                  loadedSurface);
         SDL_FreeSurface(loadedSurface);
 
         if (m_texture == nullptr)
-        {
+	  {
             throw Error(SDL_GetError());
-        }
-    }
+	  }
+      }
 
     return *this;
-}
+  }
 #endif
 
-const SDL_Texture* Texture::toSDL() const
-{
+  const SDL_Texture* Texture::toSDL() const
+  {
     return m_texture;
-}
+  }
 
 
 
-// Private methods of class CTexture
+  // Private methods of class CTexture
 
-void Texture::free()
-{
+  void Texture::free()
+  {
     if (m_texture != nullptr)
-    {
+      {
         SDL_DestroyTexture(m_texture);
         m_texture = nullptr;
-    }
-}
+      }
+  }
 
 }

@@ -35,13 +35,13 @@
 namespace SDL
 {
 
-Window::Window(const char* title,
-               int width,
-               int height,
-               SDL::WindowFlags flags,
-               int x,
-               int y) : m_window(nullptr)
-{
+  Window::Window(const char* title,
+		 int width,
+		 int height,
+		 SDL::WindowFlags flags,
+		 int x,
+		 int y) : m_window(nullptr)
+  {
     m_window = SDL_CreateWindow(title,
                                 x,
                                 y,
@@ -50,12 +50,12 @@ Window::Window(const char* title,
                                 flags);
         
     if (m_window == nullptr)
-        throw Error(SDL_GetError());
-}
+      throw Error(SDL_GetError());
+  }
 
-Window::Window(const char* title, WindowFlags flags)
-: m_window(nullptr)
-{
+  Window::Window(const char* title, WindowFlags flags)
+    : m_window(nullptr)
+  {
     m_window = SDL_CreateWindow(title,
                                 640,
                                 480,
@@ -64,12 +64,12 @@ Window::Window(const char* title, WindowFlags flags)
                                 flags);
 
     if (m_window == nullptr)
-            throw Error(SDL_GetError());
-}
+      throw Error(SDL_GetError());
+  }
 
 
-Window::Window(const Window& orig)
-{
+  Window::Window(const Window& orig)
+  {
 
     Point     pos  = orig.getPosition();
     Pair<int> size = orig.getSize();
@@ -84,46 +84,46 @@ Window::Window(const Window& orig)
                                 flags);
 
     if (m_window == nullptr)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
 
 
 
-}
+  }
 
 
-Window::~Window()
-{   
+  Window::~Window()
+  {   
     if (m_window != nullptr)
-        SDL_DestroyWindow(m_window);
+      SDL_DestroyWindow(m_window);
 
     m_window   = nullptr;
-}
+  }
 
 
 
-WindowFlags Window::getFlags() const
-{
+  WindowFlags Window::getFlags() const
+  {
     return static_cast<WindowFlags>(SDL_GetWindowFlags(m_window));
-}
+  }
 
-bool Window::getGrab() const
-{
+  bool Window::getGrab() const
+  {
     return SDL_GetWindowGrab(m_window);
-}
+  }
 
 
-Uint32 Window::getID() const
-{
+  Uint32 Window::getID() const
+  {
     Uint32 ID = SDL_GetWindowID(m_window);
 
     if (ID == 0)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
     
     return ID;
-}
+  }
 
-Pair<int> Window::getMaximumSize() const
-{
+  Pair<int> Window::getMaximumSize() const
+  {
     
     int w, h;
     
@@ -132,10 +132,10 @@ Pair<int> Window::getMaximumSize() const
     Pair<int> maximumSize {w, h};
     
     return maximumSize;
-}
+  }
 
-Pair<int> Window::getMinimumSize() const
-{
+  Pair<int> Window::getMinimumSize() const
+  {
     int w, h;
     
     SDL_GetWindowMinimumSize(m_window, &w, &h);
@@ -143,24 +143,24 @@ Pair<int> Window::getMinimumSize() const
     Pair<int> minimumSize {w, h};
     
     return minimumSize;
-}
+  }
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
-float Window::getOpacity() const
-{
+  float Window::getOpacity() const
+  {
     float opacity;
     
     if (SDL_GetWindowOpacity(m_window, &opacity) != 0)
-    {
+      {
         throw Error(SDL_GetError());
-    }
+      }
 
     return opacity;
-}
+  }
 #endif
 
-Point Window::getPosition() const
-{
+  Point Window::getPosition() const
+  {
     int x, y;
     
     SDL_GetWindowPosition(m_window, &x, &y);
@@ -168,15 +168,15 @@ Point Window::getPosition() const
     Point windowPosition(x, y);
     
     return windowPosition;
-}
+  }
 
-SDL_Renderer* Window::getRenderer() const
-{
+  SDL_Renderer* Window::getRenderer() const
+  {
     return SDL_GetRenderer(m_window);
-}
+  }
 
-Pair<int> Window::getSize() const
-{
+  Pair<int> Window::getSize() const
+  {
     int w, h;
     
     SDL_GetWindowSize(m_window, &w, &h);
@@ -184,142 +184,142 @@ Pair<int> Window::getSize() const
     Pair<int> windowSize {w, h};
     
     return windowSize;
-}
+  }
 
-std::string Window::getTitle() const
-{
+  std::string Window::getTitle() const
+  {
     return SDL_GetWindowTitle(m_window);
-}
+  }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-SDL_SysWMinfo Window::getWMInfo() const
-{
+  SDL_SysWMinfo Window::getWMInfo() const
+  {
     SDL_SysWMinfo info;
 
     SDL_VERSION(&info.version);
     
     if (SDL_GetWindowWMInfo(m_window, &info) == SDL_FALSE)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
     
     return info;
-}
+  }
 #endif
 
 
 
-Window& Window::setFullscreen(SDL::WindowFlags flags)
-{
+  Window& Window::setFullscreen(SDL::WindowFlags flags)
+  {
     if (SDL_SetWindowFullscreen(m_window, flags) == 0)
-        return *this;
+      return *this;
     throw Error(SDL_GetError());
-}
+  }
 
-Window& Window::setGrab(bool grabbed)
-{
+  Window& Window::setGrab(bool grabbed)
+  {
     if (grabbed)
-        SDL_SetWindowGrab(m_window, SDL_TRUE);
+      SDL_SetWindowGrab(m_window, SDL_TRUE);
     else
-        SDL_SetWindowGrab(m_window, SDL_FALSE);
+      SDL_SetWindowGrab(m_window, SDL_FALSE);
     return *this;
-}
+  }
 
-Window& Window::setMaximumSize(int w, int h)
-{
+  Window& Window::setMaximumSize(int w, int h)
+  {
     SDL_SetWindowMaximumSize(m_window, w, h);
     return *this;
-}
+  }
 
-Window& Window::setMinimumSize(int w, int h)
-{
+  Window& Window::setMinimumSize(int w, int h)
+  {
     SDL_SetWindowMinimumSize(m_window, w, h);
     return *this;
-}
+  }
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
-Window& Window::setOpacity(float opacity)
-{
+  Window& Window::setOpacity(float opacity)
+  {
     if (SDL_SetWindowOpacity(m_window, opacity) != 0)
-    {
+      {
         throw Error(SDL_GetError());
-    }
+      }
  
-   return *this;
-}
+    return *this;
+  }
 #endif
 
-Window& Window::setPosition(int x, int y)
-{
+  Window& Window::setPosition(int x, int y)
+  {
     SDL_SetWindowPosition(m_window, x, y);
     return *this;
-}
+  }
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
-Window& Window::setResizable(bool resizable)
-{
+  Window& Window::setResizable(bool resizable)
+  {
     SDL_SetWindowResizable(m_window, static_cast<SDL_bool>(resizable));
     return *this;
-}
+  }
 #endif
 
-Window& Window::setSize(int w, int h)
-{
+  Window& Window::setSize(int w, int h)
+  {
     SDL_SetWindowSize(m_window, w, h);
     return *this;
-}
+  }
 
-Window& Window::setTitle(const char* title)
-{
+  Window& Window::setTitle(const char* title)
+  {
     SDL_SetWindowTitle(m_window, title);
     return *this;
-}
+  }
 
-// Other methods
+  // Other methods
 
-Window& Window::hide()
-{
+  Window& Window::hide()
+  {
     SDL_HideWindow(m_window);
     return *this;
-}
+  }
 
-Window& Window::maximize()
-{
+  Window& Window::maximize()
+  {
     SDL_MaximizeWindow(m_window);
     return *this;
-}
+  }
 
-Window& Window::minimize()
-{
+  Window& Window::minimize()
+  {
     SDL_MinimizeWindow(m_window);
     return *this;
-}
+  }
 
-Window& Window::show()
-{
+  Window& Window::show()
+  {
     SDL_ShowWindow(m_window);
     return *this;
-}
+  }
 
-const SDL_Window* Window::toSDL() const
-{
+  const SDL_Window* Window::toSDL() const
+  {
     return m_window;
-}
+  }
 
-SDL_Window* Window::toSDL()
-{
+  SDL_Window* Window::toSDL()
+  {
     return m_window;
-}
+  }
 
-Window& Window::warpMouse(int x, int y)
-{
+  Window& Window::warpMouse(int x, int y)
+  {
     SDL_WarpMouseInWindow(m_window, x, y);
     return *this;
-}
+  }
 
-Window& Window::update()
-{
+  Window& Window::update()
+  {
     if (SDL_UpdateWindowSurface(m_window) != 0)
-        throw Error(SDL_GetError());
+      throw Error(SDL_GetError());
     return *this;
-}
+  }
 
 }

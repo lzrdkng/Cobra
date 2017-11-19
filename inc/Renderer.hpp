@@ -45,15 +45,15 @@
 namespace SDL
 {
 
-/**
- * @brief Wrapper class for **SDL_Renderer**.
- *
- * **SDL 2.0.0**
- */
+  /**
+   * @brief Wrapper class for **SDL_Renderer**.
+   *
+   * **SDL 2.0.0**
+   */
 
-class Renderer
-{
-public:
+  class Renderer
+  {
+  public:
     
 
     // constructors/destructor
@@ -162,11 +162,11 @@ public:
 
 
     /**
-      * @brief Return the renderer's drawing scale.
-      * @return SDL::Pair<float>
-      * @version **SDL2.0.0**
-      * @sa SDL::Renderer::setScale
-      */
+     * @brief Return the renderer's drawing scale.
+     * @return SDL::Pair<float>
+     * @version **SDL2.0.0**
+     * @sa SDL::Renderer::setScale
+     */
     Pair<float> getScale() const;
 #endif
 
@@ -280,7 +280,12 @@ public:
     
     
     // other methods
-    
+
+
+    Renderer& drawCircle(int x0, int y0, int r);
+
+    Renderer& fillCircle(int x0, int y0, int r);
+ 
     /**
      * @brief Draw a line on the renderer.
      * @param x1
@@ -405,11 +410,11 @@ public:
      */
     SDL_Renderer* toSDL();
 
-private:
+  private:
 
     SDL_Renderer* m_renderer; // wrapped object
 
-};
+  };
 
 }
 

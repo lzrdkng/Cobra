@@ -37,13 +37,13 @@
 namespace SDL
 {
 
-/**
- * @brief Wrapper class for **SDL_Rect**
- */
+  /**
+   * @brief Wrapper class for **SDL_Rect**
+   */
 
-class Rect
-{
-public:
+  class Rect
+  {
+  public:
 
 
     // static methods
@@ -221,21 +221,21 @@ public:
      * @return SDL_Rect*
      * @warning Use with caution.
      */
-     const SDL_Rect* toSDL() const;
+    const SDL_Rect* toSDL() const;
 
-     /**
-      * @brief Return wrapped structure.
-      * @return SDL_Rect*
-      * @warning Use with **extreme** caution.
-      */
-     SDL_Rect* toSDL();
+    /**
+     * @brief Return wrapped structure.
+     * @return SDL_Rect*
+     * @warning Use with **extreme** caution.
+     */
+    SDL_Rect* toSDL();
     
     
-private:
+  private:
     
     SDL_Rect m_rect; // wrapped structure
 
-};
+  };
 
 }
 

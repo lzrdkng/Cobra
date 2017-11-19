@@ -33,83 +33,83 @@
 
 SCENARIO("clas SDL::Rect", "[Rect]")
 {
-    GIVEN("A Rect instance N with values (0, 0, 0, 0) and a Rect"
-          "instance U with values (0, 0, 1, 1)")
+  GIVEN("A Rect instance N with values (0, 0, 0, 0) and a Rect"
+	"instance U with values (0, 0, 1, 1)")
     {
-        SDL::Rect N;
-        SDL::Rect U(0, 0, 1, 1);
+      SDL::Rect N;
+      SDL::Rect U(0, 0, 1, 1);
 
-        // get methods
-        REQUIRE((
-                 U.getX()      == 0 &&
-                 U.getY()      == 0 &&
-                 U.getWidth()  == 1 &&
-                 U.getHeight() == 1
+      // get methods
+      REQUIRE((
+	       U.getX()      == 0 &&
+	       U.getY()      == 0 &&
+	       U.getWidth()  == 1 &&
+	       U.getHeight() == 1
                ));
 
-        // operators == !=
-        WHEN("N is compared to U")
+      // operators == !=
+      WHEN("N is compared to U")
         {
-            THEN("N == U return false")
+	  THEN("N == U return false")
             {
-                REQUIRE(N == N);
-                REQUIRE(N != U);
+	      REQUIRE(N == N);
+	      REQUIRE(N != U);
             }
         }
 
-        // operator =
-        WHEN("A is asigned U")
+      // operator =
+      WHEN("A is asigned U")
         {
-            SDL::Rect A = U;
+	  SDL::Rect A = U;
 
-            THEN("A == U")
+	  THEN("A == U")
             {
-                REQUIRE(A == U);
+	      REQUIRE(A == U);
             }
         }
 
-        // copy constructor
-        WHEN("C is copied from U")
+      // copy constructor
+      WHEN("C is copied from U")
         {
-            SDL::Rect C(U);
+	  SDL::Rect C(U);
 
-            THEN("C == U")
+	  THEN("C == U")
             {
-                REQUIRE(C == U);
+	      REQUIRE(C == U);
             }
         }
 
-        // implicit constructor / static method fromSDL
-        WHEN("SC is implicility construct from SDL_Rect (0, 0, 1, 1)")
+      // implicit constructor / static method fromSDL
+      WHEN("SC is implicility construct from SDL_Rect (0, 0, 1, 1)")
         {
-            SDL_Rect rect {0, 0, 1, 1};
-            SDL::Rect SC(rect);
+	  SDL_Rect rect {0, 0, 1, 1};
+	  SDL::Rect SC(rect);
 
-            THEN("SC == U")
+	  THEN("SC == U")
             {
-                REQUIRE(SC == U);
+	      REQUIRE(SC == U);
             }
         }
 
-        // set methods
-        WHEN("U values are set to (0, 0, 0, 0)")
+      // set methods
+      WHEN("U values are set to (0, 0, 0, 0)")
         {
-            U.setValues(0, 0, 0, 0);
+	  U.setValues(0, 0, 0, 0);
 
-            THEN("U == N")
+	  THEN("U == N")
             {
-                REQUIRE(U == N);
+	      REQUIRE(U == N);
             }
         }
 
-        // static method fromInt
-        WHEN("S is created from static method fromInt with values (0, 0, 1, 1)")
+      // static method fromInt
+      WHEN("S is created from static method fromInt with values (0, 0, 1, 1)")
         {
-            SDL::Rect S = SDL::Rect::fromInt(0, 0, 1, 1);
+	  SDL::Rect S = SDL::Rect::fromInt(0, 0, 1, 1);
 
-            THEN("S == U")
+	  THEN("S == U")
             {
-                REQUIRE(S == U);
+	      REQUIRE(S == U);
             }
         }
     }

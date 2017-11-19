@@ -35,13 +35,13 @@
 namespace SDL
 {
 
-/**
- * @brief Wrapper class for **SDL_Point**
- */
+  /**
+   * @brief Wrapper class for **SDL_Point**
+   */
 
-class Point
-{
-public:
+  class Point
+  {
+  public:
 
 
     // static methods
@@ -167,11 +167,11 @@ public:
     SDL_Point* toSDL();
 
     
-private:
+  private:
 
     SDL_Point m_point; // wrapped object
     
-};
+  };
 
 }
 

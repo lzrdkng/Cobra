@@ -34,57 +34,57 @@
 
 SCENARIO("class SDL::Point", "[Point]")
 {
-    GIVEN("A point Z with values (0,0) and a point U with values (1,1)")
+  GIVEN("A point Z with values (0,0) and a point U with values (1,1)")
     {
-        SDL::Point Z(0,0);
-        SDL::Point U(1,1);
+      SDL::Point Z(0,0);
+      SDL::Point U(1,1);
 
-        REQUIRE((Z.getX() == 0 && Z.getY() == 0)); // get methods
+      REQUIRE((Z.getX() == 0 && Z.getY() == 0)); // get methods
 
-        WHEN("When Z is compared to U") // operators == !=
+      WHEN("When Z is compared to U") // operators == !=
         {
-            THEN("Z == U return false")
+	  THEN("Z == U return false")
             {
-                REQUIRE(Z == Z);
-                REQUIRE(U == U);
-                REQUIRE(Z != U);
+	      REQUIRE(Z == Z);
+	      REQUIRE(U == U);
+	      REQUIRE(Z != U);
             }
         }
-        WHEN("When a new point C is copied from U") // copy constructor
+      WHEN("When a new point C is copied from U") // copy constructor
         {
-            SDL::Point C(U);
+	  SDL::Point C(U);
 
-            THEN("C == U return true")
+	  THEN("C == U return true")
             {
-                REQUIRE(C == U);
+	      REQUIRE(C == U);
             }
         }
-        WHEN("When a point S is created from static method fromInt with values (1,1)") // static method fromInt
+      WHEN("When a point S is created from static method fromInt with values (1,1)") // static method fromInt
         {
-            SDL::Point S = SDL::Point::fromInt(1,1);
+	  SDL::Point S = SDL::Point::fromInt(1,1);
 
-            THEN("S == U return true")
+	  THEN("S == U return true")
             {
-                REQUIRE(S == U);
+	      REQUIRE(S == U);
             }
         }
-        WHEN("When a point S is created from static method fromSDL with value SDL_Point {1,1}") // static method fromSDL
+      WHEN("When a point S is created from static method fromSDL with value SDL_Point {1,1}") // static method fromSDL
         {
-            SDL_Point point {1,1};
-            SDL::Point S = SDL::Point::fromSDL(point);
+	  SDL_Point point {1,1};
+	  SDL::Point S = SDL::Point::fromSDL(point);
 
-            THEN("S == U return true")
+	  THEN("S == U return true")
             {
-                REQUIRE(S == U);
+	      REQUIRE(S == U);
             }
         }
-        WHEN("When x values of Z are set to (1,1)") // set methods
+      WHEN("When x values of Z are set to (1,1)") // set methods
         {
-            Z.setValues(1, 1);
+	  Z.setValues(1, 1);
 
-            THEN("Z == U")
+	  THEN("Z == U")
             {
-                REQUIRE(Z == U);
+	      REQUIRE(Z == U);
             }
         }
     }

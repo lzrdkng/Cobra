@@ -7,17 +7,17 @@
 namespace SDL
 {
 
-class WindowSurface : public Surface
-{
+  class WindowSurface : public Surface
+  {
 
-public:
+  public:
 
     explicit WindowSurface(Window& window) : Surface(SDL_GetWindowSurface(window.toSDL())) { }
 
     virtual ~WindowSurface() { m_surface = nullptr; }
 
 
-};
+  };
 
 }
 

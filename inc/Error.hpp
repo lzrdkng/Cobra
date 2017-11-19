@@ -37,16 +37,16 @@
 namespace SDL
 {
 
-class Error : public std::runtime_error
-{
+  class Error : public std::runtime_error
+  {
 
-public:
+  public:
 
     Error(const char* message) : std::runtime_error(message) {}
 
     virtual ~Error() {}
 
-};
+  };
 
 }
 

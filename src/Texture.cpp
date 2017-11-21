@@ -255,7 +255,10 @@ namespace SDL
     return m_texture;
   }
 
-
+  SDL_Texture* Texture::toSDL()
+  {
+    return m_texture;
+  }
 
   // Private methods of class CTexture
 

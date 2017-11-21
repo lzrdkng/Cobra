@@ -115,6 +115,8 @@ namespace SDL
 
     const SDL_Texture* toSDL() const;
 
+    SDL_Texture* toSDL();
+
     //bool unlock();
 
     

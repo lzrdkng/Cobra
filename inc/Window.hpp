@@ -74,9 +74,9 @@ namespace SDL
     explicit Window(const char* title,
                     int width = 640,
                     int height = 480,
-                    WindowFlags flags = SDL::WindowShown,
-                    int x = SDL::WindowPositionUndefined,
-                    int y = SDL::WindowPositionUndefined);
+                    WindowFlags flags = WindowShown,
+                    int x = WindowPositionUndefined,
+                    int y = WindowPositionUndefined);
 
     explicit Window(const char* title, WindowFlags flags);
 
@@ -91,7 +91,7 @@ namespace SDL
      * Renderer object with the new window.
      *
      */
-    Window(const Window& orig);
+    explicit Window(const Window& orig);
 
 
     /**
@@ -164,7 +164,7 @@ namespace SDL
     /** Return the window's title.
      *  @return std::string
      */
-    std::string getTitle() const;
+    const char* getTitle() const;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     /**

@@ -71,7 +71,7 @@ namespace SDL
      * @sa SDL::Renderer:~Renderer
      */
     explicit Renderer(Window& window,
-                      SDL::RendererFlags flags = SDL::RendererNull,
+                      RendererFlags flags = RendererNull,
                       int index = -1);
 
 
@@ -259,12 +259,14 @@ namespace SDL
 
 
     /**
-     * @brief Set
-     * @param texture
-     * @return
+     * @brief Set a texture as the current rendering target.
+     * @param texture the targeted texture, which must be created with the SDL::TextureAccessTarget
+     * flag, or NULL for the default render target
+     * @return bool
+     * @throw SDL::Error on failure
      * @version **SDL2.0.0**
      */
-    Renderer& setTarget(Texture& texture);
+    bool setTarget(Texture& texture);
 #endif
 
     /**

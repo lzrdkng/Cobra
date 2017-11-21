@@ -85,6 +85,9 @@ namespace SDL
 			  double scale,
 			  const Coord& offset)
   {
+
+
+
     Coord cartesianCoord(screenCoord.getX(), -screenCoord.getY());
 
     cartesianCoord += Coord {-width/2.0, height/2.0};
@@ -107,7 +110,7 @@ namespace SDL
 
     Coord screenCoord {std::real(cartesianCoord), -std::imag(cartesianCoord)};
 
-    screenCoord -= Coord {std::real(offset), std::imag(offset)};
+    screenCoord -= offset;
     
     screenCoord *= scale;
 
@@ -118,6 +121,7 @@ namespace SDL
 	static_cast<int>(std::round(std::imag(screenCoord)))
 	};
 	
+
   }
 
 }

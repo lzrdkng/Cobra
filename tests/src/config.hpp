@@ -1,7 +1,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-const uint INTERACT = 16;
+const uint INTERACT = 0;
 /*
  * Flag	Tutorial
  *

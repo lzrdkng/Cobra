@@ -34,7 +34,8 @@ namespace SDL
 
   // constructors/destructor
 
-  Renderer::Renderer(Window& window, SDL::RendererFlags flags, int index) : m_renderer(nullptr)
+  Renderer::Renderer(Window& window, RendererFlags flags, int index)
+    : m_renderer(nullptr)
   {
     m_renderer = SDL_CreateRenderer(window.toSDL(), index, flags);
 
@@ -59,7 +60,7 @@ namespace SDL
 
     SDL_RenderGetClipRect(m_renderer, &sdl_rect);
 
-    return Rect {sdl_rect};
+    return {sdl_rect};
   }
 
   BlendModes Renderer::getDrawBlendMode() const
@@ -88,14 +89,12 @@ namespace SDL
   }
 
 
-
 #if SDL_VERSION_ATLEAST(2, 0, 5)
   bool Renderer::getIntegerScale() const
   {
     return static_cast<bool>(SDL_RenderGetIntegerScale(m_renderer));
   }
 #endif
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
   Pair<int> Renderer::getLogicalSize() const
   {
@@ -103,9 +102,7 @@ namespace SDL
 
     SDL_RenderGetLogicalSize(m_renderer, &w, &h);
 
-    Pair<int> size {w, h};
-
-    return size;
+    return {w, h};
   }
 
   Pair<int> Renderer::getOutputSize() const
@@ -115,9 +112,7 @@ namespace SDL
     if (SDL_GetRendererOutputSize(m_renderer, &w, &h) != 0)
       throw SDL::Error(SDL_GetError());
 
-    Pair<int> size {w, h};
-
-    return size;
+    return {w, h};
   }
 
   Pair<float> Renderer::getScale() const
@@ -126,9 +121,7 @@ namespace SDL
 
     SDL_RenderGetScale(m_renderer, &x, &y);
 
-    Pair<float> scale {x, y};
-
-    return scale;
+    return {x , y};
   }
 #endif
 
@@ -144,10 +137,9 @@ namespace SDL
     
     SDL_RenderGetViewport(m_renderer, &rect);
     
-    return Rect::fromSDL(rect); 
+    return {rect};
   }
 #endif
-
 
   Renderer& Renderer::setClipRect(const Rect& rect)
   {
@@ -171,7 +163,6 @@ namespace SDL
 #if SDL_VERSION_ATLEAST(2, 0, 5)
   Renderer& Renderer::setIntegerScale(bool enable)
   {
-
     if (SDL_RenderSetIntegerScale(m_renderer, static_cast<SDL_bool>(enable)) != 0)
       throw Error(SDL_GetError());
     
@@ -204,9 +195,19 @@ namespace SDL
     return *this;
   }
 
-  Renderer& Renderer::setTarget(Texture& texture)
+  bool Renderer::setTarget(Texture& texture)
   {
-    return *this;
+    SDL_RendererInfo info;
+
+    if (this->getInfo(info) == 0)
+    {
+      if (info.flags & RendererTargetTexture)
+	if (SDL_SetRenderTarget(m_renderer, texture.toSDL()) != 0)
+	  throw Error(SDL_GetError());
+      return true;
+    }
+
+    return false;
   }
 #endif
 
@@ -226,21 +227,20 @@ namespace SDL
 #if SDL_VERSION_ATLEAST(2, 0, 4)
   bool Renderer::isClipEnabled() const
   {
-    return SDL_RenderIsClipEnabled(m_renderer) == SDL_TRUE ? true:false;
+    return static_cast<bool>(SDL_RenderIsClipEnabled(m_renderer));
   }
 #endif
 
   Renderer& Renderer::present()
   {
     SDL_RenderPresent(m_renderer); 
-
     return *this;
   }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
   bool Renderer::targetSupported() const
   {
-    return SDL_RenderTargetSupported(m_renderer);
+    return static_cast<bool>(SDL_RenderTargetSupported(m_renderer));
   }
 #endif
 
@@ -357,16 +357,16 @@ namespace SDL
   Renderer& Renderer::drawPoints(const std::vector<Point>& points)
   {
     for (auto it=points.begin(); it!=points.end(); ++it)
+    {
+      try
       {
-        try
-	  {
-            this->drawPoint(*it);
-	  }
-        catch (SDL::Error& error)
-	  {
-            error.what();
-	  }
+	this->drawPoint(*it);
       }
+      catch (SDL::Error& error)
+      {
+	error.what();
+      }
+    }
 
     return *this;
   }
@@ -382,17 +382,17 @@ namespace SDL
   Renderer& Renderer::drawRects(const std::vector<Rect>& rects)
   {
     for (auto it=rects.begin(); it!=rects.end(); ++it)
+    {
+      try
       {
-        try
-	  {
-            this->drawRect(*it);
-	  }
-        catch (SDL::Error& error)
-	  {
-            error.what();
-	  }
+	this->drawRect(*it);
       }
-
+      catch (SDL::Error& error)
+      {
+	error.what();
+      }
+    }
+    
     return *this;
   }
 
@@ -407,16 +407,16 @@ namespace SDL
   Renderer& Renderer::fillRects(const std::vector<Rect>& rects)
   {
     for (auto it=rects.begin(); it!=rects.end(); ++it)
+    {
+      try
       {
-        try
-	  {
-            this->fillRect(*it);
-	  }
-        catch (SDL::Error& error)
-	  {
-            error.what();
-	  }
+	this->fillRect(*it);
       }
+      catch (SDL::Error& error)
+      {
+	error.what();
+      }
+    }
 
     return *this;
   }

@@ -301,7 +301,7 @@ namespace SDL
 
     Renderer& drawLine(const Pair<Point>& points);
 
-    Renderer& drawLines(const std::vector<Pair<Point>>& points);
+    Renderer& drawLines(const std::vector<Point>& points);
 
     Renderer& drawPoint(int x, int y);
 

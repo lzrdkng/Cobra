@@ -332,21 +332,12 @@ namespace SDL
     return this->drawLine(points.first, points.second);
   }
 
-  Renderer& Renderer::drawLines(const std::vector<Pair<Point>>& points)
+  Renderer& Renderer::drawLines(const std::vector<Point>& points)
   {
 
-    for (auto it=points.begin(); it!=points.end(); ++it)
-      {
-        try
-	  {
-            this->drawLine(*it);
-	  }
-        catch (SDL::Error& error)
-	  {
-            error.what();
-	  }
-      }
-
+      if (SDL_RenderDrawLines(m_renderer, (const SDL_Point*)&points[0], points.size()) != 0)
+	  throw Error(SDL_GetError());
+      
     return *this;
   }
 

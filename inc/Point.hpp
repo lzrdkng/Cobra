@@ -39,7 +39,7 @@ namespace SDL
    * @brief Wrapper class for **SDL_Point**
    */
 
-  class Point
+  class Point : private SDL_Point
   {
   public:
 
@@ -53,7 +53,7 @@ namespace SDL
      * @param y
      * @return SDL::Point
      */
-    static Point fromInt(int x, int y);
+    constexpr static Point fromInt(int x, int y) { return {x, y}; }
 
     /**
      * @brief static method returning a SDL::Point instance
@@ -61,7 +61,7 @@ namespace SDL
      * @param point
      * @return SDL::Point
      */
-    static Point fromSDL(const SDL_Point& point);
+    constexpr static Point fromSDL(const SDL_Point& point) { return point; }
 
 
     // operator methods
@@ -70,60 +70,57 @@ namespace SDL
      * @brief operator =
      * @param copy
      */
-    Point& operator =(const Point& copy);
+    constexpr Point& operator =(const Point& copy) { this->x = copy.getX(); this->y = copy.getY(); return *this; } 
 
     /**
      * @brief operator ==
      * @param comp
      * @return bool
      */
-    bool operator ==(const Point& comp) const;
+    constexpr bool operator ==(const Point& comp) const { return (x == comp.getX() && y == comp.getY() ); }
 
     /**
      * @brief operator !=
      * @param comp
      * @return bool
      */
-    bool operator !=(const Point& comp) const;
+    constexpr bool operator !=(const Point& comp) const { return !(*this == comp); }
 
 
     // constructors/destructor
 
-    Point();
+    constexpr  Point() : SDL_Point {0, 0} {}
 
     /**
      * @brief Explicit SDL::Point constructor.
      * @param x
      * @param y
      */
-    Point(int x, int y);
+    constexpr Point(int x, int y) : SDL_Point {x, y} {}
 
 
     /**
      * @brief Copy SDL::Point constructor.
      * @param orig
      */
-    Point(const Point& orig);
-
-    /**
-     * @brief SDL::Point destructor
-     */
-    virtual ~Point();
+    constexpr Point(const Point& orig) : SDL_Point {orig.getX(), orig.getY()} {}
 
 
+    constexpr Point(const SDL_Point& point) : SDL_Point {point.x, point.y} {}
+      
     // get methods
     
     /**
      * @brief Return x value.
      * @return int
      */
-    int getX() const;
+    constexpr int getX() const { return x; }
 
     /**
      * @brief Return y value.
      * @return int
      */
-    int getY() const;
+    constexpr int getY() const { return y; }
     
     /**
      * @brief Set x, y values.
@@ -131,7 +128,11 @@ namespace SDL
      * @param y
      * @return SDL::Point
      */
-    Point& setValues(int x, int y);
+    Point& setValues(int X, int Y) {
+      x = X;
+      y = Y;
+      return *this;
+    }
 
     // set methods
     
@@ -140,39 +141,22 @@ namespace SDL
      * @param x
      * @return SDL::Point
      */
-    Point& setX(int x);
+    Point& setX(int X) {
+      x = X;
+      return *this;
+    }
 
     /**
      * @brief Set y value.
      * @param y
      * @return SDL::Point
      */
-    Point& setY(int y);
-    
-
-    // other methods
-    
-    /**
-     * @brief Return constant wrapped object.
-     * @return const SDL_Point*
-     * @warning Use with caution.
-     */
-    const SDL_Point* toSDL() const;
-
-    /**
-     * @brief Return wrapped object.
-     * @return SDL_Point*
-     * @warning Use with **extreme** caution.
-     */
-    SDL_Point* toSDL();
-
-    
-  private:
-
-    SDL_Point m_point; // wrapped object
-    
+    Point& setY(int Y) {
+      y = Y;
+      return *this;
+    }
+        
   };
-
 }
 
 #endif /* POINT_HPP */

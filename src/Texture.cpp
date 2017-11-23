@@ -169,11 +169,9 @@ namespace SDL
   {
     if ( SDL_RenderCopy(renderer.toSDL(),
 			m_texture,
-			src.toSDL(),
-			dst.toSDL()) != 0 )
-      {
+			(const SDL_Rect*)&src,
+			(const SDL_Rect*)&dst) != 0 )
 	throw Error(SDL_GetError());
-      }
 
     return *this;
   }

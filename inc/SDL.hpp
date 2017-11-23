@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL_image.h> // REMOVE IF YOU DON'T NEED SDL_image
 
+#include "Point.hpp"
 #include "Error.hpp"
 
 #define OPERATOR_OR(TYPE, CAST)						\
@@ -21,7 +22,6 @@ namespace SDL
   using Pair = std::pair<T, T>;
 
   class Color;
-  class Point;
 
   /** @namespace SDL*/
 
@@ -243,17 +243,42 @@ namespace SDL
   Color getRGB(Uint32 color, SDL_PixelFormat* format);
 
 
-  Coord screenToCartesian(const Point& screenCoord,
-			  uint width,
-			  uint height,
-			  double scale = 1.0,
-			  const Coord& offset = {0.0, 0.0});
+  inline Coord screenToCartesian(const Point& screenCoord,
+				 uint width,
+				 uint height,
+				 double scale = 1.0,
+				 const Coord& offset = {0.0, 0.0}) {
+    
+    Coord cartesianCoord(screenCoord.getX(), -screenCoord.getY());
 
-  Point cartesianToScreen(const Coord& cartesianCoord,
-			  uint width,
-			  uint height,
-			  const Coord& offset = {0.0, 0.0},
-			  double scale = 1.0);
+    cartesianCoord += Coord {-width/2.0, height/2.0};
+    
+    cartesianCoord *= scale;
+
+    cartesianCoord += Coord {std::real(offset), -std::imag(offset)};
+
+    return cartesianCoord;
+  }
+
+  inline Point cartesianToScreen(const Coord& cartesianCoord,
+				 uint width,
+				 uint height,
+				 double scale = 1.0,
+				 const Coord& offset = {0.0, 0.0}) {
+    
+    Coord screenCoord {std::real(cartesianCoord), -std::imag(cartesianCoord)};
+
+    screenCoord -= offset;
+    
+    screenCoord *= scale;
+
+    screenCoord += Coord {width/2.0, height/2.0};
+    
+    return {
+      static_cast<int>(std::round(std::real(screenCoord))),
+	static_cast<int>(std::round(std::imag(screenCoord)))
+	};	
+  }
 
 }
 

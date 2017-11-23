@@ -54,7 +54,7 @@ namespace SDL
 
   Rect Surface::getClipRect() const
   {
-    return Rect::fromSDL(m_surface->clip_rect);
+    return m_surface->clip_rect;
   }
   /*
     PixelFormat Surface::getFormat() const
@@ -73,73 +73,105 @@ namespace SDL
     return size;
   }
 
-  Surface& Surface::blit(const Rect& srcRect, Surface &dst, Rect &dstRect)
+  Surface& Surface::blit(const Rect& srcRect, Surface& dst, Rect& dstRect)
   {
-    if (SDL_BlitSurface(m_surface, srcRect.toSDL(), dst.toSDL(), dstRect.toSDL()) != 0)
+    if (SDL_BlitSurface(m_surface,
+			(const SDL_Rect*)&srcRect,
+			dst.toSDL(),
+			(SDL_Rect*)&dstRect) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
-  Surface& Surface::blit(Surface &dst, Rect &dstRect)
+  Surface& Surface::blit(Surface& dst, Rect& dstRect)
   {
-    if (SDL_BlitSurface(m_surface, NULL, dst.toSDL(), dstRect.toSDL()) != 0)
+    if (SDL_BlitSurface(m_surface, NULL, dst.toSDL(), (SDL_Rect*)&dstRect) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Surface& Surface::blit(const Rect& srcRect, Surface& dst)
   {
-    if (SDL_BlitSurface(m_surface, srcRect.toSDL(), dst.toSDL(), NULL) != 0)
+    if (SDL_BlitSurface(m_surface, (const SDL_Rect*)&srcRect, dst.toSDL(), NULL) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Surface& Surface::blit(Surface& dst)
   {
-    if (SDL_BlitSurface(m_surface, NULL, dst.toSDL(), NULL) != 0)
+    if (SDL_BlitSurface(m_surface,
+			NULL,
+			dst.toSDL(),
+			NULL) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Surface& Surface::blitScaled(const Rect& srcRect, Surface& dst, Rect& dstRect)
   {
-    if (SDL_BlitScaled(m_surface, srcRect.toSDL(), dst.toSDL(), dstRect.toSDL()) != 0)
+    if (SDL_BlitScaled(m_surface,
+		       (const SDL_Rect*)&srcRect,
+		       dst.toSDL(),
+		       (SDL_Rect*)&dstRect) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Surface& Surface::blitScaled(Surface& dst, Rect& dstRect)
   {
-    if (SDL_BlitScaled(m_surface, NULL, dst.toSDL(), dstRect.toSDL()) != 0)
+    if (SDL_BlitScaled(m_surface,
+		       NULL,
+		       dst.toSDL(),
+		       (SDL_Rect*)&dstRect) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Surface& Surface::blitScaled(const  Rect& srcRect, Surface& dst)
   {
-    if (SDL_BlitScaled(m_surface, srcRect.toSDL(), dst.toSDL(), NULL) != 0)
+    if (SDL_BlitScaled(m_surface,
+		       (const SDL_Rect*)&srcRect,
+		       dst.toSDL(),
+		       NULL) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Surface& Surface::blitScaled(Surface& dst)
   {
-    if (SDL_BlitScaled(m_surface, NULL, dst.toSDL(), NULL) != 0)
+    if (SDL_BlitScaled(m_surface,
+		       NULL,
+		       dst.toSDL(),
+		       NULL) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Surface& Surface::fillRect(const Rect& rect, Uint32 color)
   {
-    if (SDL_FillRect(m_surface, rect.toSDL(), color) != 0)
+    if (SDL_FillRect(m_surface,
+		     (const SDL_Rect*)&rect,
+		     color) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Surface& Surface::fillRect(Uint32 color)
   {
-    if (SDL_FillRect(m_surface, NULL, color) != 0)
+    if (SDL_FillRect(m_surface,
+		     NULL,
+		     color) != 0)
       throw Error(SDL_GetError());
+    
     return *this;
   }
 

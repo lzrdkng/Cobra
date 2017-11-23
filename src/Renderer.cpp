@@ -56,11 +56,11 @@ namespace SDL
 
   Rect Renderer::getClipRect() const
   {
-    SDL_Rect sdl_rect;
+    SDL_Rect rect;
 
-    SDL_RenderGetClipRect(m_renderer, &sdl_rect);
+    SDL_RenderGetClipRect(m_renderer, &rect);
 
-    return {sdl_rect};
+    return rect;
   }
 
   BlendModes Renderer::getDrawBlendMode() const
@@ -143,7 +143,7 @@ namespace SDL
 
   Renderer& Renderer::setClipRect(const Rect& rect)
   {
-    if (SDL_RenderSetClipRect(m_renderer, rect.toSDL()) != 0)
+    if (SDL_RenderSetClipRect(m_renderer, (const SDL_Rect*)&rect) != 0)
       throw Error(SDL_GetError());
 
     return *this;
@@ -189,7 +189,7 @@ namespace SDL
 
   Renderer& Renderer::setViewport(const Rect& rect)
   {
-    if (SDL_RenderSetViewport(m_renderer, rect.toSDL()) != 0)
+    if (SDL_RenderSetViewport(m_renderer, (const SDL_Rect*)&rect) != 0)
       throw Error(SDL_GetError());
 
     return *this;
@@ -212,7 +212,7 @@ namespace SDL
 #endif
 
 
-  // other methods
+// other methods
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
   Renderer& Renderer::clear()
@@ -246,6 +246,9 @@ namespace SDL
 
   Renderer& Renderer::drawCircle(int x0, int y0, int r)
   {
+    // Midpoint circle
+    // see : https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+    
     int x = r - 1;
     int y = 0;
     int dx = 1;
@@ -253,30 +256,30 @@ namespace SDL
     int e = dx - (r << 1);
 
     while (x >= y)
+    {
+      this->drawPoint(x0 + x, y0 + y);
+      this->drawPoint(x0 - x, y0 + y);
+      this->drawPoint(x0 + y, y0 + x);
+      this->drawPoint(x0 - y, y0 + x);
+      this->drawPoint(x0 - x, y0 - y);
+      this->drawPoint(x0 + x, y0 - y);
+      this->drawPoint(x0 - y, y0 - x);
+      this->drawPoint(x0 + y, y0 - x);
+
+      if (e <= 0)
       {
-	this->drawPoint(x0 + x, y0 + y);
-	this->drawPoint(x0 - x, y0 + y);
-	this->drawPoint(x0 + y, y0 + x);
-	this->drawPoint(x0 - y, y0 + x);
-	this->drawPoint(x0 - x, y0 - y);
-	this->drawPoint(x0 + x, y0 - y);
-	this->drawPoint(x0 - y, y0 - x);
-	this->drawPoint(x0 + y, y0 - x);
-
-	if (e <= 0)
-	  {
-	    y++;
-	    e += dy;
-	    dy += 2;
-	  }
-
-	if (e > 0)
-	  {
-	    x--;
-	    dx += 2;
-	    e += (-r << 1) + dx;
-	  }
+	y++;
+	e += dy;
+	dy += 2;
       }
+
+      if (e > 0)
+      {
+	x--;
+	dx += 2;
+	e += (-r << 1) + dx;
+      }
+    }
 
     return *this;
   }
@@ -290,26 +293,26 @@ namespace SDL
     int e  = dx - (r << 1);
 
     while (x >= y)
+    {
+      this->drawLine(x0 + x, y0 + y, x0 - x, y0 + y);
+      this->drawLine(x0 + y, y0 + x, x0 - y, y0 + x);
+      this->drawLine(x0 - x, y0 - y, x0 + x, y0 - y);
+      this->drawLine(x0 - y, y0 - x, x0 + y, y0 - x);
+
+      if (e <= 0)
       {
-	this->drawLine(x0 + x, y0 + y, x0 - x, y0 + y);
-	this->drawLine(x0 + y, y0 + x, x0 - y, y0 + x);
-	this->drawLine(x0 - x, y0 - y, x0 + x, y0 - y);
-	this->drawLine(x0 - y, y0 - x, x0 + y, y0 - x);
-
-	if (e <= 0)
-	  {
-	    y++;
-	    e += dy;
-	    dy += 2;
-	  }
-
-	if (e >0)
-	  {
-	    x--;
-	    dx += 2;
-	    e += (-r << 1) + dx;
-	  }
+	y++;
+	e += dy;
+	dy += 2;
       }
+
+      if (e >0)
+      {
+	x--;
+	dx += 2;
+	e += (-r << 1) + dx;
+      }
+    }
 
     return *this;
   }
@@ -335,8 +338,8 @@ namespace SDL
   Renderer& Renderer::drawLines(const std::vector<Point>& points)
   {
 
-      if (SDL_RenderDrawLines(m_renderer, (const SDL_Point*)&points[0], points.size()) != 0)
-	  throw Error(SDL_GetError());
+    if (SDL_RenderDrawLines(m_renderer, (const SDL_Point*)&points[0], points.size()) != 0)
+      throw Error(SDL_GetError());
       
     return *this;
   }
@@ -356,24 +359,18 @@ namespace SDL
 
   Renderer& Renderer::drawPoints(const std::vector<Point>& points)
   {
-    for (auto it=points.begin(); it!=points.end(); ++it)
-    {
-      try
-      {
-	this->drawPoint(*it);
-      }
-      catch (SDL::Error& error)
-      {
-	error.what();
-      }
-    }
 
+    if (SDL_RenderDrawPoints(m_renderer,
+			     (const SDL_Point*)&points[0],
+			     points.size()) != 0)
+      throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Renderer& Renderer::drawRect(const Rect& rect)
   {
-    if (SDL_RenderDrawRect(m_renderer, rect.toSDL()) != 0)
+    if (SDL_RenderDrawRect(m_renderer, (const SDL_Rect*)&rect) != 0)
       throw SDL::Error(SDL_GetError());
 
     return *this;
@@ -381,24 +378,17 @@ namespace SDL
 
   Renderer& Renderer::drawRects(const std::vector<Rect>& rects)
   {
-    for (auto it=rects.begin(); it!=rects.end(); ++it)
-    {
-      try
-      {
-	this->drawRect(*it);
-      }
-      catch (SDL::Error& error)
-      {
-	error.what();
-      }
-    }
+    if (SDL_RenderDrawRects(m_renderer,
+			    (const SDL_Rect*)&rects[0],
+			    rects.size()) != 0)
+      throw Error(SDL_GetError());
     
     return *this;
   }
 
-  Renderer& Renderer::fillRect(const Rect &rect)
+  Renderer& Renderer::fillRect(const Rect& rect)
   {
-    if (SDL_RenderFillRect(m_renderer, rect.toSDL()) != 0)
+    if (SDL_RenderFillRect(m_renderer, (const SDL_Rect*)&rect) != 0)
       throw SDL::Error(SDL_GetError());
 
     return *this;
@@ -406,24 +396,17 @@ namespace SDL
 
   Renderer& Renderer::fillRects(const std::vector<Rect>& rects)
   {
-    for (auto it=rects.begin(); it!=rects.end(); ++it)
-    {
-      try
-      {
-	this->fillRect(*it);
-      }
-      catch (SDL::Error& error)
-      {
-	error.what();
-      }
-    }
-
+    if (SDL_RenderFillRects(m_renderer,
+			    (const SDL_Rect*)&rects[0],
+			    rects.size()) != 0)
+      throw Error(SDL_GetError());
+    
     return *this;
   }
 
   Renderer& Renderer::readPixels(const Rect& rect, PixelFormats format, void* pixels, int pitch)
   {
-    if (SDL_RenderReadPixels(m_renderer, rect.toSDL(), format, pixels, pitch) != 0)
+    if (SDL_RenderReadPixels(m_renderer, (const SDL_Rect*)&rect, format, pixels, pitch) != 0)
       throw SDL::Error(SDL_GetError());
 
     return *this;

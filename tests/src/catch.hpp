@@ -382,120 +382,120 @@
 #include <sstream>
 #include <algorithm>
 
-  namespace Catch {
+    namespace Catch {
 
-    struct IConfig;
+      struct IConfig;
 
-    struct CaseSensitive { enum Choice {
-        Yes,
-        No
-      }; };
+      struct CaseSensitive { enum Choice {
+	  Yes,
+	  No
+	}; };
 
-    class NonCopyable {
+      class NonCopyable {
 #ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
-      NonCopyable( NonCopyable const& )              = delete;
-      NonCopyable( NonCopyable && )                  = delete;
-      NonCopyable& operator = ( NonCopyable const& ) = delete;
-      NonCopyable& operator = ( NonCopyable && )     = delete;
+	NonCopyable( NonCopyable const& )              = delete;
+	NonCopyable( NonCopyable && )                  = delete;
+	NonCopyable& operator = ( NonCopyable const& ) = delete;
+	NonCopyable& operator = ( NonCopyable && )     = delete;
 #else
-      NonCopyable( NonCopyable const& info );
-      NonCopyable& operator = ( NonCopyable const& );
+	NonCopyable( NonCopyable const& info );
+	NonCopyable& operator = ( NonCopyable const& );
 #endif
 
-    protected:
-      NonCopyable() {}
-      virtual ~NonCopyable();
-    };
+      protected:
+	NonCopyable() {}
+	virtual ~NonCopyable();
+      };
 
-    class SafeBool {
-    public:
-      typedef void (SafeBool::*type)() const;
+      class SafeBool {
+      public:
+	typedef void (SafeBool::*type)() const;
 
-      static type makeSafe( bool value ) {
-	return value ? &SafeBool::trueValue : 0;
+	static type makeSafe( bool value ) {
+	  return value ? &SafeBool::trueValue : 0;
+	}
+      private:
+	void trueValue() const {}
+      };
+
+      template<typename ContainerT>
+      void deleteAll( ContainerT& container ) {
+	typename ContainerT::const_iterator it = container.begin();
+	typename ContainerT::const_iterator itEnd = container.end();
+	for(; it != itEnd; ++it )
+	  delete *it;
       }
-    private:
-      void trueValue() const {}
-    };
+      template<typename AssociativeContainerT>
+      void deleteAllValues( AssociativeContainerT& container ) {
+	typename AssociativeContainerT::const_iterator it = container.begin();
+	typename AssociativeContainerT::const_iterator itEnd = container.end();
+	for(; it != itEnd; ++it )
+	  delete it->second;
+      }
 
-    template<typename ContainerT>
-    void deleteAll( ContainerT& container ) {
-      typename ContainerT::const_iterator it = container.begin();
-      typename ContainerT::const_iterator itEnd = container.end();
-      for(; it != itEnd; ++it )
-	delete *it;
-    }
-    template<typename AssociativeContainerT>
-    void deleteAllValues( AssociativeContainerT& container ) {
-      typename AssociativeContainerT::const_iterator it = container.begin();
-      typename AssociativeContainerT::const_iterator itEnd = container.end();
-      for(; it != itEnd; ++it )
-	delete it->second;
-    }
+      bool startsWith( std::string const& s, std::string const& prefix );
+      bool startsWith( std::string const& s, char prefix );
+      bool endsWith( std::string const& s, std::string const& suffix );
+      bool endsWith( std::string const& s, char suffix );
+      bool contains( std::string const& s, std::string const& infix );
+      void toLowerInPlace( std::string& s );
+      std::string toLower( std::string const& s );
+      std::string trim( std::string const& str );
+      bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
 
-    bool startsWith( std::string const& s, std::string const& prefix );
-    bool startsWith( std::string const& s, char prefix );
-    bool endsWith( std::string const& s, std::string const& suffix );
-    bool endsWith( std::string const& s, char suffix );
-    bool contains( std::string const& s, std::string const& infix );
-    void toLowerInPlace( std::string& s );
-    std::string toLower( std::string const& s );
-    std::string trim( std::string const& str );
-    bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
+      struct pluralise {
+	pluralise( std::size_t count, std::string const& label );
 
-    struct pluralise {
-      pluralise( std::size_t count, std::string const& label );
+	friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
 
-      friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
+	std::size_t m_count;
+	std::string m_label;
+      };
 
-      std::size_t m_count;
-      std::string m_label;
-    };
+      struct SourceLineInfo {
 
-    struct SourceLineInfo {
-
-      SourceLineInfo();
-      SourceLineInfo( char const* _file, std::size_t _line );
+	SourceLineInfo();
+	SourceLineInfo( char const* _file, std::size_t _line );
 #  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
-      SourceLineInfo(SourceLineInfo const& other)          = default;
-      SourceLineInfo( SourceLineInfo && )                  = default;
-      SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
-      SourceLineInfo& operator = ( SourceLineInfo && )     = default;
+	SourceLineInfo(SourceLineInfo const& other)          = default;
+	SourceLineInfo( SourceLineInfo && )                  = default;
+	SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
+	SourceLineInfo& operator = ( SourceLineInfo && )     = default;
 #  endif
-      bool empty() const;
-      bool operator == ( SourceLineInfo const& other ) const;
-      bool operator < ( SourceLineInfo const& other ) const;
+	bool empty() const;
+	bool operator == ( SourceLineInfo const& other ) const;
+	bool operator < ( SourceLineInfo const& other ) const;
 
-      char const* file;
-      std::size_t line;
-    };
+	char const* file;
+	std::size_t line;
+      };
 
-    std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info );
+      std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info );
 
-    // This is just here to avoid compiler warnings with macro constants and boolean literals
-    inline bool isTrue( bool value ){ return value; }
-    inline bool alwaysTrue() { return true; }
-    inline bool alwaysFalse() { return false; }
+      // This is just here to avoid compiler warnings with macro constants and boolean literals
+      inline bool isTrue( bool value ){ return value; }
+      inline bool alwaysTrue() { return true; }
+      inline bool alwaysFalse() { return false; }
 
-    void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
+      void throwLogicError( std::string const& message, SourceLineInfo const& locationInfo );
 
-    void seedRng( IConfig const& config );
-    unsigned int rngSeed();
+      void seedRng( IConfig const& config );
+      unsigned int rngSeed();
 
-    // Use this in variadic streaming macros to allow
-    //    >> +StreamEndStop
-    // as well as
-    //    >> stuff +StreamEndStop
-    struct StreamEndStop {
-      std::string operator+() {
-	return std::string();
+      // Use this in variadic streaming macros to allow
+      //    >> +StreamEndStop
+      // as well as
+      //    >> stuff +StreamEndStop
+      struct StreamEndStop {
+	std::string operator+() {
+	  return std::string();
+	}
+      };
+      template<typename T>
+      T const& operator + ( T const& value, StreamEndStop ) {
+	return value;
       }
-    };
-    template<typename T>
-    T const& operator + ( T const& value, StreamEndStop ) {
-      return value;
     }
-  }
 
 #define CATCH_INTERNAL_LINEINFO ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
 #define CATCH_INTERNAL_ERROR( msg ) ::Catch::throwLogicError( msg, CATCH_INTERNAL_LINEINFO );
@@ -2240,32 +2240,32 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( macroName, resultDisposition, expr )	\
   do {									\
-      Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-      try {								\
-	   static_cast<void>(expr);					\
-	   __catchResult.captureResult( Catch::ResultWas::Ok );		\
-	   }								\
-      catch( ... ) {							\
-		    __catchResult.useActiveException( resultDisposition ); \
-		    }							\
-      INTERNAL_CATCH_REACT( __catchResult )				\
+    Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+    try {								\
+      static_cast<void>(expr);						\
+      __catchResult.captureResult( Catch::ResultWas::Ok );		\
+    }									\
+    catch( ... ) {							\
+      __catchResult.useActiveException( resultDisposition );		\
+    }									\
+    INTERNAL_CATCH_REACT( __catchResult )				\
       } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( macroName, resultDisposition, matcher, expr ) \
   do {									\
-      Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition, #matcher ); \
-      if( __catchResult.allowThrows() )					\
-	try {								\
-	     static_cast<void>(expr);					\
-	     __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
-	     }								\
-	catch( ... ) {							\
-		      __catchResult.captureExpectedException( matcher ); \
-		      }							\
-      else								\
-	__catchResult.captureResult( Catch::ResultWas::Ok );		\
-      INTERNAL_CATCH_REACT( __catchResult )				\
+    Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition, #matcher ); \
+    if( __catchResult.allowThrows() )					\
+      try {								\
+	static_cast<void>(expr);					\
+	__catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+      }									\
+      catch( ... ) {							\
+	__catchResult.captureExpectedException( matcher );		\
+      }									\
+    else								\
+      __catchResult.captureResult( Catch::ResultWas::Ok );		\
+    INTERNAL_CATCH_REACT( __catchResult )				\
       } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2292,18 +2292,18 @@ namespace Catch {
 #ifdef CATCH_CONFIG_VARIADIC_MACROS
 #define INTERNAL_CATCH_MSG( macroName, messageType, resultDisposition, ... ) \
   do {									\
-      Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
-      __catchResult << __VA_ARGS__ + ::Catch::StreamEndStop();		\
-      __catchResult.captureResult( messageType );			\
-      INTERNAL_CATCH_REACT( __catchResult )				\
+    Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
+    __catchResult << __VA_ARGS__ + ::Catch::StreamEndStop();		\
+    __catchResult.captureResult( messageType );				\
+    INTERNAL_CATCH_REACT( __catchResult )				\
       } while( Catch::alwaysFalse() )
 #else
 #define INTERNAL_CATCH_MSG( macroName, messageType, resultDisposition, log ) \
   do {									\
-      Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
-      __catchResult << log + ::Catch::StreamEndStop();			\
-      __catchResult.captureResult( messageType );			\
-      INTERNAL_CATCH_REACT( __catchResult )				\
+    Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
+    __catchResult << log + ::Catch::StreamEndStop();			\
+    __catchResult.captureResult( messageType );				\
+    INTERNAL_CATCH_REACT( __catchResult )				\
       } while( Catch::alwaysFalse() )
 #endif
 
@@ -2314,13 +2314,13 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
   do {									\
-      Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
-      try {								\
-	   __catchResult.captureMatch( arg, matcher, #matcher );	\
-	   } catch( ... ) {						\
-			   __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
-			   }						\
-      INTERNAL_CATCH_REACT( __catchResult )				\
+    Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
+    try {								\
+      __catchResult.captureMatch( arg, matcher, #matcher );		\
+    } catch( ... ) {							\
+      __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
+    }									\
+    INTERNAL_CATCH_REACT( __catchResult )				\
       } while( Catch::alwaysFalse() )
 
 // #included from: internal/catch_section.h
@@ -2336,67 +2336,67 @@ namespace Catch {
 
 namespace Catch {
 
-struct Counts {
-Counts() : passed( 0 ), failed( 0 ), failedButOk( 0 ) {}
+  struct Counts {
+    Counts() : passed( 0 ), failed( 0 ), failedButOk( 0 ) {}
 
-  Counts operator - ( Counts const& other ) const {
-Counts diff;
-diff.passed = passed - other.passed;
-diff.failed = failed - other.failed;
-diff.failedButOk = failedButOk - other.failedButOk;
-return diff;
-}
+    Counts operator - ( Counts const& other ) const {
+      Counts diff;
+      diff.passed = passed - other.passed;
+      diff.failed = failed - other.failed;
+      diff.failedButOk = failedButOk - other.failedButOk;
+      return diff;
+    }
     Counts& operator += ( Counts const& other ) {
-passed += other.passed;
-failed += other.failed;
-failedButOk += other.failedButOk;
-return *this;
-}
+      passed += other.passed;
+      failed += other.failed;
+      failedButOk += other.failedButOk;
+      return *this;
+    }
 
-      std::size_t total() const {
-return passed + failed + failedButOk;
-}
-        bool allPassed() const {
-return failed == 0 && failedButOk == 0;
-}
-	  bool allOk() const {
-return failed == 0;
-}
+    std::size_t total() const {
+      return passed + failed + failedButOk;
+    }
+    bool allPassed() const {
+      return failed == 0 && failedButOk == 0;
+    }
+    bool allOk() const {
+      return failed == 0;
+    }
 
-	    std::size_t passed;
-std::size_t failed;
-std::size_t failedButOk;
-};
+    std::size_t passed;
+    std::size_t failed;
+    std::size_t failedButOk;
+  };
 
-struct Totals {
+  struct Totals {
 
-Totals operator - ( Totals const& other ) const {
-Totals diff;
-diff.assertions = assertions - other.assertions;
-diff.testCases = testCases - other.testCases;
-return diff;
-}
+    Totals operator - ( Totals const& other ) const {
+      Totals diff;
+      diff.assertions = assertions - other.assertions;
+      diff.testCases = testCases - other.testCases;
+      return diff;
+    }
 
-Totals delta( Totals const& prevTotals ) const {
-Totals diff = *this - prevTotals;
-if( diff.assertions.failed > 0 )
-  ++diff.testCases.failed;
- else if( diff.assertions.failedButOk > 0 )
-   ++diff.testCases.failedButOk;
- else
-   ++diff.testCases.passed;
-return diff;
-}
+    Totals delta( Totals const& prevTotals ) const {
+      Totals diff = *this - prevTotals;
+      if( diff.assertions.failed > 0 )
+	++diff.testCases.failed;
+      else if( diff.assertions.failedButOk > 0 )
+	++diff.testCases.failedButOk;
+      else
+	++diff.testCases.passed;
+      return diff;
+    }
 
-Totals& operator += ( Totals const& other ) {
-assertions += other.assertions;
-testCases += other.testCases;
-return *this;
-}
+    Totals& operator += ( Totals const& other ) {
+      assertions += other.assertions;
+      testCases += other.testCases;
+      return *this;
+    }
 
-Counts assertions;
-Counts testCases;
-};
+    Counts assertions;
+    Counts testCases;
+  };
 }
 
 #include <string>
@@ -2783,184 +2783,184 @@ namespace Catch {
 #include <type_traits>
 #endif
 
-  namespace Catch {
-    namespace Detail {
+    namespace Catch {
+      namespace Detail {
 
-      class Approx {
-      public:
-        explicit Approx ( double value )
-	  :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
-	      m_margin( 0.0 ),
-	      m_scale( 1.0 ),
-	      m_value( value )
-        {}
+	class Approx {
+	public:
+	  explicit Approx ( double value )
+	    :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
+		m_margin( 0.0 ),
+		m_scale( 1.0 ),
+		m_value( value )
+	  {}
 
-        static Approx custom() {
-	  return Approx( 0 );
-        }
+	  static Approx custom() {
+	    return Approx( 0 );
+	  }
 
 #if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        Approx operator()( T value ) {
-	  Approx approx( static_cast<double>(value) );
-	  approx.epsilon( m_epsilon );
-	  approx.margin( m_margin );
-	  approx.scale( m_scale );
-	  return approx;
-        }
-
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        explicit Approx( T value ): Approx(static_cast<double>(value))
-        {}
-
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator == ( const T& lhs, Approx const& rhs ) {
-	  // Thanks to Richard Harris for his help refining this formula
-	  auto lhs_v = double(lhs);
-	  bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale + (std::max)(std::fabs(lhs_v), std::fabs(rhs.m_value)));
-	  if (relativeOK) {
-	    return true;
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  Approx operator()( T value ) {
+	    Approx approx( static_cast<double>(value) );
+	    approx.epsilon( m_epsilon );
+	    approx.margin( m_margin );
+	    approx.scale( m_scale );
+	    return approx;
 	  }
-	  return std::fabs(lhs_v - rhs.m_value) < rhs.m_margin;
-        }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator == ( Approx const& lhs, const T& rhs ) {
-	  return operator==( rhs, lhs );
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  explicit Approx( T value ): Approx(static_cast<double>(value))
+	  {}
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator != ( T lhs, Approx const& rhs ) {
-	  return !operator==( lhs, rhs );
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  friend bool operator == ( const T& lhs, Approx const& rhs ) {
+	    // Thanks to Richard Harris for his help refining this formula
+	    auto lhs_v = double(lhs);
+	    bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale + (std::max)(std::fabs(lhs_v), std::fabs(rhs.m_value)));
+	    if (relativeOK) {
+	      return true;
+	    }
+	    return std::fabs(lhs_v - rhs.m_value) < rhs.m_margin;
+	  }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator != ( Approx const& lhs, T rhs ) {
-	  return !operator==( rhs, lhs );
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  friend bool operator == ( Approx const& lhs, const T& rhs ) {
+	    return operator==( rhs, lhs );
+	  }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator <= ( T lhs, Approx const& rhs ) {
-	  return double(lhs) < rhs.m_value || lhs == rhs;
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  friend bool operator != ( T lhs, Approx const& rhs ) {
+	    return !operator==( lhs, rhs );
+	  }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator <= ( Approx const& lhs, T rhs ) {
-	  return lhs.m_value < double(rhs) || lhs == rhs;
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  friend bool operator != ( Approx const& lhs, T rhs ) {
+	    return !operator==( rhs, lhs );
+	  }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator >= ( T lhs, Approx const& rhs ) {
-	  return double(lhs) > rhs.m_value || lhs == rhs;
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  friend bool operator <= ( T lhs, Approx const& rhs ) {
+	    return double(lhs) < rhs.m_value || lhs == rhs;
+	  }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator >= ( Approx const& lhs, T rhs ) {
-	  return lhs.m_value > double(rhs) || lhs == rhs;
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  friend bool operator <= ( Approx const& lhs, T rhs ) {
+	    return lhs.m_value < double(rhs) || lhs == rhs;
+	  }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        Approx& epsilon( T newEpsilon ) {
-	  m_epsilon = double(newEpsilon);
-	  return *this;
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  friend bool operator >= ( T lhs, Approx const& rhs ) {
+	    return double(lhs) > rhs.m_value || lhs == rhs;
+	  }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        Approx& margin( T newMargin ) {
-	  m_margin = double(newMargin);
-	  return *this;
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  friend bool operator >= ( Approx const& lhs, T rhs ) {
+	    return lhs.m_value > double(rhs) || lhs == rhs;
+	  }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        Approx& scale( T newScale ) {
-	  m_scale = double(newScale);
-	  return *this;
-        }
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  Approx& epsilon( T newEpsilon ) {
+	    m_epsilon = double(newEpsilon);
+	    return *this;
+	  }
+
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  Approx& margin( T newMargin ) {
+	    m_margin = double(newMargin);
+	    return *this;
+	  }
+
+	  template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+	  Approx& scale( T newScale ) {
+	    m_scale = double(newScale);
+	    return *this;
+	  }
 
 #else
 
-        Approx operator()( double value ) {
-	  Approx approx( value );
-	  approx.epsilon( m_epsilon );
-	  approx.margin( m_margin );
-	  approx.scale( m_scale );
-	  return approx;
-        }
-
-        friend bool operator == ( double lhs, Approx const& rhs ) {
-	  // Thanks to Richard Harris for his help refining this formula
-	  bool relativeOK = std::fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( std::fabs(lhs), std::fabs(rhs.m_value) ) );
-	  if (relativeOK) {
-	    return true;
+	  Approx operator()( double value ) {
+	    Approx approx( value );
+	    approx.epsilon( m_epsilon );
+	    approx.margin( m_margin );
+	    approx.scale( m_scale );
+	    return approx;
 	  }
-	  return std::fabs(lhs - rhs.m_value) < rhs.m_margin;
-        }
 
-        friend bool operator == ( Approx const& lhs, double rhs ) {
-	  return operator==( rhs, lhs );
-        }
+	  friend bool operator == ( double lhs, Approx const& rhs ) {
+	    // Thanks to Richard Harris for his help refining this formula
+	    bool relativeOK = std::fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( std::fabs(lhs), std::fabs(rhs.m_value) ) );
+	    if (relativeOK) {
+	      return true;
+	    }
+	    return std::fabs(lhs - rhs.m_value) < rhs.m_margin;
+	  }
 
-        friend bool operator != ( double lhs, Approx const& rhs ) {
-	  return !operator==( lhs, rhs );
-        }
+	  friend bool operator == ( Approx const& lhs, double rhs ) {
+	    return operator==( rhs, lhs );
+	  }
 
-        friend bool operator != ( Approx const& lhs, double rhs ) {
-	  return !operator==( rhs, lhs );
-        }
+	  friend bool operator != ( double lhs, Approx const& rhs ) {
+	    return !operator==( lhs, rhs );
+	  }
 
-        friend bool operator <= ( double lhs, Approx const& rhs ) {
-	  return lhs < rhs.m_value || lhs == rhs;
-        }
+	  friend bool operator != ( Approx const& lhs, double rhs ) {
+	    return !operator==( rhs, lhs );
+	  }
 
-        friend bool operator <= ( Approx const& lhs, double rhs ) {
-	  return lhs.m_value < rhs || lhs == rhs;
-        }
+	  friend bool operator <= ( double lhs, Approx const& rhs ) {
+	    return lhs < rhs.m_value || lhs == rhs;
+	  }
 
-        friend bool operator >= ( double lhs, Approx const& rhs ) {
-	  return lhs > rhs.m_value || lhs == rhs;
-        }
+	  friend bool operator <= ( Approx const& lhs, double rhs ) {
+	    return lhs.m_value < rhs || lhs == rhs;
+	  }
 
-        friend bool operator >= ( Approx const& lhs, double rhs ) {
-	  return lhs.m_value > rhs || lhs == rhs;
-        }
+	  friend bool operator >= ( double lhs, Approx const& rhs ) {
+	    return lhs > rhs.m_value || lhs == rhs;
+	  }
 
-        Approx& epsilon( double newEpsilon ) {
-	  m_epsilon = newEpsilon;
-	  return *this;
-        }
+	  friend bool operator >= ( Approx const& lhs, double rhs ) {
+	    return lhs.m_value > rhs || lhs == rhs;
+	  }
 
-        Approx& margin( double newMargin ) {
-	  m_margin = newMargin;
-	  return *this;
-        }
+	  Approx& epsilon( double newEpsilon ) {
+	    m_epsilon = newEpsilon;
+	    return *this;
+	  }
 
-        Approx& scale( double newScale ) {
-	  m_scale = newScale;
-	  return *this;
-        }
+	  Approx& margin( double newMargin ) {
+	    m_margin = newMargin;
+	    return *this;
+	  }
+
+	  Approx& scale( double newScale ) {
+	    m_scale = newScale;
+	    return *this;
+	  }
 #endif
 
-        std::string toString() const {
-	  std::ostringstream oss;
-	  oss << "Approx( " << Catch::toString( m_value ) << " )";
-	  return oss.str();
-        }
+	  std::string toString() const {
+	    std::ostringstream oss;
+	    oss << "Approx( " << Catch::toString( m_value ) << " )";
+	    return oss.str();
+	  }
 
-      private:
-        double m_epsilon;
-        double m_margin;
-        double m_scale;
-        double m_value;
-      };
-    }
+	private:
+	  double m_epsilon;
+	  double m_margin;
+	  double m_scale;
+	  double m_value;
+	};
+      }
 
-    template<>
-    inline std::string toString<Detail::Approx>( Detail::Approx const& value ) {
-      return value.toString();
-    }
+      template<>
+      inline std::string toString<Detail::Approx>( Detail::Approx const& value ) {
+	return value.toString();
+      }
 
-  } // end namespace Catch
+    } // end namespace Catch
 
 // #included from: internal/catch_matchers_string.h
 #define TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
@@ -3507,19 +3507,19 @@ namespace Catch {
 // !TBD: Move the leak detector code into a separate header
 #ifdef CATCH_CONFIG_WINDOWS_CRTDBG
 #include <crtdbg.h>
-  class LeakDetector {
-  public:
-    LeakDetector() {
-      int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
-      flag |= _CRTDBG_LEAK_CHECK_DF;
-      flag |= _CRTDBG_ALLOC_MEM_DF;
-      _CrtSetDbgFlag(flag);
-      _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
-      _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
-      // Change this to leaking allocation's number to break there
-      _CrtSetBreakAlloc(-1);
-    }
-  };
+class LeakDetector {
+public:
+  LeakDetector() {
+    int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
+    flag |= _CRTDBG_LEAK_CHECK_DF;
+    flag |= _CRTDBG_ALLOC_MEM_DF;
+    _CrtSetDbgFlag(flag);
+    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+    _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
+    // Change this to leaking allocation's number to break there
+    _CrtSetBreakAlloc(-1);
+  }
+};
 #else
 class LeakDetector {};
 #endif

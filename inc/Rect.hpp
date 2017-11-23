@@ -41,7 +41,7 @@ namespace SDL
    * @brief Wrapper class for **SDL_Rect**
    */
 
-  class Rect
+  class Rect : private SDL_Rect
   {
   public:
 
@@ -56,7 +56,10 @@ namespace SDL
      * @param h Height
      * @return SDL::Rect
      */
-    static Rect fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h);
+    constexpr static Rect fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h) {
+      return {x, y, w, h};
+    }
+      
 
     /**
      * @brief Rect factory. Create a Rect object from two SDL::Point instances.
@@ -64,14 +67,18 @@ namespace SDL
      * @param b Bottom-right point
      * @return SDL::Rect
      */
-    static Rect fromPoints(const Point& a, const Point& b);
-
+    constexpr static Rect fromPoints(const Point& a, const Point& b) {
+      return {a, b};
+    }
+    
     /**
      * @brief Rect factory. Create a Rect object from a SDL_Rect structure.
      * @param sdl_rect The SDL_Rect structure.
      * @return SDL::Rect
      */
-    static Rect fromSDL(const SDL_Rect& sdl_rect);
+    constexpr static Rect fromSDL(const SDL_Rect& rect) {
+      return rect;
+    }
 
 
     // operator methods
@@ -81,21 +88,35 @@ namespace SDL
      * @param orig The original Rect
      * @return SDL::Rect
      */
-    Rect& operator =(const Rect& orig);
+    constexpr Rect& operator =(const Rect& orig) {
+      this->x = orig.x;
+      this->y = orig.y;
+      this->w = orig.w;
+      this->h = orig.h;
+      return *this;
+    }
+      
 
     /**
-     * @brief Equality operator. Determine if two Rect are equivalent.
+     * @Brief Equality operator. Determine if two Rect are equivalent.
      * @param comp The Rect to compare
      * @return bool
      */
-    bool operator ==(const Rect& comp) const;
+    constexpr bool operator ==(const Rect& comp) const {
+      return (x == comp.x &&
+	      y == comp.y &&
+	      w == comp.w &&
+	      h == comp.h);
+    }
 
     /**
      * @brief Inequality operator. Determine if two Rect are not equivalent.
      * @param comp The Rect to compare
      * @return bool
      */
-    bool operator !=(const Rect& comp) const;
+    constexpr bool operator !=(const Rect& comp) const {
+      return !(*this == comp);
+    }
 
 
     // constructors/destructor
@@ -103,13 +124,14 @@ namespace SDL
     /**
      * @brief Default constructor. SDL_Rect struct intialize to {0, 0, 0, 0}.
      */
-    Rect();
+    constexpr Rect() : SDL_Rect {0, 0, 0, 0} {}
 
     /**
      * @brief Copy constructor.
      * @param orig Rect to copy
      */
-    Rect(const Rect& orig);
+    constexpr Rect(const Rect& orig)
+      : SDL_Rect {orig.x, orig.y, orig.w, orig.h} {}
 
     /**
      * @brief Constructor from 4 integers.
@@ -118,10 +140,8 @@ namespace SDL
      * @param w Width
      * @param h Height
      */
-    constexpr Rect(Sint16 x,
-                   Sint16 y,
-                   Uint16 w,
-                   Uint16 h) : m_rect {x, y, w ,h} {}
+    constexpr Rect(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
+      : SDL_Rect {x, y, w ,h} {}
 
     /**
      * @brief Constructor from two SDL::Point instances.
@@ -129,18 +149,18 @@ namespace SDL
      * @param b Bottom-right point
      * @return SDL::Rect
      */
-    Rect(const Point& a, const Point& b);
+    constexpr Rect(const Point& a, const Point& b)
+      : SDL_Rect {a.getX(), a.getY(), 0, 0} {
+      w = b.getX() - x;
+      h = b.getY() - y;
+    }
 
     /**
      * @brief Create a Rect object from a SDL_Rect structure.
      * @param sdl_rect The SDL_Rect structure.
      */
-    Rect(const SDL_Rect& sdl_rect);
-    
-    /**
-     * @brief Destructor
-     */
-    virtual ~Rect();
+    constexpr Rect(const SDL_Rect& rect)
+      : SDL_Rect {rect.x, rect.y, rect.w, rect.h} {}
     
 
     // get methods
@@ -149,25 +169,25 @@ namespace SDL
      * @brief Return rect's height.
      * @return Uint16
      */
-    Uint16 getHeight() const;
+    constexpr Uint16 getHeight() const { return h; }
 
     /**
      * @brief Return rect's width.
      * @return Uint16
      */
-    Uint16 getWidth() const;
+    constexpr Uint16 getWidth() const { return w; }
 
     /**
      * @brief Return rect's x value.
      * @return Sint16
      */
-    Sint16 getX() const;
+    constexpr Sint16 getX() const { return x; }
 
     /**
      * @brief Return rect's y value.
      * @return Sint16
      */
-    Sint16 getY() const;
+    constexpr Sint16 getY() const { return y; }
 
 
     // set methods
@@ -177,7 +197,10 @@ namespace SDL
      * @param h Height
      * @return SDL::Rect&
      */
-    Rect& setHeight(Uint16 h);
+    Rect& setHeight(Uint16 H) {
+      h = H;
+      return *this;
+    }
 
     /**
      * @brief Set all rect's values.
@@ -187,54 +210,44 @@ namespace SDL
      * @param h Height
      * @return SDL::Rect&
      */
-    Rect& setValues(Sint16 x,
-                    Sint16 y,
-                    Uint16 w,
-                    Uint16 h);
+    Rect& setValues(Sint16 X, Sint16 Y, Uint16 W, Uint16 H) {
+      x = X;
+      y = Y;
+      w = W;
+      h = H;
+      return *this;
+    }
 
     /**
      * @brief Set rect's width.
      * @param w Width
      * @return SDL::Rect&
      */
-    Rect& setWidth(Uint16 w);
+    Rect& setWidth(Uint16 W) {
+      w = W;
+      return *this;
+    }
 
     /**
      * @brief Set rect's x value.
      * @param x Top-left x value
      * @return SDL::Rect&
      */
-    Rect& setX(Sint16 x);
+    Rect& setX(Sint16 X) {
+      x = X;
+      return *this;
+    }
 
     /**
      * @brief Set rect's y value.
      * @param y Top-left y value
      * @return SDL::Rect&
      */
-    Rect& setY(Sint16 y);
-
-
-    // other methods
-
-    /**
-     * @brief Return constante wrapped structure.
-     * @return SDL_Rect*
-     * @warning Use with caution.
-     */
-    const SDL_Rect* toSDL() const;
-
-    /**
-     * @brief Return wrapped structure.
-     * @return SDL_Rect*
-     * @warning Use with **extreme** caution.
-     */
-    SDL_Rect* toSDL();
+    Rect& setY(Sint16 Y) {
+      y = Y;
+      return *this;
+    }
     
-    
-  private:
-    
-    SDL_Rect m_rect; // wrapped structure
-
   };
 
 }

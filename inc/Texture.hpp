@@ -51,10 +51,10 @@ namespace SDL
                      int height,
                      TextureAccess access=TextureAccessTarget,
                      PixelFormats format=PixelFormatUnknown);
-
+#ifdef _SDL_IMAGE_H
     explicit Texture(Renderer& renderer,
                      const char* file);
-
+#endif
 
     
     Texture(const Texture& orig)             = delete;

@@ -53,12 +53,13 @@ namespace SDL
     if (m_texture == nullptr)
       throw Error(SDL_GetError());
   }
-
+#ifdef _SDL_IMAGE_H
   Texture::Texture(Renderer& renderer, const char* file)
     : m_texture(nullptr)
   {
     this->loadFromFile(file, renderer);
   }
+#endif
 
   Texture::~Texture() 
   {

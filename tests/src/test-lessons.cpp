@@ -301,6 +301,7 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
     } while(INTERACT & 16);
 }
 
+#ifdef _SDL_IMAGE_H
 TEST_CASE("The Viewport", "[viewport]")
 {
   SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"); // [4]
@@ -344,7 +345,7 @@ TEST_CASE("The Viewport", "[viewport]")
 
     } while (INTERACT & 32);
 }
-
+#endif
 
 
 TEST_CASE("Quit all subsystem")

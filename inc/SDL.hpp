@@ -5,8 +5,6 @@
 
 #include <SDL2/SDL.h>
 
-#include <SDL2/SDL_image.h> // REMOVE IF YOU DON'T NEED SDL_image
-
 #include "Point.hpp"
 #include "Error.hpp"
 

@@ -39,7 +39,7 @@ namespace SDL
    * @brief Wrapper class for **SDL_Color**
    */
 
-  class Color
+  class Color : SDL_Color
   {
   public:
     
@@ -53,9 +53,17 @@ namespace SDL
      * @param b Blue component in range 0-255.
      * @return SDL::Color
      */
-    static Color fromRGB(Uint8 r, Uint8 g, Uint8 b);
+    constexpr static Color fromRGB(Uint8 r, Uint8 g, Uint8 b)
+    {
+      return {r, g, b};
+    }
+      
+  
 
-    static Color fromHexa(uint code);
+    constexpr static Color fromHexa(uint code)
+    {
+      return {code};
+    }
 
     /**
      * @brief static method to create Color object from rgba.
@@ -65,8 +73,10 @@ namespace SDL
      * @param a Alpha component in range 0-255.
      * @return Color
      */
-    static Color fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-
+    constexpr static Color fromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    {
+      return {r, g, b, a};
+    }
 
     // operator methods
 
@@ -74,30 +84,45 @@ namespace SDL
      * @brief Assign Color operator.
      * @param orig The Color assign.
      */
-    void operator =(const Color& orig);
+    constexpr Color&  operator =(const Color& orig)
+    {
+      r = orig.r;
+      g = orig.g;
+      b = orig.g;
+      a = orig.a;
+      return *this;
+    }
 
     /**
      * @brief operator ==
      * @param comp
      * @return bool
      */
-    bool operator ==(const Color& comp) const;
+    constexpr bool operator ==(const Color& comp) const
+    {
+      return (r == comp.r) && (g == comp.g) && (b == comp.b) && (a == comp.a);
+    }
 
     /**
      * @brief operator !=
      * @param comp
      * @return bool
      */
-    bool operator !=(const Color& comp) const;
+    constexpr bool operator !=(const Color& comp) const {return !(*this==comp);}
 
 
     // constructors/destructor
 
-    Color();
+    constexpr Color() : SDL_Color {0, 0, 0, 0xFF} {}
 
-    Color(uint x);
+    constexpr Color(uint x)
+      : SDL_Color {
+        static_cast<Uint8>(x >> 24),
+	static_cast<Uint8>(x >> 16 & 255),
+	static_cast<Uint8>(x >> 8 & 255),
+	static_cast<Uint8>(x & 255)} {}
 
-    constexpr Color(Uint8 r, Uint8 g, Uint8 b) : m_color {r ,g ,b, 0xFF} {}
+    constexpr Color(Uint8 R, Uint8 G, Uint8 B) : SDL_Color {R, G, B, 0xFF} {}
 
     /**
      * @brief Explicit constructor of class Color.
@@ -107,22 +132,15 @@ namespace SDL
      * @param a Alpha component in range 0-255.
      * @note The compiler will truncate value over 255.
      */
-    Color(Uint8 r,
-	  Uint8 g,
-	  Uint8 b,
-	  Uint8 a);
+    constexpr Color(Uint8 R, Uint8 G, Uint8 B, Uint8 A)
+      : SDL_Color {R, G, B, A} {}
 
     /**
      * @brief Copy constructor of class Color.
      * @param orig The orignal color.
      */
-    Color(const Color& orig);
-
-    /**
-     * @brief Destructor of class Color.
-     */
-    virtual ~Color();
-    
+    constexpr Color(const Color& orig)
+      : SDL_Color {orig.r, orig.g, orig.b, orig.a} {}
 
     // get methods
 
@@ -130,26 +148,26 @@ namespace SDL
      * @brief Return the Color's alpha component.
      * @return Uint8
      */
-    Uint8 getAlpha() const;
+    constexpr Uint8 getAlpha() const { return a; }
 
     /**
      * @brief Return the Color's blue component.
      * @return Uint8
      */
-    Uint8 getBlue() const;
+    constexpr Uint8 getBlue() const { return b; }
 
 
     /**
      * @brief Return the Color's green component.
      * @return Uint8
      */
-    Uint8 getGreen() const;
+    constexpr Uint8 getGreen() const { return g; }
 
     /**
      * @brief Return the Color's red component.
      * @return Uint8
      */
-    Uint8 getRed() const;
+    constexpr Uint8 getRed() const { return r; }
     
 
     // set methods
@@ -159,28 +177,44 @@ namespace SDL
      * @param alpha The alpha component in range 0-255.
      * @return SDL::Color&
      */
-    Color& setAlpha(Uint8 alpha);
+    Color& setAlpha(Uint8 alpha)
+    {
+      a = alpha;
+      return *this;
+    }
 
     /**
      * @brief Set the Color's blue component.
      * @param blue The blue component in range 0-255.
      * @return SDL::Color&
      */
-    Color& setBlue(Uint8 blue);
+    Color& setBlue(Uint8 blue)
+    {
+      b = blue;
+      return *this;
+    }
 
     /**
      * @brief Set the Color's green component.
      * @param red The green component in range 0-255.
      * @return SDL::Color&
      */
-    Color& setGreen(Uint8 green);
+    Color& setGreen(Uint8 green)
+    {
+      g = green;
+      return *this;
+    }
 
     /**
      * @brief Set the Color's red component.
      * @param red The red component in range 0-255.
      * @return SDL::Color&
      */
-    Color& setRed(Uint8 red);
+    Color& setRed(Uint8 red)
+    {
+      r = red;
+      return *this;
+    }
     
     /**
      * @brief Set the Color's red, green, blue components.
@@ -189,9 +223,13 @@ namespace SDL
      * @param b
      * @return SDL::Color&
      */
-    Color& setRGB(Uint8 r=0,
-                  Uint8 g=0,
-                  Uint8 b=0);
+    Color& setRGB(Uint8 R, Uint8 G, Uint8 B)
+    {
+      r = R;
+      g = G;
+      b = B;
+      return *this;
+    }
 
     /**
      * @brief Set the Color's red, green, blue, alpha components.
@@ -201,26 +239,30 @@ namespace SDL
      * @param a
      * @return SDL::Color&
      */
-    Color& setRGBA(Uint8 r=0,
-                   Uint8 g=0,
-                   Uint8 b=0,
-                   Uint8 a=255);
-
-
-    // other methods
+    Color& setRGBA(Uint8 R, Uint8 G, Uint8 B, Uint8 A)
+    {
+      r = R;
+      g = G;
+      b = B;
+      a = A;
+      return *this;
+    }
 
     /**
-     * @brief Return the wrapped object.
-     * @return const SDL_Color*
-     * @warning Use with caution
+     * @brief Set the Color's red, green, blue, alpha components.
+     * @param value
+     * @return SDL::Color&
      */
-    const SDL_Color* toSDL() const;
+    Color& setRGBA(uint value)
+    {
+      r = static_cast<Uint8>(value >> 24);
+      g = static_cast<Uint8>(value >> 16 & 255);
+      b = static_cast<Uint8>(value >> 8 & 255);
+      a = static_cast<Uint8>(value & 255);
+      return *this;
+    }
     
-  private:
-
-    SDL_Color m_color; // wrapped value
   };
-
 }
 
 #endif /* COLOR_HPP */

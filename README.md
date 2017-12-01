@@ -40,7 +40,7 @@ Every other none wrapper class offered by **Cobra** follow the exact same docume
 Every **class** and **enum** are in **SDL** namespace. This ensure there's
 no name collision. 
 
-Talking about name, **Cobra** uses the same name defined by  **SDL**.
+Talking about names, **Cobra** uses the same names defined by  **SDL**.
 
 *For examples*
 

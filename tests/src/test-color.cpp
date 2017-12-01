@@ -43,7 +43,7 @@ SCENARIO( "class SDL::Color", "[Color]" )
       REQUIRE( B.getRed() == 0 );
       REQUIRE( B.getGreen() == 0 );
       REQUIRE( B.getBlue() == 0 );
-      REQUIRE( B.getAlpha() == 0 );
+      REQUIRE( B.getAlpha() == 0xFF );
 
       REQUIRE( W.getRed() == 255);
       REQUIRE( W.getGreen() == 255);

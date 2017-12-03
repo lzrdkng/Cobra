@@ -16,35 +16,35 @@ namespace SDL
 
   typedef std::complex<double> Coord;
 
-  template <typename T>
-  using Pair = std::pair<T, T>;
+  template <typename T, typename U=T>
+  using Pair = std::pair<T, U>;
 
   class Color;
 
   /** @namespace SDL*/
 
   enum InitFlags
-    {
-      InitNull           = 0,                       /**< Equivalent to NULL */
-      InitTimer          = SDL_INIT_TIMER,          /**< Timer subsystem */
-      InitAudio          = SDL_INIT_AUDIO,          /**< Audio subsystem */
-      InitVideo          = SDL_INIT_VIDEO,          /**< Video
-						       subsystem. Automatically
-						       initializes the vents
-						       subsystem */
-      InitJoystick       = SDL_INIT_JOYSTICK,       /**< Joystick
-						       subsystem. Automatically
-						       initializes the vents
-						       subsystem */
-      InitHaptic         = SDL_INIT_HAPTIC,         /**< Haptic (force feedback) subsystem */
-      InitGamecontroller = SDL_INIT_GAMECONTROLLER, /**< Controller
-						       subsystem. Automatically
-						       initializes the
-						       joystick subsystem */
-      InitEvents         = SDL_INIT_EVENTS,         /**< Events subsystem */
-      InitEverything     = SDL_INIT_EVERYTHING,     /**< All subsystems */
-      InitNoparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
-    };
+  {
+    InitNull           = 0,                       /**< Equivalent to NULL */
+    InitTimer          = SDL_INIT_TIMER,          /**< Timer subsystem */
+    InitAudio          = SDL_INIT_AUDIO,          /**< Audio subsystem */
+    InitVideo          = SDL_INIT_VIDEO,          /**< Video
+						     subsystem. Automatically
+						     initializes the vents
+						     subsystem */
+    InitJoystick       = SDL_INIT_JOYSTICK,       /**< Joystick
+						     subsystem. Automatically
+						     initializes the vents
+						     subsystem */
+    InitHaptic         = SDL_INIT_HAPTIC,         /**< Haptic (force feedback) subsystem */
+    InitGamecontroller = SDL_INIT_GAMECONTROLLER, /**< Controller
+						     subsystem. Automatically
+						     initializes the
+						     joystick subsystem */
+    InitEvents         = SDL_INIT_EVENTS,         /**< Events subsystem */
+    InitEverything     = SDL_INIT_EVERYTHING,     /**< All subsystems */
+    InitNoparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
+  };
 
   /**< Flags to initialize subsytems. */
 
@@ -102,94 +102,94 @@ namespace SDL
   //OPERATOR_OR(RendererFlags, )
 
   enum TextureAccess
-    {
-      TextureAccessNull      = 0,
-      TextureAccessStatic    = SDL_TEXTUREACCESS_STATIC,
-      TextureAccessStreaming = SDL_TEXTUREACCESS_STREAMING,
-      TextureAccessTarget    = SDL_TEXTUREACCESS_TARGET
-    };
+  {
+    TextureAccessNull      = 0,
+    TextureAccessStatic    = SDL_TEXTUREACCESS_STATIC,
+    TextureAccessStreaming = SDL_TEXTUREACCESS_STREAMING,
+    TextureAccessTarget    = SDL_TEXTUREACCESS_TARGET
+  };
 
 
   enum PixelFormats
-    {
-      PixelFormatUnknown          = SDL_PIXELFORMAT_UNKNOWN,
-      PixelFormatIndex1LSB        = SDL_PIXELFORMAT_INDEX1LSB,
-      PixelFormatIndex1MSB        = SDL_PIXELFORMAT_INDEX1MSB,
-      PixelFormatIndex4LSB        = SDL_PIXELFORMAT_INDEX4LSB,
-      PixelFormatIndex4MSB        = SDL_PIXELFORMAT_INDEX4MSB,
-      PixelFormatIndex8           = SDL_PIXELFORMAT_INDEX8,
-      PixelFormatIndexRGB332      = SDL_PIXELFORMAT_RGB332,
-      PixelFormatIndexRGB444      = SDL_PIXELFORMAT_RGB444,
-      PixelFormatIndexRGB555      = SDL_PIXELFORMAT_RGB555,
-      PixelFormatIndexBGR555      = SDL_PIXELFORMAT_BGR555,
-      PixelFormatIndexARGB4444    = SDL_PIXELFORMAT_ARGB4444,
-      PixelFormatIndexRGBA4444    = SDL_PIXELFORMAT_RGBA4444,
-      PixelFormatIndexABGR4444    = SDL_PIXELFORMAT_ABGR4444,
-      PixelFormatIndexBGRA4444    = SDL_PIXELFORMAT_BGRA4444,
-      PixelFormatIndexARGB1555    = SDL_PIXELFORMAT_ARGB1555,
-      PixelFormatIndexRGBA5551    = SDL_PIXELFORMAT_RGBA5551,
-      PixelFormatIndexABGR1555    = SDL_PIXELFORMAT_ABGR1555,
-      PixelFormatIndexBGRA5551    = SDL_PIXELFORMAT_BGRA5551,
-      PixelFormatIndexRGB565      = SDL_PIXELFORMAT_RGB565,
-      PixelFormatIndexBGR565      = SDL_PIXELFORMAT_BGR565,
-      PixelFormatIndexRGB24       = SDL_PIXELFORMAT_RGB24,
-      PixelFormatIndexBGR24       = SDL_PIXELFORMAT_BGR24,
-      PixelFormatIndexRGB888      = SDL_PIXELFORMAT_RGB888,
-      PixelFormatIndexRGBX8888    = SDL_PIXELFORMAT_RGBX8888,
-      PixelFormatIndexBGR888      = SDL_PIXELFORMAT_BGR888,
-      PixelFormatIndexBGRX8888    = SDL_PIXELFORMAT_BGRX8888,
-      PixelFormatIndexARGB8888    = SDL_PIXELFORMAT_ARGB8888,
-      PixelFormatIndexRGBA8888    = SDL_PIXELFORMAT_RGBA8888,
-      PixelFormatIndexABGR8888    = SDL_PIXELFORMAT_ABGR8888,
-      PixelFormatIndexBGRA8888    = SDL_PIXELFORMAT_BGRA8888,
-      PixelFormatIndexARGB2101010 = SDL_PIXELFORMAT_ARGB2101010,
-      PixelFormatIndexRGBA32      = SDL_PIXELFORMAT_RGBA32,
-      PixelFormatIndexARGB32      = SDL_PIXELFORMAT_ARGB32,
-      PixelFormatIndexBGRA32      = SDL_PIXELFORMAT_BGRA32,
-      PixelFormatIndexABGR32      = SDL_PIXELFORMAT_ABGR32,
-      PixelFormatIndexYV12        = SDL_PIXELFORMAT_YV12,
-      PixelFormatIndexIYUV        = SDL_PIXELFORMAT_IYUV,
-      PixelFormatIndexYUY2        = SDL_PIXELFORMAT_YUY2,
-      PixelFormatIndexUYVY        = SDL_PIXELFORMAT_UYVY,
-      PixelFormatIndexYVYU        = SDL_PIXELFORMAT_YVYU,
-      PixelFormatIndexNV12        = SDL_PIXELFORMAT_NV12,
-      PixelFormatIndexNV21        = SDL_PIXELFORMAT_NV21
+  {
+    PixelFormatUnknown          = SDL_PIXELFORMAT_UNKNOWN,
+    PixelFormatIndex1LSB        = SDL_PIXELFORMAT_INDEX1LSB,
+    PixelFormatIndex1MSB        = SDL_PIXELFORMAT_INDEX1MSB,
+    PixelFormatIndex4LSB        = SDL_PIXELFORMAT_INDEX4LSB,
+    PixelFormatIndex4MSB        = SDL_PIXELFORMAT_INDEX4MSB,
+    PixelFormatIndex8           = SDL_PIXELFORMAT_INDEX8,
+    PixelFormatIndexRGB332      = SDL_PIXELFORMAT_RGB332,
+    PixelFormatIndexRGB444      = SDL_PIXELFORMAT_RGB444,
+    PixelFormatIndexRGB555      = SDL_PIXELFORMAT_RGB555,
+    PixelFormatIndexBGR555      = SDL_PIXELFORMAT_BGR555,
+    PixelFormatIndexARGB4444    = SDL_PIXELFORMAT_ARGB4444,
+    PixelFormatIndexRGBA4444    = SDL_PIXELFORMAT_RGBA4444,
+    PixelFormatIndexABGR4444    = SDL_PIXELFORMAT_ABGR4444,
+    PixelFormatIndexBGRA4444    = SDL_PIXELFORMAT_BGRA4444,
+    PixelFormatIndexARGB1555    = SDL_PIXELFORMAT_ARGB1555,
+    PixelFormatIndexRGBA5551    = SDL_PIXELFORMAT_RGBA5551,
+    PixelFormatIndexABGR1555    = SDL_PIXELFORMAT_ABGR1555,
+    PixelFormatIndexBGRA5551    = SDL_PIXELFORMAT_BGRA5551,
+    PixelFormatIndexRGB565      = SDL_PIXELFORMAT_RGB565,
+    PixelFormatIndexBGR565      = SDL_PIXELFORMAT_BGR565,
+    PixelFormatIndexRGB24       = SDL_PIXELFORMAT_RGB24,
+    PixelFormatIndexBGR24       = SDL_PIXELFORMAT_BGR24,
+    PixelFormatIndexRGB888      = SDL_PIXELFORMAT_RGB888,
+    PixelFormatIndexRGBX8888    = SDL_PIXELFORMAT_RGBX8888,
+    PixelFormatIndexBGR888      = SDL_PIXELFORMAT_BGR888,
+    PixelFormatIndexBGRX8888    = SDL_PIXELFORMAT_BGRX8888,
+    PixelFormatIndexARGB8888    = SDL_PIXELFORMAT_ARGB8888,
+    PixelFormatIndexRGBA8888    = SDL_PIXELFORMAT_RGBA8888,
+    PixelFormatIndexABGR8888    = SDL_PIXELFORMAT_ABGR8888,
+    PixelFormatIndexBGRA8888    = SDL_PIXELFORMAT_BGRA8888,
+    PixelFormatIndexARGB2101010 = SDL_PIXELFORMAT_ARGB2101010,
+    PixelFormatIndexRGBA32      = SDL_PIXELFORMAT_RGBA32,
+    PixelFormatIndexARGB32      = SDL_PIXELFORMAT_ARGB32,
+    PixelFormatIndexBGRA32      = SDL_PIXELFORMAT_BGRA32,
+    PixelFormatIndexABGR32      = SDL_PIXELFORMAT_ABGR32,
+    PixelFormatIndexYV12        = SDL_PIXELFORMAT_YV12,
+    PixelFormatIndexIYUV        = SDL_PIXELFORMAT_IYUV,
+    PixelFormatIndexYUY2        = SDL_PIXELFORMAT_YUY2,
+    PixelFormatIndexUYVY        = SDL_PIXELFORMAT_UYVY,
+    PixelFormatIndexYVYU        = SDL_PIXELFORMAT_YVYU,
+    PixelFormatIndexNV12        = SDL_PIXELFORMAT_NV12,
+    PixelFormatIndexNV21        = SDL_PIXELFORMAT_NV21
 
-    };
+  };
 
 
   enum WindowPositions
-    {
-      WindowPositionCentered  = SDL_WINDOWPOS_CENTERED,
-      WindowPositionUndefined = SDL_WINDOWPOS_UNDEFINED
-    };
+  {
+    WindowPositionCentered  = SDL_WINDOWPOS_CENTERED,
+    WindowPositionUndefined = SDL_WINDOWPOS_UNDEFINED
+  };
 
   enum BlendModes
-    {
-      BlendModeNone  = SDL_BLENDMODE_NONE,         /**< No blending. <br>
-						      dstRGBA = srcRGBA */
-      BlendModeBlend = SDL_BLENDMODE_BLEND,        /**< Alpha blending. <br>
-						      dstRGB = (srcRGB * srcA)
-						      + (dstRGB * (1-srcA))
-						      <br> dstA = srcA + (dstA
-						      * (1-srcA)) */
-      BlendModeAdd   = SDL_BLENDMODE_ADD,          /**< Additive
-						      blending. <br> dstRGB =
-						      (srcRGB srcA) + dstRGB
-						      <br> dstA = dstA */
-      BlendModeMod   = SDL_BLENDMODE_MOD,         /**< Color modulate. <br>
-						     dstRGB = srcRGB * dstRGB
-						     <br> dstA = dstA */
+  {
+    BlendModeNone  = SDL_BLENDMODE_NONE,         /**< No blending. <br>
+						    dstRGBA = srcRGBA */
+    BlendModeBlend = SDL_BLENDMODE_BLEND,        /**< Alpha blending. <br>
+						    dstRGB = (srcRGB * srcA)
+						    + (dstRGB * (1-srcA))
+						    <br> dstA = srcA + (dstA
+						    * (1-srcA)) */
+    BlendModeAdd   = SDL_BLENDMODE_ADD,          /**< Additive
+						    blending. <br> dstRGB =
+						    (srcRGB srcA) + dstRGB
+						    <br> dstA = dstA */
+    BlendModeMod   = SDL_BLENDMODE_MOD,         /**< Color modulate. <br>
+						   dstRGB = srcRGB * dstRGB
+						   <br> dstA = dstA */
 
-    };
+  };
 
 #ifdef _SDL_IMAGE_H
   enum ImageInitFlags
-    {
-      ImageInitJPG = IMG_INIT_JPG,
-      ImageInitPNG = IMG_INIT_PNG,
-      ImageInitTIF = IMG_INIT_TIF
-    };
+  {
+    ImageInitJPG = IMG_INIT_JPG,
+    ImageInitPNG = IMG_INIT_PNG,
+    ImageInitTIF = IMG_INIT_TIF
+  };
 #endif
 
   void init(InitFlags flags);
@@ -247,15 +247,10 @@ namespace SDL
 				 double scale = 1.0,
 				 const Coord& offset = {0.0, 0.0}) {
     
-    Coord cartesianCoord(screenCoord.getX(), -screenCoord.getY());
+    double x = (screenCoord.getX() - width/2.0)/scale + std::real(offset);
+    double y = (height/2.0 - screenCoord.getY())/scale - std::imag(offset);
 
-    cartesianCoord += Coord {-width/2.0, height/2.0};
-    
-    cartesianCoord *= scale;
-
-    cartesianCoord += Coord {std::real(offset), -std::imag(offset)};
-
-    return cartesianCoord;
+    return {x, y};
   }
 
   inline Point cartesianToScreen(const Coord& cartesianCoord,
@@ -266,16 +261,10 @@ namespace SDL
     
     Coord screenCoord {std::real(cartesianCoord), -std::imag(cartesianCoord)};
 
-    screenCoord -= offset;
+    double x = scale*(std::real(cartesianCoord) - std::real(offset)) + width/2.0;
+    double y = -scale*(std::imag(cartesianCoord) + std::imag(offset)) + height/2.0;
     
-    screenCoord *= scale;
-
-    screenCoord += Coord {width/2.0, height/2.0};
-    
-    return {
-      static_cast<int>(std::round(std::real(screenCoord))),
-	static_cast<int>(std::round(std::imag(screenCoord)))
-	};	
+    return {static_cast<int>(std::round(x)), static_cast<int>(std::round(y))};	
   }
 
 }

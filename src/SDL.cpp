@@ -35,7 +35,7 @@ namespace SDL
 
   void quit()
   {
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
     quitImage();
 #endif
 
@@ -43,7 +43,7 @@ namespace SDL
     SDL_Quit();
   }
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
   void initImage(ImageInitFlags flags)
   {
     if ((IMG_Init(static_cast<int>(flags)) & flags) != flags)

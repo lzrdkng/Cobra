@@ -4,6 +4,7 @@
 #include <complex>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h> 
 
 #include "Point.hpp"
 #include "Error.hpp"
@@ -183,7 +184,7 @@ namespace SDL
 
   };
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
   enum ImageInitFlags
   {
     ImageInitJPG = IMG_INIT_JPG,
@@ -210,7 +211,7 @@ namespace SDL
    */
   void quit();
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
   void initImage(ImageInitFlags flags);
 
   void quitImage();

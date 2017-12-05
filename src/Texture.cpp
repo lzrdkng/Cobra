@@ -53,11 +53,13 @@ namespace SDL
     if (m_texture == nullptr)
       throw Error(SDL_GetError());
   }
-#ifdef _SDL_IMAGE_H
-  Texture::Texture(Renderer& renderer, const char* file)
+#ifdef SDL_IMAGE_H_
+  Texture::Texture(Renderer& renderer,
+		   const char* file,
+		   const Color& colorKeying)
     : m_texture(nullptr)
   {
-    this->loadFromFile(file, renderer);
+    this->loadFromFile(file, renderer, colorKeying);
   }
 #endif
 
@@ -228,43 +230,42 @@ namespace SDL
     }*/
 
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
   Texture& Texture::loadFromFile(const char* file,
 				 Renderer& renderer,
-				 int hexaRGB)
+				 const Color& colorKeying)
   {
 
     SDL_Surface* loadedSurface = IMG_Load(file);
 
     if (loadedSurface == nullptr)
-      {
-        throw Error(IMG_GetError());
-      }
+    {
+      throw Error(IMG_GetError());
+    }
     else
+    {
+      this->free();
+
+      if (colorKeying != Color {0, 0, 0, 0})
+	SDL_SetColorKey(
+	  loadedSurface,
+	  SDL_TRUE,
+	  SDL_MapRGB(
+	    loadedSurface->format,
+	    colorKeying.getRed(),
+	    colorKeying.getGreen(), 
+	    colorKeying.getBlue())
+	  );
+
+      m_texture = SDL_CreateTextureFromSurface(renderer.toSDL(),
+					       loadedSurface);
+      SDL_FreeSurface(loadedSurface);
+
+      if (m_texture == nullptr)
       {
-        this->free();
-
-        if (hexaRGB > 0)
-	  SDL_SetColorKey(
-			  loadedSurface,
-			  SDL_TRUE,
-			  SDL_MapRGB(
-				     loadedSurface->format,
-				     (hexaRGB >> 24),
-				     (hexaRGB >> 16)&255,
-				     (hexaRGB >> 8 )&255
-				     )
-			  );
-
-        m_texture = SDL_CreateTextureFromSurface(renderer.toSDL(),
-                                                 loadedSurface);
-        SDL_FreeSurface(loadedSurface);
-
-        if (m_texture == nullptr)
-	  {
-            throw Error(SDL_GetError());
-	  }
+	throw Error(SDL_GetError());
       }
+    }
 
     return *this;
   }
@@ -285,10 +286,10 @@ namespace SDL
   void Texture::free()
   {
     if (m_texture != nullptr)
-      {
-        SDL_DestroyTexture(m_texture);
-        m_texture = nullptr;
-      }
+    {
+      SDL_DestroyTexture(m_texture);
+      m_texture = nullptr;
+    }
   }
 
 }

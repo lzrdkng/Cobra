@@ -51,9 +51,10 @@ namespace SDL
                      int height,
                      TextureAccess access=TextureAccessTarget,
                      PixelFormats format=PixelFormatUnknown);
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
     explicit Texture(Renderer& renderer,
-                     const char* file);
+                     const char* file,
+		     const Color& colorKeying = {0, 0, 0, 0});
 #endif
 
     
@@ -107,10 +108,10 @@ namespace SDL
       const CPoint& center,
       SDL::RendererFlip flip);*/
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
     Texture& loadFromFile(const char* file,
                           Renderer& renderer,
-                          int hexaRGB = -1);
+			  const Color& colorKeying = {0, 0, 0, 0});
 #endif
 
     //bool lock(const CRectangle& rect, void** pixels, int* pitch);

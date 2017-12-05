@@ -19,7 +19,7 @@ TEST_CASE("Init subsystems")
 {
   SDL::init(SDL::InitEverything);
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
   SDL::initImage(SDL::ImageInitPNG);
 #endif
 }
@@ -184,7 +184,7 @@ TEST_CASE("Optimized surface loading and soft stretching",
 }
 
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
 TEST_CASE("Extension libraries and loading other image formats",
           "[SDL_image, lib, image, tutorial]")
 {
@@ -222,7 +222,7 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 
 
       render.clear();
-      loadedTexture.copyToRender(render);
+      loadedTexture.copy(render);
       render.present();
 
     } while (INTERACT & 8);
@@ -293,7 +293,7 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
     } while(INTERACT & 16);
 }
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
 TEST_CASE("The Viewport", "[viewport]")
 {
     SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
@@ -324,13 +324,13 @@ TEST_CASE("The Viewport", "[viewport]")
 	render.clear();
 
 	render.setViewport({0, 0, size.first / 2, size.second / 2});
-	texture.copyToRender(render);
+	texture.copy(render);
 
 	render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
-	texture.copyToRender(render);
+	texture.copy(render);
 
 	render.setViewport({0, size.second/2, size.first, size.second/2});
-	texture.copyToRender(render);
+	texture.copy(render);
 
 	render.present();
 
@@ -339,18 +339,18 @@ TEST_CASE("The Viewport", "[viewport]")
 }
 #endif
 
-#ifdef _SDL_IMAGE_H
+#ifdef SDL_IMAGE_H_
 TEST_CASE("Color keying", "[Color]")
 {
     SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
     SDL::Window window("Color keying [10]");
 
-    SDL::Renderer render(window, SDL::RenderAccelerated);
+    SDL::Renderer render(window, SDL::RendererAccelerated);
 
-    SDL::Texture foo(render, "media/foo.png");
+    SDL::Texture foo(render, "media/foo.png", {0, 255, 255});
 
-    SDL::Texture background(render, "media/background.png");
+    SDL::Texture background(render, "media/background.png", {0, 255, 255});
 
     SDL_Event event;
 
@@ -364,8 +364,8 @@ TEST_CASE("Color keying", "[Color]")
 	render.setDrawColor(UINT32_MAX);
 	render.clear();
 
-	background.copyToDist(render, {0, 0, background.getWidth(), background.getHeight()});
-	foo.copyToDist(render, {240, 190, background.getWidth(), background.getHeight()});
+	background.copyToDst(render, {0, 0, background.getWidth(), background.getHeight()});
+	foo.copyToDst(render, {240, 190, foo.getWidth(), foo.getHeight()});
 
 	render.present();
 	

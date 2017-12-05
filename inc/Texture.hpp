@@ -91,11 +91,13 @@ namespace SDL
 
     Texture& setColorMod(const Color& color);
 
-    Texture& copyToRender(Renderer& renderer,
-                          const Rect& src,
-                          const Rect& dst);
+    Texture& copyToRender(Renderer& renderer, const Rect& src, const Rect& dst);
+    
+    Texture& copyFromSrc(Renderer& renderer, const Rect& src);
 
-    Texture& copyToRender(Renderer& renderer);
+    Texture& copyToDst(Renderer& renderer, const Rect& dst);
+
+    Texture& copy(Renderer& renderer);
 
 
 
@@ -119,16 +121,12 @@ namespace SDL
 
     //bool unlock();
 
+  protected:    
+    void free();
     
   private:
-    
-    // Members
-    
     SDL_Texture*  m_texture;
     
-    // Methods
-    
-    void free();
   };
 
 }

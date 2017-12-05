@@ -168,24 +168,45 @@ namespace SDL
   Texture& Texture::copyToRender(Renderer& renderer,
 				 const Rect& src, const Rect& dst)
   {
-    if ( SDL_RenderCopy(renderer.toSDL(),
-			m_texture,
-			(const SDL_Rect*)&src,
-			(const SDL_Rect*)&dst) != 0 )
-	throw Error(SDL_GetError());
+    if (SDL_RenderCopy(renderer.toSDL(),
+		       m_texture,
+		       (const SDL_Rect*)&src,
+		       (const SDL_Rect*)&dst) != 0 )
+      throw Error(SDL_GetError());
 
     return *this;
   }
 
-  Texture& Texture::copyToRender(Renderer& renderer)
+  Texture& Texture::copyFromSrc(Renderer& renderer, const Rect& src)
   {
-    if ( SDL_RenderCopy(renderer.toSDL(),
-			m_texture,
-			NULL,
-			NULL) != 0 )
-      {
-        throw Error(SDL_GetError());
-      }
+    if (SDL_RenderCopy(renderer.toSDL(),
+		       m_texture,
+		       (const SDL_Rect*)&src,
+		       NULL) != 0)
+      throw Error(SDL_GetError());
+
+    return *this;
+  }
+
+  Texture& Texture::copyToDst(Renderer& renderer, const Rect& dst)
+  {
+    if (SDL_RenderCopy(renderer.toSDL(),
+		       m_texture,
+		       NULL,
+		       (const SDL_Rect*)&dst) != 0)
+      throw Error(SDL_GetError());
+
+    return *this;
+  }
+    
+
+  Texture& Texture::copy(Renderer& renderer)
+  {
+    if (SDL_RenderCopy(renderer.toSDL(),
+		       m_texture,
+		       NULL,
+		       NULL) != 0)
+      throw Error(SDL_GetError());
 
     return *this;
   }

@@ -1,5 +1,6 @@
 // std imports
 #include <vector>
+#include <iostream>
 
 // catch import
 #include "catch.hpp"
@@ -13,15 +14,6 @@
 #include "Renderer.hpp"
 
 extern const uint INTERACT; // Tutorials interactions MASK
-
-/******************************************************************************
- * TODO list
- *
- * [2] : Implement wrapper around SDL_Event structure/union
- * [3] : Keys constants : https://wiki.libsdl.org/SDL_Keycode
- * [4] : enum marcro : SDL_HINT_RENDER_SCALE_QUALITY
- ******************************************************************************
- */
 
 TEST_CASE("Init subsystems")
 {
@@ -64,7 +56,7 @@ TEST_CASE("Event driven programming", "[event, tutorial")
 
   SDL::Surface imageSurface("media/x.bmp");
 
-  SDL_Event event; // [2]
+  SDL_Event event;
 
   // Main loop
   do
@@ -113,7 +105,7 @@ TEST_CASE("Key presses", "[key, tutorial")
 
   SDL::Surface* currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
 
-  SDL_Event event; // [2]
+  SDL_Event event; 
 
   // Main Loop
   do
@@ -124,7 +116,7 @@ TEST_CASE("Key presses", "[key, tutorial")
         {
 	  break;
         }
-      else if (event.type == SDL_KEYDOWN) // [3]
+      else if (event.type == SDL_KEYDOWN) 
         {
 	  switch (event.key.keysym.sym)
             {
@@ -176,7 +168,7 @@ TEST_CASE("Optimized surface loading and soft stretching",
 
   window.update();
 
-  SDL_Event event; // [2]
+  SDL_Event event;
 
   // Main Loop
   do
@@ -304,46 +296,81 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 #ifdef _SDL_IMAGE_H
 TEST_CASE("The Viewport", "[viewport]")
 {
-  SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"); // [4]
+    SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+    
+    SDL::Window window("The Viewport [9]");
+    window.setResizable(true);
 
-  SDL::Window window("The Viewport [9]");
-  window.setResizable(true);
+    SDL::Pair<int> size = window.getSize();
 
-  SDL::Pair<int> size = window.getSize();
+    SDL::Renderer render(window, SDL::RendererAccelerated);
 
-  SDL::Renderer render(window, SDL::RendererAccelerated);
+    SDL::Texture texture (render, "media/viewport.png");
 
-  SDL::Texture texture (render, "media/viewport.png");
+    SDL_Event event;
 
-  SDL_Event event;
-
-  do
+    do
     {
-      SDL_PollEvent(&event);
+	SDL_PollEvent(&event);
 
-      if (event.type == SDL_QUIT)
-        {
+	if (event.type == SDL_QUIT)
+	{
 	  break;
         }
 
-      size = window.getSize();
+	size = window.getSize();
 
-      render.setDrawColor(UINT32_MAX);
-      render.clear();
+	render.setDrawColor(UINT32_MAX);
+	render.clear();
 
-      render.setViewport({0, 0, size.first / 2, size.second / 2});
-      texture.copyToRender(render);
+	render.setViewport({0, 0, size.first / 2, size.second / 2});
+	texture.copyToRender(render);
 
-      render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
-      texture.copyToRender(render);
+	render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
+	texture.copyToRender(render);
 
-      render.setViewport({0, size.second/2, size.first, size.second/2});
-      texture.copyToRender(render);
+	render.setViewport({0, size.second/2, size.first, size.second/2});
+	texture.copyToRender(render);
 
-      render.present();
+	render.present();
 
 
     } while (INTERACT & 32);
+}
+#endif
+
+#ifdef _SDL_IMAGE_H
+TEST_CASE("Color keying", "[Color]")
+{
+    SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+
+    SDL::Window window("Color keying [10]");
+
+    SDL::Renderer render(window, SDL::RenderAccelerated);
+
+    SDL::Texture foo(render, "media/foo.png");
+
+    SDL::Texture background(render, "media/background.png");
+
+    SDL_Event event;
+
+    do
+    {
+	SDL_PollEvent(&event);
+
+	if (event.type == SDL_QUIT)
+	    break;
+
+	render.setDrawColor(UINT32_MAX);
+	render.clear();
+
+	background.copyToDist(render, {0, 0, background.getWidth(), background.getHeight()});
+	foo.copyToDist(render, {240, 190, background.getWidth(), background.getHeight()});
+
+	render.present();
+	
+    }  while (INTERACT & 64);
+	
 }
 #endif
 

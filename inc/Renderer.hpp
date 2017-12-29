@@ -33,7 +33,7 @@
 #include <vector>
 #include <utility>
 
-#include "SDL.hpp"
+#include "Utils.hpp"
 #include "Error.hpp"
 
 #include "Rect.hpp"

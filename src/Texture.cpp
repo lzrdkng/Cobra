@@ -54,7 +54,7 @@ namespace SDL
       throw Error(SDL_GetError());
   }
 #ifdef SDL_IMAGE_H_
-  Texture::Texture(Renderer& renderer,
+  Texture::Texture(Renderer& renderer,        
 		   const char* file,
 		   const Color& colorKeying)
     : m_texture(nullptr)

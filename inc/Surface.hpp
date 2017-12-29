@@ -1,7 +1,7 @@
 #ifndef SURFACE_HPP
 #define SURFACE_HPP
 
-#include "SDL.hpp"
+#include "Utils.hpp"
 #include "Rect.hpp"
 #include "Error.hpp"
 

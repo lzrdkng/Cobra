@@ -42,7 +42,7 @@ namespace SDL
   class Color : SDL_Color
   {
   public:
-    
+
 
     // static methods
 
@@ -116,8 +116,8 @@ namespace SDL
     constexpr Color() : SDL_Color {0, 0, 0, 0xFF} {}
 
     constexpr Color(uint x)
-      : SDL_Color {
-        static_cast<Uint8>(x >> 24),
+      : SDL_Color
+	  {static_cast<Uint8>(x >> 24),
 	static_cast<Uint8>(x >> 16 & 255),
 	static_cast<Uint8>(x >> 8 & 255),
 	static_cast<Uint8>(x & 255)} {}

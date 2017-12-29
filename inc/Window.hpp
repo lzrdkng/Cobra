@@ -35,7 +35,7 @@
 // C SDL imports
 #include <SDL2/SDL_syswm.h>
 // lib imports
-#include "SDL.hpp"
+#include "Utils.hpp"
 
 #include "Point.hpp"
 

@@ -31,7 +31,7 @@
 #define TEXTURE_HPP
 
 #include <string>
-#include "SDL.hpp"
+#include "Utils.hpp"
 
 
 #include "Point.hpp"

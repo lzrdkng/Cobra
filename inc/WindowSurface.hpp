@@ -12,7 +12,8 @@ namespace SDL
 
   public:
 
-    explicit WindowSurface(Window& window) : Surface(SDL_GetWindowSurface(window.toSDL())) { }
+    explicit WindowSurface(Window& window)
+      : Surface(SDL_GetWindowSurface(window.toSDL())) {}
 
     virtual ~WindowSurface() { m_surface = nullptr; }
 

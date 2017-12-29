@@ -1,7 +1,17 @@
 #ifndef COBRA_SDL_HPP
 #define COBRA_SDL_HPP
 
-#include "Color.hpp"
+// std import
+#include <complex>
+
+// SDL2 import
+#include <SDL2/SDL.h>
+
+
+#include <SDL2/SDL_image.h>
+
+// lib import
+#include "Point.hpp"
 #include "Error.hpp"
 #include "PixelFormat.hpp"
 #include "Point.hpp"

@@ -20,7 +20,7 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fPIC -fopenmp -Wall -g -std=gnu++14 -O3
+CFLAGS      := -fPIC -fopenmp -Wall -g -std=gnu++14 -O3 -DWITH_SDL_IMAGE
 LIB         := -lSDL2 -lSDL2_image
 INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)

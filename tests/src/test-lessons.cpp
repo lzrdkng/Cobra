@@ -4,7 +4,6 @@
 
 // catch import
 #include "catch.hpp"
-#include "config.hpp"
 
 // lib imports
 #include "SDL.hpp"
@@ -13,17 +12,20 @@
 #include "Rect.hpp"
 #include "Renderer.hpp"
 
-extern const uint INTERACT; // Tutorials interactions MASK
+#define INTERACT 1024
 
 TEST_CASE("Init subsystems")
 {
   SDL::init(SDL::InitEverything);
 
-#ifdef SDL_IMAGE_H_
+  SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+
+#ifdef  SDL_IMAGE_H_
   SDL::initImage(SDL::ImageInitPNG);
 #endif
 }
 
+#if INTERACT & 1
 TEST_CASE("Creating a window", "[window, tutorial]")
 {
   SDL::Window window("Creating a window [1]");
@@ -34,7 +36,9 @@ TEST_CASE("Creating a window", "[window, tutorial]")
 
   window.update();
 }
+#endif
 
+#if INTERACT & 2
 TEST_CASE("Getting an image on the screen", "[image, tutorial]")
 {
   SDL::Window window("Getting an image on the screen [2]");
@@ -47,7 +51,9 @@ TEST_CASE("Getting an image on the screen", "[image, tutorial]")
 
   window.update();
 }
+#endif
 
+#if INTERACT & 4
 TEST_CASE("Event driven programming", "[event, tutorial")
 {
   SDL::Window window("Event driven programming [3]");
@@ -72,9 +78,11 @@ TEST_CASE("Event driven programming", "[event, tutorial")
 	  imageSurface.blit(windowSurface);
 	  window.update();
         }
-    } while (INTERACT & 1);
+    } while (true);
 }
+#endif
 
+#if INTERACT & 8
 TEST_CASE("Key presses", "[key, tutorial")
 {
   enum KeyPressSurfaces
@@ -142,7 +150,7 @@ TEST_CASE("Key presses", "[key, tutorial")
 	  window.update();
         }
 
-    } while (INTERACT & 2);
+    } while (true);
 
   currentSurface = nullptr;
 
@@ -152,7 +160,9 @@ TEST_CASE("Key presses", "[key, tutorial")
     }
   keyPressSurfaces.clear();
 }
+#endif
 
+#if INTERACT & 16
 TEST_CASE("Optimized surface loading and soft stretching",
           "[surface, stretch, tutorial]")
 {
@@ -180,11 +190,12 @@ TEST_CASE("Optimized surface loading and soft stretching",
 	  break;
         }
 
-    }  while(INTERACT & 4);
+    } while (true);
 }
-
+#endif
 
 #ifdef SDL_IMAGE_H_
+#if INTERACT & 32 
 TEST_CASE("Extension libraries and loading other image formats",
           "[SDL_image, lib, image, tutorial]")
 {
@@ -199,7 +210,11 @@ TEST_CASE("Extension libraries and loading other image formats",
 
   window.update();
 }
+#endif
+#endif
 
+#ifdef SDL_IMAGE_H_
+#if INTERACT & 64
 TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 {
   SDL::Window window("Texture Loading and Rendering [7]");
@@ -225,10 +240,12 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
       loadedTexture.copy(render);
       render.present();
 
-    } while (INTERACT & 8);
+    } while (true);
 }
 #endif
+#endif
 
+#if INTERACT & 128
 TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 {
   SDL::Window window("Geometry Rendering [8]");
@@ -290,10 +307,12 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 
       render.present();
 
-    } while(INTERACT & 16);
-}
+    } while (true);
+}y
+#endif
 
 #ifdef SDL_IMAGE_H_
+#if INTERACT & 256
 TEST_CASE("The Viewport", "[viewport]")
 {
     SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
@@ -335,15 +354,15 @@ TEST_CASE("The Viewport", "[viewport]")
 	render.present();
 
 
-    } while (INTERACT & 32);
+    } while (true);
 }
+#endif
 #endif
 
 #ifdef SDL_IMAGE_H_
+#if INTERACT & 512
 TEST_CASE("Color keying", "[Color]")
 {
-    SDL::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-
     SDL::Window window("Color keying [10]");
 
     SDL::Renderer render(window, SDL::RendererAccelerated);
@@ -369,9 +388,59 @@ TEST_CASE("Color keying", "[Color]")
 
 	render.present();
 	
-    }  while (INTERACT & 64);
+    }  while (true);
 	
 }
+#endif
+#endif
+
+#ifdef SDL_IMAGE_H_
+#if INTERACT & 1024 
+TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
+{
+
+  SDL::Window window("Clip Rendering and Sprite Sheets [11]");
+
+  SDL::Pair<int> size = window.getSize();
+
+  SDL::Renderer render(window, SDL::RendererAccelerated);
+
+  SDL::Texture spriteSheet(render, "media/dots.png");
+
+  int width = spriteSheet.getWidth();
+  int height = spriteSheet.getHeight();
+
+  std::vector<SDL::Rect> spriteClips =
+    {
+      {0, 0, 100, 100},
+      {100, 0, 100, 100},
+      {0, 100, 100, 100},
+      {100, 100, 100, 100}
+    };
+
+  SDL_Event event;
+
+  do
+    {
+      SDL_PollEvent(&event);
+
+      if (event.type == SDL_QUIT)
+	break;
+
+      render.setDrawColor(UINT32_MAX);
+      render.clear();
+
+      spriteSheet.copyToRender(render, {0, 0, width, height}, spriteClips[0]);
+      spriteSheet.copyToRender(render, {size.first - spriteClips[1].getWidth(), 0, width, height}, spriteClips[1]);
+      spriteSheet.copyToRender(render, {0, size.second - spriteClips[2].getHeight(), width, height}, spriteClips[2]);
+      spriteSheet.copyToRender(render, {size.first - spriteClips[3].getWidth(), size.second - spriteClips[3].getHeight(), width, height}, spriteClips[3]);
+      render.present();
+      
+    } while (true);
+    
+  
+}
+#endif
 #endif
 
 

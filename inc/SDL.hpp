@@ -1,11 +1,17 @@
 #ifndef SDL_HPP
 #define SDL_HPP
 
+// std import
 #include <complex>
 
+// SDL2 import
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h> 
 
+
+#include <SDL2/SDL_image.h>
+
+
+// lib import
 #include "Point.hpp"
 #include "Error.hpp"
 

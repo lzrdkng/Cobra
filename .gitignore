@@ -1,0 +1,7 @@
+doc/
+lib/
+obj/
+tests/bin/
+tests/obj/
+*#*#*
+*~

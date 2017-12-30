@@ -10,7 +10,7 @@
 #include "Error.hpp"
 
 
-namespace SDL
+namespace SDLO
 {
 #define OPERATOR_OR(TYPE, CAST)						\
   inline TYPE operator |(TYPE x, TYPE y) { return static_cast<TYPE>(static_cast<CAST>(x) | static_cast<CAST>(y));}
@@ -22,7 +22,7 @@ namespace SDL
 
   class Color;
 
-  /** @namespace SDL*/
+  /** @namespace SDLO*/
 
   enum InitFlags
   {
@@ -198,11 +198,11 @@ namespace SDL
   /**
    * @brief Return a mask of the specified subsystems initialized.
    * @param flags
-   * @return If flags is SDL::InitNull it returns a mask of all initiliazed
+   * @return If flags is SDLO::InitNull it returns a mask of all initiliazed
    * subsystems, otherwise it returns the initialization status of the
    * specified subsystems. The return value does not include
-   * SDL::InitNoparachute
-   * @sa SDL::InitFlags
+   * SDLO::InitNoparachute
+   * @sa SDLO::InitFlags
    */
   Uint32 wasInit(InitFlags flags);
 
@@ -233,7 +233,7 @@ namespace SDL
    * @return True on success, false otherwise.
    * @remark Hints will not be set if there is an existing override
    * hint or environment variable that takes precedence. You can use
-   * SDL::setHintWithPriority to set the hint with override priority
+   * SDLO::setHintWithPriority to set the hint with override priority
    * instead.
    */
   bool setHint(const char* name, const char* value);

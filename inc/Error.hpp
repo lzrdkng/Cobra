@@ -34,7 +34,7 @@
 
 #include <stdexcept>
 
-namespace SDL
+namespace SDLO
 {
 
   class Error : public std::runtime_error

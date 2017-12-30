@@ -3,7 +3,7 @@
 #include "Color.hpp"
 
 
-namespace SDL
+namespace SDLO
 {
 
   void init(InitFlags flags)

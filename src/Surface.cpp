@@ -1,6 +1,6 @@
 #include "Surface.hpp"
 
-namespace SDL
+namespace SDLO
 {
 
   Surface::Surface(SDL_Surface* surface) : m_surface(surface)
@@ -133,7 +133,7 @@ namespace SDL
     return *this;
   }
 
-  Surface& Surface::blitScaled(const  Rect& srcRect, Surface& dst)
+  Surface& Surface::blitScaled(const Rect& srcRect, Surface& dst)
   {
     if (SDL_BlitScaled(m_surface,
 		       (const SDL_Rect*)&srcRect,

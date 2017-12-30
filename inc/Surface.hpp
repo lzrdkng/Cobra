@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace SDL
+namespace SDLO
 {
 
   class Surface
@@ -30,14 +30,14 @@ namespace SDL
 
 
     /**
-     * @brief Return a wrapped SDL_Rect structure used to clip blits to the surface which can be set by SDL::Surface::setClipRect().
-     * @return SDL::Rect
+     * @brief Return a wrapped SDL_Rect structure used to clip blits to the surface which can be set by SDLO::Surface::setClipRect().
+     * @return SDLO::Rect
      */
     Rect getClipRect() const;
 
     /**
      * @brief Return the format of the pixels stored in the surface.
-     * @return SDL::PixelFormats
+     * @return SDLO::PixelFormats
      */
 
     //PixelFormat getFormat() const;
@@ -63,8 +63,8 @@ namespace SDL
      * @param srcRect the area to be copied.
      * @param dst the surface destination.
      * @param dstRect the area to be paste on.
-     * @return SDL::Surface&
-     * @throw SDL::Error on failure.
+     * @return SDLO::Surface&
+     * @throw SDLO::Error on failure.
      * @remark This method should not be called on a locked surface.
      * The width and height in srcRect determine the size of the copied rectangle.
      * Only the position is used in the destRect (the width and height are ignored).
@@ -72,20 +72,20 @@ namespace SDL
      * blit rectangle is saved in dstRect after all clipping is performed (srcRect
      * is not modified).
      */
-    Surface& blit(const SDL::Rect& srcRect, SDL::Surface& dst, SDL::Rect& dstRect);
+    Surface& blit(const Rect& srcRect, Surface& dst, Rect& dstRect);
 
     /**
      * @brief Use this method to perform a total fast surface copy to a destination surface.
      * @param dst the surface destination
      * @param dstRect the are to be paste on.
-     * @return SDL::Surface&
-     * @throw SDL::Error on failure.
+     * @return SDLO::Surface&
+     * @throw SDLO::Error on failure.
      */
-    Surface& blit(SDL::Surface& dst, SDL::Rect& dstRect);
+    Surface& blit(Surface& dst, Rect& dstRect);
 
-    Surface& blit(const SDL::Rect& srcRect, SDL::Surface& dst);
+    Surface& blit(const Rect& srcRect, Surface& dst);
 
-    Surface& blit(SDL::Surface& dst);
+    Surface& blit(Surface& dst);
 
 
     /**
@@ -93,25 +93,27 @@ namespace SDL
      * @param srcRect
      * @param dst
      * @param dstRect
-     * @return SDL::Surface&
-     * @throw SDL::Error on failure.
+     * @return SDLO::Surface&
+     * @throw SDLO::Error on failure.
      */
-    Surface& blitScaled(const SDL::Rect& srcRect, SDL::Surface& dst, SDL::Rect& dstRect);
+    Surface& blitScaled(const Rect& srcRect, Surface& dst, Rect& dstRect);
 
-    Surface& blitScaled(SDL::Surface& dst, SDL::Rect& dstRect);
+    Surface& blitScaled(Surface& dst, Rect& dstRect);
 
-    Surface& blitScaled(const SDL::Rect& srcRect, SDL::Surface& dst);
+    Surface& blitScaled(const Rect& srcRect, Surface& dst);
 
-    Surface& blitScaled(SDL::Surface& dst);
+    Surface& blitScaled(Surface& dst);
 
     /**
-     * @brief Use this method to perform a fast fill of a rectangle with a specified color.
+     * @brief Use this method to perform a fast fill of a rectangle with a
+     * specified color.
+     *
      * @param rect the rectangle to fill
      * @param color the color to fill with
-     * @return SDL::Surface&
-     * @throw SDL::Error on failure.
+     * @return SDLO::Surface&
+     * @throw SDLO::Error on failure.
      */
-    Surface& fillRect(const SDL::Rect& rect, Uint32 color);
+    Surface& fillRect(const Rect& rect, Uint32 color);
 
     Surface& fillRect(Uint32 color);
 

@@ -32,7 +32,7 @@
 
 // Public interface
 
-namespace SDL
+namespace SDLO
 {
 
 // constructor/destructor
@@ -186,7 +186,7 @@ namespace SDL
 #endif
 
 
-  Window& Window::setFullscreen(SDL::WindowFlags flags)
+  Window& Window::setFullscreen(WindowFlags flags)
   {
     if (SDL_SetWindowFullscreen(m_window, flags) != 0)
       throw Error(SDL_GetError());

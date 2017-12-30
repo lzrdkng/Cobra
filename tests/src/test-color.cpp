@@ -32,12 +32,12 @@
 #include "catch.hpp"
 #include "Color.hpp"
 
-SCENARIO( "class SDL::Color", "[Color]" )
+SCENARIO( "class SDLO::Color", "[Color]" )
 {
   GIVEN( "A black Color named B and a white color named W" )
     {
-      SDL::Color B;
-      SDL::Color W {255, 255, 255, 255};
+      SDLO::Color B;
+      SDLO::Color W {255, 255, 255, 255};
 
       // get methods
       REQUIRE( B.getRed() == 0 );
@@ -62,7 +62,7 @@ SCENARIO( "class SDL::Color", "[Color]" )
 	}
       WHEN( "Color C is copied from Color W" ) // copy constructor
 	{
-	  SDL::Color C(W);
+	  SDLO::Color C(W);
 
 	  THEN( "C equal W" )
 	    {
@@ -71,7 +71,7 @@ SCENARIO( "class SDL::Color", "[Color]" )
 	}
       WHEN( "Color A is assigned Color W" ) // operator =
 	{
-	  SDL::Color A = W;
+	  SDLO::Color A = W;
 
 	  THEN( "A equal W" )
 	    {
@@ -80,7 +80,7 @@ SCENARIO( "class SDL::Color", "[Color]" )
 	}
       WHEN( "Color S is created from class Color static method 'fromRGB' with same values as W" ) // static methods fromRGB fromRGBA
 	{
-	  SDL::Color S = SDL::Color::fromRGB(255, 255, 255);
+	  SDLO::Color S = SDLO::Color::fromRGB(255, 255, 255);
 
 	  THEN( "S equal W" )
 	    {

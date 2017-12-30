@@ -29,7 +29,7 @@
 
 #include "Renderer.hpp"
 
-namespace SDL
+namespace SDLO
 {
 
   // constructors/destructor
@@ -110,7 +110,7 @@ namespace SDL
     int w, h;
 
     if (SDL_GetRendererOutputSize(m_renderer, &w, &h) != 0)
-      throw SDL::Error(SDL_GetError());
+      throw SDLO::Error(SDL_GetError());
 
     return {w, h};
   }
@@ -320,7 +320,7 @@ namespace SDL
   Renderer& Renderer::drawLine(int x1, int y1, int x2, int y2)
   {
     if (SDL_RenderDrawLine(m_renderer, x1, y1, x2, y2) != 0)
-      throw SDL::Error(SDL_GetError());
+      throw SDLO::Error(SDL_GetError());
 
     return *this;
   }
@@ -347,7 +347,7 @@ namespace SDL
   Renderer& Renderer::drawPoint(int x, int y)
   {
     if (SDL_RenderDrawPoint(m_renderer, x, y) != 0)
-      throw SDL::Error(SDL_GetError());
+      throw SDLO::Error(SDL_GetError());
 
     return *this;
   }
@@ -371,7 +371,7 @@ namespace SDL
   Renderer& Renderer::drawRect(const Rect& rect)
   {
     if (SDL_RenderDrawRect(m_renderer, (const SDL_Rect*)&rect) != 0)
-      throw SDL::Error(SDL_GetError());
+      throw SDLO::Error(SDL_GetError());
 
     return *this;
   }
@@ -389,7 +389,7 @@ namespace SDL
   Renderer& Renderer::fillRect(const Rect& rect)
   {
     if (SDL_RenderFillRect(m_renderer, (const SDL_Rect*)&rect) != 0)
-      throw SDL::Error(SDL_GetError());
+      throw SDLO::Error(SDL_GetError());
 
     return *this;
   }
@@ -407,7 +407,7 @@ namespace SDL
   Renderer& Renderer::readPixels(const Rect& rect, PixelFormats format, void* pixels, int pitch)
   {
     if (SDL_RenderReadPixels(m_renderer, (const SDL_Rect*)&rect, format, pixels, pitch) != 0)
-      throw SDL::Error(SDL_GetError());
+      throw SDLO::Error(SDL_GetError());
 
     return *this;
   }

@@ -1,5 +1,4 @@
-* SDLO 
-** Simple DirectMedia Layer ObjectOriented
+* SDLO (Simple DirectMedia Layer ObjectOriented)
 
 *** A *C++* wrapper around [[https://www.libsdl.org/][SDL]] cross-platform development library.
 
@@ -15,7 +14,7 @@
 
    There's no configure file yet. If you don't want to use *SDL_image*,
    remove the *#include <SDL2/SDL_image.h>* macro in *SDL.hpp*, and
-   remove *lSDL2_image* in *LIBS* from *MakeFile*.
+   remove *-lSDL2_image* in *LIBS* from *MakeFile*.
 
 ** Testings
  *SDLO* uses [[https://github.com/philsquared/Catch][Catch]] for its testing.
@@ -59,7 +58,6 @@
 
 #+BEGIN_SRC C++
   #include <SDLO/SDL.hpp>
-  #include <SDLO/Application.hpp>
   #include <SDLO/Window.hpp>
   #include <SDLO/Renderer.hpp>
 

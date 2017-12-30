@@ -2,7 +2,7 @@
 CC          := g++
 
 #The Target Binary Program
-TARGET      := libCobra.so
+TARGET      := libSDLO.so
 ifeq ($(PREFIX),)
 	PREFIX := /usr/local
 endif
@@ -36,9 +36,9 @@ all: directories $(TARGET)
 
 install:
 	mkdir -p $(PREFIX)/lib
-	mkdir -p $(PREFIX)/include/Cobra
+	mkdir -p $(PREFIX)/include/SDLO
 	install -m 557 $(TARGETDIR)/$(TARGET) $(PREFIX)/lib/
-	install -m 557 $(INCDIR)/*.hpp $(PREFIX)/include/Cobra
+	install -m 557 $(INCDIR)/*.hpp $(PREFIX)/include/SDLO
 
 #Remake
 remake: cleaner all

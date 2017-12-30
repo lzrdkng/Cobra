@@ -17,7 +17,7 @@ OBJEXT      := o
 
 #Flags, Libraries and Includes
 CFLAGS      := -fopenmp -Wall -g -std=gnu++14
-LIB         := -L${LIBDIR} -lCobra -lSDL2 -lSDL2_image
+LIB         := -L${LIBDIR} -lSDLO -lSDL2 -lSDL2_image
 INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)
 
@@ -65,8 +65,4 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 
 #Non-File Targets
 .PHONY: all remake clean cleaner resources
-
-
-minimal:
-	g++ -Wl,-rpath=../lib/ src/minimal-app.cpp -L ../lib/ -lCobra -lSDL2 -I ../inc/ -std=c++11 && ./a.out && rm a.out
 

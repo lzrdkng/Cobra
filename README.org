@@ -104,4 +104,4 @@
 
 ** Others examples
 
-   To see others examples, see my other repo [[https://github.com/lzrdkng/Cobra-Examples][SDLO-Examples]].
+   To see others examples, see my other repo [[https://github.com/lzrdkng/SDLO-Examples][SDLO-Examples]].

@@ -1,6 +1,6 @@
 * SDLO (Simple DirectMedia Layer ObjectOriented)
 
-*** A *C++* wrapper around [[https://www.libsdl.org/][SDL]] cross-platform development library.
+** A *C++* wrapper around [[https://www.libsdl.org/][SDL]] cross-platform development library.
 
 ** Dependencies
    *SDLO* is intend to work with all *SDL2* major versions.
@@ -48,11 +48,11 @@
 
     *SDL_RenderSetScale* -> *SDLO::Renderer::setScale*
 
-    Constants have also been re-written in *enum*.
+    Constants have also been re-written in *enum class*.
 
-    *SDL_INIT_VIDEO* -> *SDLO::InitFlags::InitVideo*
+    *SDL_INIT_VIDEO* -> *SDLO::InitFlags::Video*
 
-    *SDL_WINDOW_FULLSCREEN* -> *SDLO::WindowFlags::WindowFullScreen**
+    *SDL_WINDOW_FULLSCREEN* -> *SDLO::WindowFlags::FullScreen**
 
 ** Usage
 
@@ -64,14 +64,14 @@
   int main()
   {
     // Call to SDL_Init with flag SDL_INIT_VIDEO
-    SDLO::init(SDLO::InitVideo);
-  
+    SDLO::init(SDLO::InitFlags::Video);
+
     // Create a resizable window at position (0,0) of size (250, 250)
-    SDLO::Window root("Minimal app", 0, 0, SDLO::WindowResizable, 250, 250);
+    SDLO::Window root("Minimal app", 0, 0, SDLO::WindowFlags::Resizable, 250, 250);
 
     // Create a hardware accelerated renderer, hooked to root
-    SDLO::Renderer renderer(root, SDLO::RenderAccelerated);
-  
+    SDLO::Renderer renderer(root, SDLO::RenderFlags::Accelerated);
+
     SDL_Event event;
 
     bool quit = false;
@@ -92,7 +92,7 @@
 
       // Do stuff 
     }  
-    
+
     // Quit all subsystems
     SDLO::quit();
 

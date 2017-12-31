@@ -49,8 +49,8 @@ namespace SDLO
     explicit Texture(Renderer& renderer,
                      int width,
                      int height,
-                     TextureAccess access=TextureAccessTarget,
-                     PixelFormats format=PixelFormatUnknown);
+                     TextureAccess access=TextureAccess::Target,
+                     PixelFormats format=PixelFormats::Unknown);
 #ifdef SDL_IMAGE_H_
     explicit Texture(Renderer& renderer,
                      const char* file,

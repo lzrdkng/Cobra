@@ -11,10 +11,7 @@
 
 
 namespace SDLO
-{
-#define OPERATOR_OR(TYPE, CAST)						\
-  inline TYPE operator |(TYPE x, TYPE y) { return static_cast<TYPE>(static_cast<CAST>(x) | static_cast<CAST>(y));}
-  
+{  
   typedef std::complex<double> Coord;
 
   template<typename T, typename U=T>
@@ -22,175 +19,188 @@ namespace SDLO
 
   class Color;
 
-  /** @namespace SDLO*/
+#define __ENUM_CLASS_OR_OVERLOAD__(T, S) inline T operator|(T l, T r)	\
+  {return static_cast<T>(static_cast<S>(l) | static_cast<S>(r));}
+  
+#define __ENUM_CLASS_AND_OVERLOAD__(T, S) inline T operator&(T l, T r)	\
+  {return static_cast<T>(static_cast<S>(l) & static_cast<S>(r));}
 
-  enum InitFlags
+
+#define __NAME_COLLISION_HACK__(NAME) NAME 
+
+  enum class InitFlags : Uint32
   {
-    InitNull           = 0,                       /**< Equivalent to NULL */
-    InitTimer          = SDL_INIT_TIMER,          /**< Timer subsystem */
-    InitAudio          = SDL_INIT_AUDIO,          /**< Audio subsystem */
-    InitVideo          = SDL_INIT_VIDEO,          /**< Video
+    Null           = 0,                       /**< Equivalent to NULL */
+    Timer          = SDL_INIT_TIMER,          /**< Timer subsystem */
+    Audio          = SDL_INIT_AUDIO,          /**< Audio subsystem */
+    Video          = SDL_INIT_VIDEO,          /**< Video
 						     subsystem. Automatically
 						     initializes the vents
 						     subsystem */
-    InitJoystick       = SDL_INIT_JOYSTICK,       /**< Joystick
+    Joystick       = SDL_INIT_JOYSTICK,       /**< Joystick
 						     subsystem. Automatically
 						     initializes the vents
 						     subsystem */
-    InitHaptic         = SDL_INIT_HAPTIC,         /**< Haptic (force feedback) subsystem */
-    InitGamecontroller = SDL_INIT_GAMECONTROLLER, /**< Controller
+    Haptic         = SDL_INIT_HAPTIC,         /**< Haptic (force feedback) subsystem */
+    Gamecontroller = SDL_INIT_GAMECONTROLLER, /**< Controller
 						     subsystem. Automatically
 						     initializes the
 						     joystick subsystem */
-    InitEvents         = SDL_INIT_EVENTS,         /**< Events subsystem */
-    InitEverything     = SDL_INIT_EVERYTHING,     /**< All subsystems */
-    InitNoparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
+    Events         = SDL_INIT_EVENTS,         /**< Events subsystem */
+    Everything     = SDL_INIT_EVERYTHING,     /**< All subsystems */
+    Noparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
   };
 
-  /**< Flags to initialize subsytems. */
+  __ENUM_CLASS_OR_OVERLOAD__(InitFlags, Uint32)
+  __ENUM_CLASS_AND_OVERLOAD__(InitFlags, Uint32)
 
-  OPERATOR_OR(InitFlags, Uint32)
-
-  enum WindowFlags
+  #undef InputFocus
+  
+  enum class WindowFlags : Uint32
   {
-    WindowNull              = 0,
-    WindowFullscreen        = SDL_WINDOW_FULLSCREEN,
-    WindowFullscreenDesktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
-    WindowOpenGL            = SDL_WINDOW_OPENGL,
-    WindowShown             = SDL_WINDOW_SHOWN,
-    WindowHidden            = SDL_WINDOW_HIDDEN,
-    WindowBorderless        = SDL_WINDOW_BORDERLESS,
-    WindowResizable         = SDL_WINDOW_RESIZABLE,
-    WindowMinimized         = SDL_WINDOW_MINIMIZED,
-    WindowMaximized         = SDL_WINDOW_MAXIMIZED,
-    WindowInputGrabbed      = SDL_WINDOW_INPUT_GRABBED,
-    WindowInputFocus        = SDL_WINDOW_INPUT_FOCUS,
-    WindowForeign           = SDL_WINDOW_FOREIGN,
-    WindowAllowHighDPI      = SDL_WINDOW_ALLOW_HIGHDPI,
-    WindowMouseCapture      = SDL_WINDOW_MOUSE_CAPTURE,
-    WindowAlwaysOnTop       = SDL_WINDOW_ALWAYS_ON_TOP,
-    WindowSkipTaskbar       = SDL_WINDOW_SKIP_TASKBAR,
-    WindowUtility           = SDL_WINDOW_UTILITY,
-    WindowTooltip           = SDL_WINDOW_TOOLTIP,
-    WindowPopupMenu         = SDL_WINDOW_POPUP_MENU
+    Null              = 0,
+    Fullscreen        = SDL_WINDOW_FULLSCREEN,
+    FullscreenDesktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
+    OpenGL            = SDL_WINDOW_OPENGL,
+    Shown             = SDL_WINDOW_SHOWN,
+    Hidden            = SDL_WINDOW_HIDDEN,
+    Borderless        = SDL_WINDOW_BORDERLESS,
+    Resizable         = SDL_WINDOW_RESIZABLE,
+    Minimized         = SDL_WINDOW_MINIMIZED,
+    Maximized         = SDL_WINDOW_MAXIMIZED,
+    InputGrabbed      = SDL_WINDOW_INPUT_GRABBED,
+    InputFocus        = SDL_WINDOW_INPUT_FOCUS,
+    Foreign           = SDL_WINDOW_FOREIGN,
+    AllowHighDPI      = SDL_WINDOW_ALLOW_HIGHDPI,
+    MouseCapture      = SDL_WINDOW_MOUSE_CAPTURE,
+    AlwaysOnTop       = SDL_WINDOW_ALWAYS_ON_TOP,
+    SkipTaskbar       = SDL_WINDOW_SKIP_TASKBAR,
+    Utility           = SDL_WINDOW_UTILITY,
+    Tooltip           = SDL_WINDOW_TOOLTIP,
+    PopupMenu         = SDL_WINDOW_POPUP_MENU
   };
 
-  OPERATOR_OR(WindowFlags, Uint32)
+  #define InputFocus 1L
 
+  __ENUM_CLASS_OR_OVERLOAD__(WindowFlags, Uint32)
+  __ENUM_CLASS_AND_OVERLOAD__(WindowFlags, Uint32)
 
-  enum RendererFlags
+  enum class RendererFlags : Uint32
   {
-    RendererNull          = 0,                          /**< Equivalent to NULL */
-    RendererSoftware      = SDL_RENDERER_SOFTWARE,      /**< The renderer is
+    Null          = 0,                          /**< Equivalent to NULL */
+    Software      = SDL_RENDERER_SOFTWARE,      /**< The renderer is
 							   a software
 							   fallback */
-    RendererAccelerated   = SDL_RENDERER_ACCELERATED,   /**< The renderer
+    Accelerated   = SDL_RENDERER_ACCELERATED,   /**< The renderer
 							   uses hardware
 							   acceleration */
-    RendererPresentVSync  = SDL_RENDERER_PRESENTVSYNC,  /**< Present is
+    PresentVSync  = SDL_RENDERER_PRESENTVSYNC,  /**< Present is
 							   synchronized with
 							   the refresh
 							   rate */
-    RendererTargetTexture = SDL_RENDERER_TARGETTEXTURE  /**< The renderer
+    TargetTexture = SDL_RENDERER_TARGETTEXTURE  /**< The renderer
 							   supports
 							   rendering
 							   texture */
-
   };
+
+  __ENUM_CLASS_OR_OVERLOAD__(RendererFlags, Uint32)
+  __ENUM_CLASS_AND_OVERLOAD__(RendererFlags, Uint32)
 
   /**< Flags to create renderer. */
 
-  //OPERATOR_OR(RendererFlags, )
-
-  enum TextureAccess
+  enum class TextureAccess : int
   {
-    TextureAccessNull      = 0,
-    TextureAccessStatic    = SDL_TEXTUREACCESS_STATIC,
-    TextureAccessStreaming = SDL_TEXTUREACCESS_STREAMING,
-    TextureAccessTarget    = SDL_TEXTUREACCESS_TARGET
+    Null      = 0,
+    Static    = SDL_TEXTUREACCESS_STATIC,
+    Streaming = SDL_TEXTUREACCESS_STREAMING,
+    Target    = SDL_TEXTUREACCESS_TARGET
   };
 
 
-  enum PixelFormats
+  enum class PixelFormats : Uint32
   {
-    PixelFormatUnknown          = SDL_PIXELFORMAT_UNKNOWN,
-    PixelFormatIndex1LSB        = SDL_PIXELFORMAT_INDEX1LSB,
-    PixelFormatIndex1MSB        = SDL_PIXELFORMAT_INDEX1MSB,
-    PixelFormatIndex4LSB        = SDL_PIXELFORMAT_INDEX4LSB,
-    PixelFormatIndex4MSB        = SDL_PIXELFORMAT_INDEX4MSB,
-    PixelFormatIndex8           = SDL_PIXELFORMAT_INDEX8,
-    PixelFormatIndexRGB332      = SDL_PIXELFORMAT_RGB332,
-    PixelFormatIndexRGB444      = SDL_PIXELFORMAT_RGB444,
-    PixelFormatIndexRGB555      = SDL_PIXELFORMAT_RGB555,
-    PixelFormatIndexBGR555      = SDL_PIXELFORMAT_BGR555,
-    PixelFormatIndexARGB4444    = SDL_PIXELFORMAT_ARGB4444,
-    PixelFormatIndexRGBA4444    = SDL_PIXELFORMAT_RGBA4444,
-    PixelFormatIndexABGR4444    = SDL_PIXELFORMAT_ABGR4444,
-    PixelFormatIndexBGRA4444    = SDL_PIXELFORMAT_BGRA4444,
-    PixelFormatIndexARGB1555    = SDL_PIXELFORMAT_ARGB1555,
-    PixelFormatIndexRGBA5551    = SDL_PIXELFORMAT_RGBA5551,
-    PixelFormatIndexABGR1555    = SDL_PIXELFORMAT_ABGR1555,
-    PixelFormatIndexBGRA5551    = SDL_PIXELFORMAT_BGRA5551,
-    PixelFormatIndexRGB565      = SDL_PIXELFORMAT_RGB565,
-    PixelFormatIndexBGR565      = SDL_PIXELFORMAT_BGR565,
-    PixelFormatIndexRGB24       = SDL_PIXELFORMAT_RGB24,
-    PixelFormatIndexBGR24       = SDL_PIXELFORMAT_BGR24,
-    PixelFormatIndexRGB888      = SDL_PIXELFORMAT_RGB888,
-    PixelFormatIndexRGBX8888    = SDL_PIXELFORMAT_RGBX8888,
-    PixelFormatIndexBGR888      = SDL_PIXELFORMAT_BGR888,
-    PixelFormatIndexBGRX8888    = SDL_PIXELFORMAT_BGRX8888,
-    PixelFormatIndexARGB8888    = SDL_PIXELFORMAT_ARGB8888,
-    PixelFormatIndexRGBA8888    = SDL_PIXELFORMAT_RGBA8888,
-    PixelFormatIndexABGR8888    = SDL_PIXELFORMAT_ABGR8888,
-    PixelFormatIndexBGRA8888    = SDL_PIXELFORMAT_BGRA8888,
-    PixelFormatIndexARGB2101010 = SDL_PIXELFORMAT_ARGB2101010,
-    PixelFormatIndexRGBA32      = SDL_PIXELFORMAT_RGBA32,
-    PixelFormatIndexARGB32      = SDL_PIXELFORMAT_ARGB32,
-    PixelFormatIndexBGRA32      = SDL_PIXELFORMAT_BGRA32,
-    PixelFormatIndexABGR32      = SDL_PIXELFORMAT_ABGR32,
-    PixelFormatIndexYV12        = SDL_PIXELFORMAT_YV12,
-    PixelFormatIndexIYUV        = SDL_PIXELFORMAT_IYUV,
-    PixelFormatIndexYUY2        = SDL_PIXELFORMAT_YUY2,
-    PixelFormatIndexUYVY        = SDL_PIXELFORMAT_UYVY,
-    PixelFormatIndexYVYU        = SDL_PIXELFORMAT_YVYU,
-    PixelFormatIndexNV12        = SDL_PIXELFORMAT_NV12,
-    PixelFormatIndexNV21        = SDL_PIXELFORMAT_NV21
-
+    Unknown     = SDL_PIXELFORMAT_UNKNOWN,
+    Index1LSB   = SDL_PIXELFORMAT_INDEX1LSB,
+    Index1MSB   = SDL_PIXELFORMAT_INDEX1MSB,
+    Index4LSB   = SDL_PIXELFORMAT_INDEX4LSB,
+    Index4MSB   = SDL_PIXELFORMAT_INDEX4MSB,
+    Index8      = SDL_PIXELFORMAT_INDEX8,
+    RGB332      = SDL_PIXELFORMAT_RGB332,
+    RGB444      = SDL_PIXELFORMAT_RGB444,
+    RGB555      = SDL_PIXELFORMAT_RGB555,
+    BGR555      = SDL_PIXELFORMAT_BGR555,
+    ARGB4444    = SDL_PIXELFORMAT_ARGB4444,
+    RGBA4444    = SDL_PIXELFORMAT_RGBA4444,
+    ABGR4444    = SDL_PIXELFORMAT_ABGR4444,
+    BGRA4444    = SDL_PIXELFORMAT_BGRA4444,
+    ARGB1555    = SDL_PIXELFORMAT_ARGB1555,
+    RGBA5551    = SDL_PIXELFORMAT_RGBA5551,
+    ABGR1555    = SDL_PIXELFORMAT_ABGR1555,
+    BGRA5551    = SDL_PIXELFORMAT_BGRA5551,
+    RGB565      = SDL_PIXELFORMAT_RGB565,
+    BGR565      = SDL_PIXELFORMAT_BGR565,
+    RGB24       = SDL_PIXELFORMAT_RGB24,
+    BGR24       = SDL_PIXELFORMAT_BGR24,
+    RGB888      = SDL_PIXELFORMAT_RGB888,
+    RGBX8888    = SDL_PIXELFORMAT_RGBX8888,
+    BGR888      = SDL_PIXELFORMAT_BGR888,
+    BGRX8888    = SDL_PIXELFORMAT_BGRX8888,
+    ARGB8888    = SDL_PIXELFORMAT_ARGB8888,
+    RGBA8888    = SDL_PIXELFORMAT_RGBA8888,
+    ABGR8888    = SDL_PIXELFORMAT_ABGR8888,
+    BGRA8888    = SDL_PIXELFORMAT_BGRA8888,
+    ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010,
+    RGBA32      = SDL_PIXELFORMAT_RGBA32,
+    ARGB32      = SDL_PIXELFORMAT_ARGB32,
+    BGRA32      = SDL_PIXELFORMAT_BGRA32,
+    ABGR32      = SDL_PIXELFORMAT_ABGR32,
+    YV12        = SDL_PIXELFORMAT_YV12,
+    IYUV        = SDL_PIXELFORMAT_IYUV,
+    YUY2        = SDL_PIXELFORMAT_YUY2,
+    UYVY        = SDL_PIXELFORMAT_UYVY,
+    YVYU        = SDL_PIXELFORMAT_YVYU,
+    NV12        = SDL_PIXELFORMAT_NV12,
+    NV21        = SDL_PIXELFORMAT_NV21
   };
 
 
-  enum WindowPositions
+  enum class WindowPositions : int
   {
-    WindowPositionCentered  = SDL_WINDOWPOS_CENTERED,
-    WindowPositionUndefined = SDL_WINDOWPOS_UNDEFINED
+    Centered  = SDL_WINDOWPOS_CENTERED,
+    Undefined = SDL_WINDOWPOS_UNDEFINED
   };
 
-  enum BlendModes
+  enum class BlendModes : int
   {
-    BlendModeNone  = SDL_BLENDMODE_NONE,         /**< No blending. <br>
+    Null  = SDL_BLENDMODE_NONE,         /**< No blending. <br>
 						    dstRGBA = srcRGBA */
-    BlendModeBlend = SDL_BLENDMODE_BLEND,        /**< Alpha blending. <br>
+    Blend = SDL_BLENDMODE_BLEND,        /**< Alpha blending. <br>
 						    dstRGB = (srcRGB * srcA)
 						    + (dstRGB * (1-srcA))
 						    <br> dstA = srcA + (dstA
 						    * (1-srcA)) */
-    BlendModeAdd   = SDL_BLENDMODE_ADD,          /**< Additive
+    Add   = SDL_BLENDMODE_ADD,          /**< Additive
 						    blending. <br> dstRGB =
 						    (srcRGB srcA) + dstRGB
 						    <br> dstA = dstA */
-    BlendModeMod   = SDL_BLENDMODE_MOD,         /**< Color modulate. <br>
+    Mod   = SDL_BLENDMODE_MOD,         /**< Color modulate. <br>
 						   dstRGB = srcRGB * dstRGB
 						   <br> dstA = dstA */
 
   };
 
 #ifdef SDL_IMAGE_H_
-  enum ImageInitFlags
+  enum class ImageInitFlags : int
   {
-    ImageInitJPG = IMG_INIT_JPG,
-    ImageInitPNG = IMG_INIT_PNG,
-    ImageInitTIF = IMG_INIT_TIF
+    JPG = IMG_INIT_JPG,
+    PNG = IMG_INIT_PNG,
+    TIF = IMG_INIT_TIF
   };
+
+  __ENUM_CLASS_OR_OVERLOAD__(ImageInitFlags,int)
+  __ENUM_CLASS_AND_OVERLOAD__(ImageInitFlags, int)
+
 #endif
 
   void init(InitFlags flags);
@@ -204,7 +214,10 @@ namespace SDLO
    * SDLO::InitNoparachute
    * @sa SDLO::InitFlags
    */
-  Uint32 wasInit(InitFlags flags);
+  inline Uint32 wasInit(InitFlags flags)
+  {
+    return SDL_WasInit(static_cast<Uint32>(flags));
+  }
 
   /**
    * @brief Clean up all initialized subsystems.
@@ -212,7 +225,7 @@ namespace SDLO
   void quit();
 
 #ifdef SDL_IMAGE_H_
-  void initImage(ImageInitFlags flags);
+  void initImage(ImageInit flags);
 
   void quitImage();
 #endif
@@ -225,7 +238,7 @@ namespace SDLO
    * due to OS scheduling.
    * @sa https://wiki.libsdl.org/SDL_Delay
    */
-  void delay(Uint32 ms);
+  inline void delay(Uint32 ms) { SDL_Delay(ms); }
 
   /**
    * @brief Use this function to set a hint with normal priority.
@@ -236,11 +249,10 @@ namespace SDLO
    * SDLO::setHintWithPriority to set the hint with override priority
    * instead.
    */
-  bool setHint(const char* name, const char* value);
-
-
-  Color getRGB(Uint32 color, SDL_PixelFormat* format);
-
+  inline bool setHint(const char* name, const char* value)
+  {
+    return static_cast<bool>(SDL_SetHint(name, value));
+  }
 
   inline Coord screenToCartesian(const Point& screenCoord,
 				 uint width,

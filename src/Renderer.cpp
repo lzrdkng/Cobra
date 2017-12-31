@@ -37,7 +37,7 @@ namespace SDLO
   Renderer::Renderer(Window& window, RendererFlags flags, int index)
     : m_renderer(nullptr)
   {
-    m_renderer = SDL_CreateRenderer(window.toSDL(), index, flags);
+    m_renderer = SDL_CreateRenderer(window.toSDL(), index, (Uint32)flags);
 
     if (m_renderer == nullptr)
       throw Error(SDL_GetError());
@@ -201,7 +201,7 @@ namespace SDLO
 
     if (this->getInfo(info) == 0)
     {
-      if (info.flags & RendererTargetTexture)
+      if (info.flags & (Uint32)RendererFlags::TargetTexture)
 	if (SDL_SetRenderTarget(m_renderer, texture.toSDL()) != 0)
 	  throw Error(SDL_GetError());
       return true;
@@ -406,7 +406,10 @@ namespace SDLO
 
   Renderer& Renderer::readPixels(const Rect& rect, PixelFormats format, void* pixels, int pitch)
   {
-    if (SDL_RenderReadPixels(m_renderer, (const SDL_Rect*)&rect, format, pixels, pitch) != 0)
+    if (SDL_RenderReadPixels(m_renderer,
+			     (const SDL_Rect*)&rect,
+			     (Uint32)format,
+			     pixels, pitch) != 0)
       throw SDLO::Error(SDL_GetError());
 
     return *this;

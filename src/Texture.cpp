@@ -46,8 +46,8 @@ namespace SDLO
     : m_texture(nullptr)
   {
     m_texture = SDL_CreateTexture(renderer.toSDL(),
-                                  format,
-                                  access,
+                                  static_cast<Uint32>(format),
+                                  static_cast<Uint32>(access),
                                   width, height);
 
     if (m_texture == nullptr)

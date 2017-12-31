@@ -16,12 +16,12 @@
 
 TEST_CASE("Init subsystems")
 {
-  SDLO::init(SDLO::InitEverything);
+  SDLO::init(SDLO::InitFlags::Everything);
 
   SDLO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
 #ifdef  SDL_IMAGE_H_
-  SDLO::initImage(SDLO::ImageInitPNG);
+  SDLO::initImage(SDLO::ImageInitFlags::PNG | SDLO::ImageInitFlags::JPG);
 #endif
 }
 
@@ -66,19 +66,19 @@ TEST_CASE("Event driven programming", "[event, tutorial")
 
   // Main loop
   do
-    {
-      SDL_PollEvent(&event);
+  {
+    SDL_PollEvent(&event);
 
-      if (event.type == SDL_QUIT)
-        {
-	  break;
-        }
-      else
-        {
-	  imageSurface.blit(windowSurface);
-	  window.update();
-        }
-    } while (true);
+    if (event.type == SDL_QUIT)
+    {
+      break;
+    }
+    else
+    {
+      imageSurface.blit(windowSurface);
+      window.update();
+    }
+  } while (true);
 }
 #endif
 
@@ -86,14 +86,14 @@ TEST_CASE("Event driven programming", "[event, tutorial")
 TEST_CASE("Key presses", "[key, tutorial")
 {
   enum KeyPressSurfaces
-  {
-    KeyPressSurfaceDefault,
-    KeyPressSurfaceUp,
-    KeyPressSurfaceDown,
-    KeyPressSurfaceLeft,
-    KeyPressSurfaceRight,
-    KeyPressSurfaceTotal
-  };
+    {
+      KeyPressSurfaceDefault,
+      KeyPressSurfaceUp,
+      KeyPressSurfaceDown,
+      KeyPressSurfaceLeft,
+      KeyPressSurfaceRight,
+      KeyPressSurfaceTotal
+    };
 
 
 
@@ -101,63 +101,59 @@ TEST_CASE("Key presses", "[key, tutorial")
 
   SDLO::WindowSurface windowSurface(window);
 
-  std::vector<SDLO::Surface*> keyPressSurfaces =
-
-    {
-      new SDLO::Surface("media/press.bmp"),
-      new SDLO::Surface("media/up.bmp"),
-      new SDLO::Surface("media/down.bmp"),
-      new SDLO::Surface("media/left.bmp"),
-      new SDLO::Surface("media/right.bmp")
-    };
-
+  std::vector<SDLO::Surface*> keyPressSurfaces = {new SDLO::Surface("media/press.bmp"),
+						  new SDLO::Surface("media/up.bmp"),
+						  new SDLO::Surface("media/down.bmp"),
+						  new SDLO::Surface("media/left.bmp"),
+						  new SDLO::Surface("media/right.bmp")};
+  
   SDLO::Surface* currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
 
   SDL_Event event; 
 
   // Main Loop
   do
+  {
+    SDL_PollEvent(&event);
+
+    if (event.type == SDL_QUIT)
     {
-      SDL_PollEvent(&event);
+      break;
+    }
+    else if (event.type == SDL_KEYDOWN) 
+    {
+      switch (event.key.keysym.sym)
+      {
+      case SDLK_UP:
+	currentSurface = keyPressSurfaces[KeyPressSurfaceUp];
+	break;
+      case SDLK_DOWN:
+	currentSurface = keyPressSurfaces[KeyPressSurfaceDown];
+	break;
+      case SDLK_LEFT:
+	currentSurface = keyPressSurfaces[KeyPressSurfaceLeft];
+	break;
+      case SDLK_RIGHT:
+	currentSurface = keyPressSurfaces[KeyPressSurfaceRight];
+	break;
+      default:
+	currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
+      }
+    }
+    else
+    {
+      currentSurface->blit(windowSurface);
+      window.update();
+    }
 
-      if (event.type == SDL_QUIT)
-        {
-	  break;
-        }
-      else if (event.type == SDL_KEYDOWN) 
-        {
-	  switch (event.key.keysym.sym)
-            {
-	    case SDLK_UP:
-	      currentSurface = keyPressSurfaces[KeyPressSurfaceUp];
-	      break;
-	    case SDLK_DOWN:
-	      currentSurface = keyPressSurfaces[KeyPressSurfaceDown];
-	      break;
-	    case SDLK_LEFT:
-	      currentSurface = keyPressSurfaces[KeyPressSurfaceLeft];
-	      break;
-	    case SDLK_RIGHT:
-	      currentSurface = keyPressSurfaces[KeyPressSurfaceRight];
-	      break;
-	    default:
-	      currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
-            }
-        }
-      else
-        {
-	  currentSurface->blit(windowSurface);
-	  window.update();
-        }
-
-    } while (true);
+  } while (true);
 
   currentSurface = nullptr;
 
   for (auto it=keyPressSurfaces.begin(); it!=keyPressSurfaces.end(); ++it)
-    {
-      delete *it;
-    }
+  {
+    delete *it;
+  }
   keyPressSurfaces.clear();
 }
 #endif
@@ -182,15 +178,15 @@ TEST_CASE("Optimized surface loading and soft stretching",
 
   // Main Loop
   do
+  {
+    SDL_PollEvent(&event);
+
+    if (event.type == SDL_QUIT)
     {
-      SDL_PollEvent(&event);
+      break;
+    }
 
-      if (event.type == SDL_QUIT)
-        {
-	  break;
-        }
-
-    } while (true);
+  } while (true);
 }
 #endif
 
@@ -200,7 +196,7 @@ TEST_CASE("Extension libraries and loading other image formats",
           "[SDL_image, lib, image, tutorial]")
 {
   SDLO::Window window("Extension libraries and loading other image formats "
-		     "[6]");
+		      "[6]");
 
   SDLO::WindowSurface windowSurface(window);
 
@@ -219,7 +215,7 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 {
   SDLO::Window window("Texture Loading and Rendering [7]");
 
-  SDLO::Renderer render(window, SDLO::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
   render.setDrawColor(SDLO::Color {0, 0, 0});
 
   SDLO::Texture loadedTexture(render, "media/texture.png");
@@ -227,20 +223,20 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
   SDL_Event event;
 
   do
+  {
+    SDL_PollEvent(&event);
+
+    if (event.type == SDL_QUIT)
     {
-      SDL_PollEvent(&event);
-
-      if (event.type == SDL_QUIT)
-        {
-	  break;
-        }
+      break;
+    }
 
 
-      render.clear();
-      loadedTexture.copy(render);
-      render.present();
+    render.clear();
+    loadedTexture.copy(render);
+    render.present();
 
-    } while (true);
+  } while (true);
 }
 #endif
 #endif
@@ -253,61 +249,61 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 
   SDLO::Pair<int> size = window.getSize();
 
-  SDLO::Renderer render(window, SDLO::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
 
   SDL_Event event;
 
   do
+  {
+    SDL_PollEvent(&event);
+
+    if (event.type == SDL_QUIT)
     {
-      SDL_PollEvent(&event);
+      break;
+    }
+    else if (event.type == SDL_WINDOWEVENT)
+    {
+      switch (event.window.event)
+      {
+      case SDL_WINDOWEVENT_RESIZED:
+      case SDL_WINDOWEVENT_SIZE_CHANGED:
+	size = window.getSize();
+	break;
+      default:
+	break;
+      }
+    }
 
-      if (event.type == SDL_QUIT)
-        {
-	  break;
-        }
-      else if (event.type == SDL_WINDOWEVENT)
-	{
-	  switch (event.window.event)
-	    {
-	    case SDL_WINDOWEVENT_RESIZED:
-	    case SDL_WINDOWEVENT_SIZE_CHANGED:
-	      size = window.getSize();
-	      break;
-	    default:
-	      break;
-	    }
-	}
+    render.setDrawColor(0);
+    render.clear();
 
-      render.setDrawColor(0);
-      render.clear();
+    render.setDrawColor({0xFF, 0, 0});
+    render.fillRect({size.first / 4, size.second / 4,
+		     size.first / 2, size.second / 2});
 
-      render.setDrawColor({0xFF, 0, 0});
-      render.fillRect({size.first / 4, size.second / 4,
-	    size.first / 2, size.second / 2});
+    render.setDrawColor({0, 0xFF, 0});
+    render.drawRect({size.first / 6, size.second / 6,
+		     2*size.first/3, 2*size.second/3 });
 
-      render.setDrawColor({0, 0xFF, 0});
-      render.drawRect({size.first / 6, size.second / 6,
-	    2*size.first/3, 2*size.second/3 });
+    render.setDrawColor({0, 0, 0xFF});
+    render.drawLine({{0, size.second / 2},
+		     {size.first, size.second / 2}});
+      
+    render.setDrawColor({0, 0xFF, 0xFF});
+    render.drawCircle(size.first/2, size.second/2, 150);
 
-      render.setDrawColor({0, 0, 0xFF});
-      render.drawLine({{0, size.second / 2},
-	    {size.first, size.second / 2}});
+    render.setDrawColor({0xFF, 0, 0xFF});
+    render.fillCircle(size.first/2, size.second/2, 75);
 
-      render.setDrawColor({0, 0xFF, 0xFF});
-      render.drawCircle(size.first/2, size.second/2, 150);
+    render.setDrawColor({0xFF, 0xFF, 0});
+    for (auto i=0; i<size.first; i += 4)
+    {
+      render.drawPoint({size.first/2, i});
+    }
 
-      render.setDrawColor({0xFF, 0, 0xFF});
-      render.fillCircle(size.first/2, size.second/2, 75);
+    render.present();
 
-      render.setDrawColor({0xFF, 0xFF, 0});
-      for (auto i=0; i<size.first; i += 4)
-        {
-	  render.drawPoint({size.first/2, i});
-        }
-
-      render.present();
-
-    } while (true);
+  } while (true);
 }y
 #endif
 
@@ -315,46 +311,46 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 #if INTERACT & 256
 TEST_CASE("The Viewport", "[viewport]")
 {
-    SDLO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+  SDLO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
     
-    SDLO::Window window("The Viewport [9]");
-    window.setResizable(true);
+  SDLO::Window window("The Viewport [9]");
+  window.setResizable(true);
 
-    SDLO::Pair<int> size = window.getSize();
+  SDLO::Pair<int> size = window.getSize();
 
-    SDLO::Renderer render(window, SDLO::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
 
-    SDLO::Texture texture (render, "media/viewport.png");
+  SDLO::Texture texture (render, "media/viewport.png");
 
-    SDL_Event event;
+  SDL_Event event;
 
-    do
+  do
+  {
+    SDL_PollEvent(&event);
+
+    if (event.type == SDL_QUIT)
     {
-	SDL_PollEvent(&event);
+      break;
+    }
 
-	if (event.type == SDL_QUIT)
-	{
-	  break;
-        }
+    size = window.getSize();
 
-	size = window.getSize();
+    render.setDrawColor(UINT32_MAX);
+    render.clear();
 
-	render.setDrawColor(UINT32_MAX);
-	render.clear();
+    render.setViewport({0, 0, size.first / 2, size.second / 2});
+    texture.copy(render);
 
-	render.setViewport({0, 0, size.first / 2, size.second / 2});
-	texture.copy(render);
+    render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
+    texture.copy(render);
 
-	render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
-	texture.copy(render);
+    render.setViewport({0, size.second/2, size.first, size.second/2});
+    texture.copy(render);
 
-	render.setViewport({0, size.second/2, size.first, size.second/2});
-	texture.copy(render);
-
-	render.present();
+    render.present();
 
 
-    } while (true);
+  } while (true);
 }
 #endif
 #endif
@@ -363,32 +359,34 @@ TEST_CASE("The Viewport", "[viewport]")
 #if INTERACT & 512
 TEST_CASE("Color keying", "[Color]")
 {
-    SDLO::Window window("Color keying [10]");
+  SDLO::Window window("Color keying [10]");
 
-    SDLO::Renderer render(window, SDLO::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
 
-    SDLO::Texture foo(render, "media/foo.png", {0, 255, 255});
+  SDLO::Texture foo(render, "media/foo.png", {0, 255, 255});
 
-    SDLO::Texture background(render, "media/background.png", {0, 255, 255});
+  SDLO::Texture background(render, "media/background.png", {0, 255, 255});
 
-    SDL_Event event;
+  SDL_Event event;
 
-    do
-    {
-	SDL_PollEvent(&event);
+  do
+  {
+    SDL_PollEvent(&event);
 
-	if (event.type == SDL_QUIT)
-	    break;
+    if (event.type == SDL_QUIT)
+      break;
 
-	render.setDrawColor(UINT32_MAX);
-	render.clear();
+    render.setDrawColor(UINT32_MAX);
+    render.clear();
 
-	background.copyToDst(render, {0, 0, background.getWidth(), background.getHeight()});
-	foo.copyToDst(render, {240, 190, foo.getWidth(), foo.getHeight()});
+    background.copyToDst(render,
+			 {0, 0, background.getWidth(), background.getHeight()});
+    foo.copyToDst(render,
+		  {240, 190, foo.getWidth(), foo.getHeight()});
 
-	render.present();
+    render.present();
 	
-    }  while (true);
+  }  while (true);
 	
 }
 #endif
@@ -403,40 +401,48 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 
   SDLO::Pair<int> size = window.getSize();
 
-  SDLO::Renderer render(window, SDLO::RendererAccelerated);
+  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
 
   SDLO::Texture spriteSheet(render, "media/dots.png");
 
   int width = spriteSheet.getWidth();
   int height = spriteSheet.getHeight();
 
-  std::vector<SDLO::Rect> spriteClips =
-    {
-      {0, 0, 100, 100},
-      {100, 0, 100, 100},
-      {0, 100, 100, 100},
-      {100, 100, 100, 100}
-    };
+  std::vector<SDLO::Rect> spriteClips ={{0, 0, 100, 100},
+					{100, 0, 100, 100},
+					{0, 100, 100, 100},
+					{100, 100, 100, 100}};
 
   SDL_Event event;
 
   do
-    {
-      SDL_PollEvent(&event);
+  {
+    SDL_PollEvent(&event);
 
-      if (event.type == SDL_QUIT)
-	break;
+    if (event.type == SDL_QUIT)
+      break;
 
-      render.setDrawColor(UINT32_MAX);
-      render.clear();
+    render.setDrawColor(UINT32_MAX);
+    render.clear();
 
-      spriteSheet.copyToRender(render, {0, 0, width, height}, spriteClips[0]);
-      spriteSheet.copyToRender(render, {size.first - spriteClips[1].getWidth(), 0, width, height}, spriteClips[1]);
-      spriteSheet.copyToRender(render, {0, size.second - spriteClips[2].getHeight(), width, height}, spriteClips[2]);
-      spriteSheet.copyToRender(render, {size.first - spriteClips[3].getWidth(), size.second - spriteClips[3].getHeight(), width, height}, spriteClips[3]);
-      render.present();
+    spriteSheet.copyToRender(render,
+			     {0, 0,width, height},
+			     spriteClips[0]);
       
-    } while (true);
+    spriteSheet.copyToRender(render,
+			     {size.first - spriteClips[1].getWidth(), 0, width, height},
+			     spriteClips[1]);
+      
+    spriteSheet.copyToRender(render,
+			     {0, size.second - spriteClips[2].getHeight(), width, height},
+			     spriteClips[2]);
+      
+    spriteSheet.copyToRender(render,
+			     {size.first - spriteClips[3].getWidth(), size.second - spriteClips[3].getHeight(), width, height},
+			     spriteClips[3]);
+    render.present();
+      
+  } while (true);
     
   
 }

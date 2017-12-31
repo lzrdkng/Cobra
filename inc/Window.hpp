@@ -71,15 +71,19 @@ namespace SDLO
      * If SDL failed to create the window.
      *
      */
+
     explicit Window(const char* title,
-                    int width = 640,
-                    int height = 480,
-                    WindowFlags flags = WindowShown,
-                    int x = WindowPositionUndefined,
-                    int y = WindowPositionUndefined);
+		    Pair<int> size = {640, 480},
+		    WindowFlags flags = WindowFlags::Shown,
+		    Pair<int> pos = {static_cast<int>(WindowPositions::Undefined),
+				     static_cast<int>(WindowPositions::Undefined)});
+    
+    explicit Window(const char* title,
+		    Pair<int> size,
+		    Pair<int> pos);
 
-    explicit Window(const char* title, WindowFlags flags);
-
+    explicit Window(const char* title,
+		    WindowFlags flags);
 
     /**
      * @brief Copy constructor of Class SDLO::Window.

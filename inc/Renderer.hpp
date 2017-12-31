@@ -71,7 +71,7 @@ namespace SDLO
      * @sa SDLO::Renderer:~Renderer
      */
     explicit Renderer(Window& window,
-                      RendererFlags flags = RendererNull,
+                      RendererFlags flags = RendererFlags::Null,
                       int index = -1);
 
 

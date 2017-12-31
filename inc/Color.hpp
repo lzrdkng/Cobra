@@ -43,6 +43,19 @@ namespace SDLO
   {
   public:
 
+    static Color getRGB(Uint32 color, SDL_PixelFormat* format)
+    {
+      Uint8 r = 0, g = 0, b = 0;
+
+      SDL_GetRGB(color, format, &r, &g, &b);
+
+      return {r, g, b};
+    }
+
+
+    static const Color White;
+    static const Color Black;
+
 
     // static methods
 

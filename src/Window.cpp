@@ -38,15 +38,15 @@ namespace SDLO
 // constructor/destructor
   
   Window::Window(const char* title,
-		 int width, int height,
+		 Pair<int> size,
 		 WindowFlags flags,
-		 int x, int y)
+		 Pair<int> pos)
     : m_window(nullptr)
   {
     m_window = SDL_CreateWindow(title,
-				x, y,
-				width, height,
-				flags);
+				pos.first, pos.second,
+				size.first, size.second,
+				static_cast<Uint32>(flags));
 
     if (m_window == nullptr)
       throw Error(SDL_GetError());
@@ -56,9 +56,10 @@ namespace SDLO
     : m_window(nullptr)
   {
     m_window = SDL_CreateWindow(title,
+				static_cast<int>(WindowPositions::Undefined),
+				static_cast<int>(WindowPositions::Undefined),
 				640, 480,
-				WindowPositionUndefined, WindowPositionUndefined,
-				flags);
+				static_cast<Uint32>(flags));
 
     if (m_window == nullptr)
       throw Error(SDL_GetError());
@@ -73,8 +74,8 @@ namespace SDLO
 
     m_window = SDL_CreateWindow(orig.getTitle(),
                                 pos.getX(), pos.getY(),
-                                size.first, size.second,
-                                flags);
+				size.first, size.second,
+                                static_cast<Uint32>(flags));
 
     if (m_window == nullptr)
       throw Error(SDL_GetError());
@@ -188,7 +189,7 @@ namespace SDLO
 
   Window& Window::setFullscreen(WindowFlags flags)
   {
-    if (SDL_SetWindowFullscreen(m_window, flags) != 0)
+    if (SDL_SetWindowFullscreen(m_window, static_cast<Uint32>(flags)) != 0)
       throw Error(SDL_GetError());
     
     return *this;

@@ -35,66 +35,69 @@
 SCENARIO( "class SDLO::Color", "[Color]" )
 {
   GIVEN( "A black Color named B and a white color named W" )
+  {
+    SDLO::Color B;
+    SDLO::Color W {255, 255, 255, 255};
+
+    // get methods
+    REQUIRE( B.getRed() == 0 );
+    REQUIRE( B.getGreen() == 0 );
+    REQUIRE( B.getBlue() == 0 );
+    REQUIRE( B.getAlpha() == 0xFF );
+
+    REQUIRE( W.getRed() == 255);
+    REQUIRE( W.getGreen() == 255);
+    REQUIRE( W.getBlue() == 255);
+    REQUIRE( W.getAlpha() == 255);
+
+    REQUIRE(B == SDLO::Color::Black);
+    REQUIRE(W == SDLO::Color::White);
+
+    WHEN( "Colors are compared" ) // operators == !=
     {
-      SDLO::Color B;
-      SDLO::Color W {255, 255, 255, 255};
 
-      // get methods
-      REQUIRE( B.getRed() == 0 );
-      REQUIRE( B.getGreen() == 0 );
-      REQUIRE( B.getBlue() == 0 );
-      REQUIRE( B.getAlpha() == 0xFF );
-
-      REQUIRE( W.getRed() == 255);
-      REQUIRE( W.getGreen() == 255);
-      REQUIRE( W.getBlue() == 255);
-      REQUIRE( W.getAlpha() == 255);
-
-      WHEN( "Colors are compared" ) // operators == !=
-	{
-
-	  THEN( "B equal B, W equal W, but W doesn't equal B" )
-	    {
-	      REQUIRE( B == B );
-	      REQUIRE( W == W );
-	      REQUIRE( B != W );
-	    }
-	}
-      WHEN( "Color C is copied from Color W" ) // copy constructor
-	{
-	  SDLO::Color C(W);
-
-	  THEN( "C equal W" )
-	    {
-	      REQUIRE( C == W );
-	    }
-	}
-      WHEN( "Color A is assigned Color W" ) // operator =
-	{
-	  SDLO::Color A = W;
-
-	  THEN( "A equal W" )
-	    {
-	      REQUIRE( A == W );
-	    }
-	}
-      WHEN( "Color S is created from class Color static method 'fromRGB' with same values as W" ) // static methods fromRGB fromRGBA
-	{
-	  SDLO::Color S = SDLO::Color::fromRGB(255, 255, 255);
-
-	  THEN( "S equal W" )
-	    {
-	      REQUIRE( S == W );
-	    }
-	}
-      WHEN("Color B is set with values (255, 255, 255 ,255)") // set methods
-	{
-	  B.setRGB(255, 255, 255);
-
-	  THEN("B == W")
-	    {
-	      REQUIRE(B == W);
-	    }
-	}
+      THEN( "B equal B, W equal W, but W doesn't equal B" )
+      {
+	REQUIRE( B == B );
+	REQUIRE( W == W );
+	REQUIRE( B != W );
+      }
     }
+    WHEN( "Color C is copied from Color W" ) // copy constructor
+    {
+      SDLO::Color C(W);
+
+      THEN( "C equal W" )
+      {
+	REQUIRE( C == W );
+      }
+    }
+    WHEN( "Color A is assigned Color W" ) // operator =
+    {
+      SDLO::Color A = W;
+
+      THEN( "A equal W" )
+      {
+	REQUIRE( A == W );
+      }
+    }
+    WHEN( "Color S is created from class Color static method 'fromRGB' with same values as W" ) // static methods fromRGB fromRGBA
+    {
+      SDLO::Color S = SDLO::Color::fromRGB(255, 255, 255);
+
+      THEN( "S equal W" )
+      {
+	REQUIRE( S == W );
+      }
+    }
+    WHEN("Color B is set with values (255, 255, 255 ,255)") // set methods
+    {
+      B.setRGB(255, 255, 255);
+
+      THEN("B == W")
+      {
+	REQUIRE(B == W);
+      }
+    }
+  }
 }

@@ -34,18 +34,18 @@ namespace SDLO
     Timer          = SDL_INIT_TIMER,          /**< Timer subsystem */
     Audio          = SDL_INIT_AUDIO,          /**< Audio subsystem */
     Video          = SDL_INIT_VIDEO,          /**< Video
-						     subsystem. Automatically
-						     initializes the vents
-						     subsystem */
+						 subsystem. Automatically
+						 initializes the vents
+						 subsystem */
     Joystick       = SDL_INIT_JOYSTICK,       /**< Joystick
-						     subsystem. Automatically
-						     initializes the vents
-						     subsystem */
+						 subsystem. Automatically
+						 initializes the vents
+						 subsystem */
     Haptic         = SDL_INIT_HAPTIC,         /**< Haptic (force feedback) subsystem */
     Gamecontroller = SDL_INIT_GAMECONTROLLER, /**< Controller
-						     subsystem. Automatically
-						     initializes the
-						     joystick subsystem */
+						 subsystem. Automatically
+						 initializes the
+						 joystick subsystem */
     Events         = SDL_INIT_EVENTS,         /**< Events subsystem */
     Everything     = SDL_INIT_EVERYTHING,     /**< All subsystems */
     Noparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
@@ -54,7 +54,7 @@ namespace SDLO
   __ENUM_CLASS_OR_OVERLOAD__(InitFlags, Uint32)
   __ENUM_CLASS_AND_OVERLOAD__(InitFlags, Uint32)
 
-  #undef InputFocus
+#undef InputFocus
   
   enum class WindowFlags : Uint32
   {
@@ -80,7 +80,7 @@ namespace SDLO
     PopupMenu         = SDL_WINDOW_POPUP_MENU
   };
 
-  #define InputFocus 1L
+#define InputFocus 1L
 
   __ENUM_CLASS_OR_OVERLOAD__(WindowFlags, Uint32)
   __ENUM_CLASS_AND_OVERLOAD__(WindowFlags, Uint32)
@@ -89,19 +89,19 @@ namespace SDLO
   {
     Null          = 0,                          /**< Equivalent to NULL */
     Software      = SDL_RENDERER_SOFTWARE,      /**< The renderer is
-							   a software
-							   fallback */
+						   a software
+						   fallback */
     Accelerated   = SDL_RENDERER_ACCELERATED,   /**< The renderer
-							   uses hardware
-							   acceleration */
+						   uses hardware
+						   acceleration */
     PresentVSync  = SDL_RENDERER_PRESENTVSYNC,  /**< Present is
-							   synchronized with
-							   the refresh
-							   rate */
+						   synchronized with
+						   the refresh
+						   rate */
     TargetTexture = SDL_RENDERER_TARGETTEXTURE  /**< The renderer
-							   supports
-							   rendering
-							   texture */
+						   supports
+						   rendering
+						   texture */
   };
 
   __ENUM_CLASS_OR_OVERLOAD__(RendererFlags, Uint32)
@@ -174,19 +174,19 @@ namespace SDLO
   enum class BlendModes : int
   {
     Null  = SDL_BLENDMODE_NONE,         /**< No blending. <br>
-						    dstRGBA = srcRGBA */
+					   dstRGBA = srcRGBA */
     Blend = SDL_BLENDMODE_BLEND,        /**< Alpha blending. <br>
-						    dstRGB = (srcRGB * srcA)
-						    + (dstRGB * (1-srcA))
-						    <br> dstA = srcA + (dstA
-						    * (1-srcA)) */
+					   dstRGB = (srcRGB * srcA)
+					   + (dstRGB * (1-srcA))
+					   <br> dstA = srcA + (dstA
+					   * (1-srcA)) */
     Add   = SDL_BLENDMODE_ADD,          /**< Additive
-						    blending. <br> dstRGB =
-						    (srcRGB srcA) + dstRGB
-						    <br> dstA = dstA */
+					   blending. <br> dstRGB =
+					   (srcRGB srcA) + dstRGB
+					   <br> dstA = dstA */
     Mod   = SDL_BLENDMODE_MOD,         /**< Color modulate. <br>
-						   dstRGB = srcRGB * dstRGB
-						   <br> dstA = dstA */
+					  dstRGB = srcRGB * dstRGB
+					  <br> dstA = dstA */
 
   };
 
@@ -258,7 +258,8 @@ namespace SDLO
 				 uint width,
 				 uint height,
 				 double scale = 1.0,
-				 const Coord& offset = {0.0, 0.0}) {
+				 const Coord& offset = {0.0, 0.0})
+  {
     
     double x = (screenCoord.getX() - width/2.0)/scale + std::real(offset);
     double y = (height/2.0 - screenCoord.getY())/scale - std::imag(offset);
@@ -270,7 +271,8 @@ namespace SDLO
 				 uint width,
 				 uint height,
 				 double scale = 1.0,
-				 const Coord& offset = {0.0, 0.0}) {
+				 const Coord& offset = {0.0, 0.0})
+  {
     
     Coord screenCoord {std::real(cartesianCoord), -std::imag(cartesianCoord)};
 

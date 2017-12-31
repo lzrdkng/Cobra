@@ -129,8 +129,8 @@ namespace SDLO
     constexpr Color() : SDL_Color {0, 0, 0, 0xFF} {}
 
     constexpr Color(uint x)
-      : SDL_Color
-	  {static_cast<Uint8>(x >> 24),
+    : SDL_Color
+    {static_cast<Uint8>(x >> 24),
 	static_cast<Uint8>(x >> 16 & 255),
 	static_cast<Uint8>(x >> 8 & 255),
 	static_cast<Uint8>(x & 255)} {}
@@ -146,14 +146,14 @@ namespace SDLO
      * @note The compiler will truncate value over 255.
      */
     constexpr Color(Uint8 R, Uint8 G, Uint8 B, Uint8 A)
-      : SDL_Color {R, G, B, A} {}
+    : SDL_Color {R, G, B, A} {}
 
     /**
      * @brief Copy constructor of class Color.
      * @param orig The orignal color.
      */
     constexpr Color(const Color& orig)
-      : SDL_Color {orig.r, orig.g, orig.b, orig.a} {}
+    : SDL_Color {orig.r, orig.g, orig.b, orig.a} {}
 
     // get methods
 

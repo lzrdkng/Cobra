@@ -56,7 +56,8 @@ namespace SDLO
      * @param h Height
      * @return SDL::Rect
      */
-    constexpr static Rect fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h) {
+    constexpr static Rect fromInt(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
+    {
       return {x, y, w, h};
     }
       
@@ -67,7 +68,8 @@ namespace SDLO
      * @param b Bottom-right point
      * @return SDL::Rect
      */
-    constexpr static Rect fromPoints(const Point& a, const Point& b) {
+    constexpr static Rect fromPoints(const Point& a, const Point& b)
+    {
       return {a, b};
     }
     
@@ -76,7 +78,8 @@ namespace SDLO
      * @param sdl_rect The SDL_Rect structure.
      * @return SDL::Rect
      */
-    constexpr static Rect fromSDL(const SDL_Rect& rect) {
+    constexpr static Rect fromSDL(const SDL_Rect& rect)
+    {
       return rect;
     }
 
@@ -88,7 +91,8 @@ namespace SDLO
      * @param orig The original Rect
      * @return SDL::Rect
      */
-    constexpr Rect& operator =(const Rect& orig) {
+    constexpr Rect& operator =(const Rect& orig)
+    {
       this->x = orig.x;
       this->y = orig.y;
       this->w = orig.w;
@@ -102,7 +106,8 @@ namespace SDLO
      * @param comp The Rect to compare
      * @return bool
      */
-    constexpr bool operator ==(const Rect& comp) const {
+    constexpr bool operator ==(const Rect& comp) const
+    {
       return (x == comp.x &&
 	      y == comp.y &&
 	      w == comp.w &&
@@ -114,7 +119,8 @@ namespace SDLO
      * @param comp The Rect to compare
      * @return bool
      */
-    constexpr bool operator !=(const Rect& comp) const {
+    constexpr bool operator !=(const Rect& comp) const
+    {
       return !(*this == comp);
     }
 
@@ -131,7 +137,7 @@ namespace SDLO
      * @param orig Rect to copy
      */
     constexpr Rect(const Rect& orig)
-      : SDL_Rect {orig.x, orig.y, orig.w, orig.h} {}
+    : SDL_Rect {orig.x, orig.y, orig.w, orig.h} {}
 
     /**
      * @brief Constructor from 4 integers.
@@ -141,7 +147,7 @@ namespace SDLO
      * @param h Height
      */
     constexpr Rect(Sint16 x, Sint16 y, Uint16 w, Uint16 h)
-      : SDL_Rect {x, y, w ,h} {}
+    : SDL_Rect {x, y, w ,h} {}
 
     /**
      * @brief Constructor from two SDL::Point instances.
@@ -150,7 +156,8 @@ namespace SDLO
      * @return SDL::Rect
      */
     constexpr Rect(const Point& a, const Point& b)
-      : SDL_Rect {a.getX(), a.getY(), 0, 0} {
+      : SDL_Rect {a.getX(), a.getY(), 0, 0}
+    {
       w = b.getX() - x;
       h = b.getY() - y;
     }
@@ -160,7 +167,7 @@ namespace SDLO
      * @param sdl_rect The SDL_Rect structure.
      */
     constexpr Rect(const SDL_Rect& rect)
-      : SDL_Rect {rect.x, rect.y, rect.w, rect.h} {}
+    : SDL_Rect {rect.x, rect.y, rect.w, rect.h} {}
     
 
     // get methods
@@ -197,7 +204,8 @@ namespace SDLO
      * @param h Height
      * @return SDL::Rect&
      */
-    Rect& setHeight(Uint16 H) {
+    Rect& setHeight(Uint16 H)
+    {
       h = H;
       return *this;
     }
@@ -210,7 +218,8 @@ namespace SDLO
      * @param h Height
      * @return SDL::Rect&
      */
-    Rect& setValues(Sint16 X, Sint16 Y, Uint16 W, Uint16 H) {
+    Rect& setValues(Sint16 X, Sint16 Y, Uint16 W, Uint16 H)
+    {
       x = X;
       y = Y;
       w = W;
@@ -223,7 +232,8 @@ namespace SDLO
      * @param w Width
      * @return SDL::Rect&
      */
-    Rect& setWidth(Uint16 W) {
+    Rect& setWidth(Uint16 W)
+    {
       w = W;
       return *this;
     }
@@ -233,7 +243,8 @@ namespace SDLO
      * @param x Top-left x value
      * @return SDL::Rect&
      */
-    Rect& setX(Sint16 X) {
+    Rect& setX(Sint16 X)
+    {
       x = X;
       return *this;
     }
@@ -243,7 +254,8 @@ namespace SDLO
      * @param y Top-left y value
      * @return SDL::Rect&
      */
-    Rect& setY(Sint16 Y) {
+    Rect& setY(Sint16 Y)
+    {
       y = Y;
       return *this;
     }

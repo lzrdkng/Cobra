@@ -42,7 +42,7 @@
 #include "Window.hpp"
 
 
-namespace SDLO
+namespace SO
 {
 
   /**
@@ -59,19 +59,19 @@ namespace SDLO
     // constructors/destructor
 
     /**
-     * @brief Explicit constructor for Class SDLO::Renderer.
+     * @brief Explicit constructor for Class SO::Renderer.
      *
-     * Create a 2D rendering context for a SDLO::Window.
+     * Create a 2D rendering context for a SO::Window.
      *
      * @param window the window where rendering is displayed
-     * @param flags SDLO::RendererFlags
+     * @param flags SO::Render
      * @param index the index of the rendering driver to initiliaze,
      * or -1 to initialize the first one supporting the requested flags
-     * @throw SDLO::Error if there was an error
-     * @sa SDLO::Renderer:~Renderer
+     * @throw SO::Error if there was an error
+     * @sa SO::Renderer:~Renderer
      */
     explicit Renderer(Window& window,
-                      RendererFlags flags = RendererFlags::Null,
+                      Render flags = Render::Null,
                       int index = -1);
 
 
@@ -83,10 +83,10 @@ namespace SDLO
 
 
     /**
-     * @brief Destructor of class SDLO::Renderer
+     * @brief Destructor of class SO::Renderer
      * Will call **SDL_DestroyRenderer**
      *
-     * @sa SDLO::Renderer::Renderer
+     * @sa SO::Renderer::Renderer
      */
     virtual ~Renderer();
     
@@ -95,35 +95,35 @@ namespace SDLO
     
     /**
      * @brief Return a clip rectangle of the renderer.
-     * @return SDLO::Rect
-     * @sa SDLO::Renderer::setClipRect
-     * @sa SDLO::Renderer::isClipEnabled
+     * @return SO::Rect
+     * @sa SO::Renderer::setClipRect
+     * @sa SO::Renderer::isClipEnabled
      */
     Rect getClipRect() const;
 
 
     /**
      * @brief Return the current blend mode of the renderer
-     * @return SDLO::BlendModes
-     * @throw SDLO::Error on failure
-     * @sa SDLO::Renderer::setDrawBlendMode
+     * @return SO::BlendModes
+     * @throw SO::Error on failure
+     * @sa SO::Renderer::setDrawBlendMode
      */
     BlendModes getDrawBlendMode() const;
 
 
     /**
      * @brief Return the color used for drawing operations (Rect, Line and Clear).
-     * @return SDLO::Color
-     * @throw SDLO::Error on failure
-     * @sa SDLO::Renderer::setDrawColor
+     * @return SO::Color
+     * @throw SO::Error on failure
+     * @sa SO::Renderer::setDrawColor
      */
     Color getDrawColor() const;
 
 
     /**
      * @brief Return informations about the renderer.
-     * @return SDLO::RendererInfo
-     * @throw SDLO::Error on failure
+     * @return SO::RendererInfo
+     * @throw SO::Error on failure
      */
     bool getInfo(SDL_RendererInfo& info) const;
 
@@ -133,7 +133,7 @@ namespace SDLO
      * @brief Return wheter integer scales are forced for resolution-independent rendering.
      * @return bool
      * @version **SDL2.0.5**
-     * @sa SDLO::Renderer::setIntegerScale
+     * @sa SO::Renderer::setIntegerScale
      */
     bool getIntegerScale() const;
 #endif
@@ -156,16 +156,16 @@ namespace SDLO
      * @return std::pair<int, int>
      * @throw sdl::runtime_error on failure
      * @version **SDL2.0.0**
-     * @sa SDLO::Window::getRenderer
+     * @sa SO::Window::getRenderer
      */
     Pair<int> getOutputSize() const;
 
 
     /**
      * @brief Return the renderer's drawing scale.
-     * @return SDLO::Pair<float>
+     * @return SO::Pair<float>
      * @version **SDL2.0.0**
-     * @sa SDLO::Renderer::setScale
+     * @sa SO::Renderer::setScale
      */
     Pair<float> getScale() const;
 #endif
@@ -182,9 +182,9 @@ namespace SDLO
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     /**
      * @brief Return the renderer's drawing area.
-     * @return SDLO::Rect
+     * @return SO::Rect
      * @version **SDL2.0.0**
-     * @sa SDLO::Renderer::setViewport
+     * @sa SO::Renderer::setViewport
      */
     Rect getViewport() const;
 #endif
@@ -193,10 +193,10 @@ namespace SDLO
     /**
      * @brief Set the clip rectangle for the renderer's target.
      * @param rect The clip area
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on falure
-     * @sa SDLO::Renderer::getClipRect
-     * @sa SDLO::Renderer::isClipEnabled
+     * @return SO::Renderer&
+     * @throw SO::Error on falure
+     * @sa SO::Renderer::getClipRect
+     * @sa SO::Renderer::isClipEnabled
      */
     Renderer& setClipRect(const Rect& rect);
 
@@ -204,8 +204,8 @@ namespace SDLO
     /**
      * @brief Set the color for drawing operation.
      * @param c the color
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on failure.
+     * @return SO::Renderer&
+     * @throw SO::Error on failure.
      */
     Renderer& setDrawColor(Color color);
 
@@ -214,14 +214,14 @@ namespace SDLO
     /**
      * @brief Set wheter to force integer scale for resolution-independent rendering.
      * @param enable
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on failure
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
      * @note This method restrict the logical viewport to integer values -
      * that is, when a resolution is between two multiples of a logical size,
      * the viewport size is rounded down to the lower multiple.
      * @version **SDL2.0.5**
-     * @sa SDLO::Renderer::getIntegerScale
-     * @sa SDLO::Renderer::setLogicalSize
+     * @sa SO::Renderer::getIntegerScale
+     * @sa SO::Renderer::setLogicalSize
      */
     Renderer& setIntegerScale(bool enable);
 #endif
@@ -232,10 +232,10 @@ namespace SDLO
      * @brief Set the renderer resolution.
      * @param w
      * @param h
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on failure
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
      * @version **SDL2.0.0**
-     * @sa SDLO::Renderer::getLogicalSize
+     * @sa SO::Renderer::getLogicalSize
      */
     Renderer& setLogicalSize(int w, int h);
 
@@ -244,26 +244,26 @@ namespace SDLO
      * @brief Set the renderer's drawing scale.
      * @param scaleX
      * @param scaleY
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on failure
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
      * @note The drawing coordinates are scaled by the x/y scaling factors before they are
      * used by the renderer. This allows resolution independent drawing with a single
      *  coordinate system. <br> If this results in scaling or subpixel drawing by the
      *  rendering backend, it will be handled using the appropriate quality hints. For best
      *  results use integer scaling factors.
      * @version **SDL2.0.0**
-     * @sa SDLO::Renderer::getScale
-     * @sa SDLO::Renderer::setLogicalSize
+     * @sa SO::Renderer::getScale
+     * @sa SO::Renderer::setLogicalSize
      */
     Renderer& setScale(float scaleX, float scaleY);
 
 
     /**
      * @brief Set a texture as the current rendering target.
-     * @param texture the targeted texture, which must be created with the SDLO::TextureAccessTarget
+     * @param texture the targeted texture, which must be created with the SO::TextureAccessTarget
      * flag, or NULL for the default render target
      * @return bool
-     * @throw SDLO::Error on failure
+     * @throw SO::Error on failure
      * @version **SDL2.0.0**
      */
     bool setTarget(Texture& texture);
@@ -272,11 +272,11 @@ namespace SDLO
     /**
      * @brief Set the renderer's drawing area.
      * @param rect
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on failure
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
      * @note When the window is resized, the current viewport is automatically centered
      * within the new window size.
-     * @sa SDLO::Renderer::getViewport
+     * @sa SO::Renderer::getViewport
      */
     Renderer& setViewport(const Rect& rect);
     
@@ -294,8 +294,8 @@ namespace SDLO
      * @param y1
      * @param x2
      * @param y2
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on failure
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
      */
     Renderer& drawLine(int x1, int y1, int x2, int y2);
 
@@ -323,12 +323,12 @@ namespace SDLO
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     /**
      * @brief Clear the renderer with its drawing color.
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on failure
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
      * @note This method clears the entire renderer, ignoring the viewport
      * and the clip rectangle.
      * @version **SDL2.0.0**
-     * @sa SDLO::Renderer::setDrawColor
+     * @sa SO::Renderer::setDrawColor
      */
     Renderer& clear();
 #endif
@@ -338,8 +338,8 @@ namespace SDLO
      * @brief Return wheter clipping is enable on the renderer.
      * @return bool
      * @version **SDL2.0.4**
-     * @sa SDLO::Renderer::getClipRect
-     * @sa SDLO::Renderer::setClipRect
+     * @sa SO::Renderer::getClipRect
+     * @sa SO::Renderer::setClipRect
      */
     bool isClipEnabled() const;
 #endif
@@ -347,9 +347,9 @@ namespace SDLO
 
     /**
      * @brief Update the renderer with any rendering perfomed since the previous call.
-     * @return SDLO::Renderer&
+     * @return SO::Renderer&
      * @note SDL's rendering functions operate on a backbuffer; that is,
-     * calling a rendering method such as SDLO::Renderer::drawLine() does not
+     * calling a rendering method such as SO::Renderer::drawLine() does not
      * directly put a line on the screen, but rather updates the backbuffer.
      * As such, you compose your entire scene and present the composed
      * backbuffer to the screen as a complete picture. <br> Therefore, when
@@ -357,20 +357,20 @@ namespace SDLO
      * and then calls this function once per frame to present the final drawing
      * to the user. <br> The backbuffer should be considered invalidated after
      * each present; do not assume that previous contents will exist between
-     * frames. You are strongly encouraged to call SDLO::Render::clear() to
+     * frames. You are strongly encouraged to call SO::Render::clear() to
      * initialize the backbuffer before starting each new frame's drawing,
      * even if you plan to overwrite every pixel.
-     * @sa SDLO::Renderer::clear
-     * @sa SDLO::Renderer::drawLine
-     * @sa SDLO::Renderer::drawLines
-     * @sa SDLO::Renderer::drawPoint
-     * @sa SDLO::Renderer::drawPoints
-     * @sa SDLO::Renderer::drawRect
-     * @sa SDLO::Renderer::drawRects
-     * @sa SDLO::Renderer::fillRect
-     * @sa SDLO::Renderer::fillRects
-     * @sa SDLO::Renderer::setDrawBlendMode
-     * @sa SDLO::Renderer::setDrawColor
+     * @sa SO::Renderer::clear
+     * @sa SO::Renderer::drawLine
+     * @sa SO::Renderer::drawLines
+     * @sa SO::Renderer::drawPoint
+     * @sa SO::Renderer::drawPoints
+     * @sa SO::Renderer::drawRect
+     * @sa SO::Renderer::drawRects
+     * @sa SO::Renderer::fillRect
+     * @sa SO::Renderer::fillRects
+     * @sa SO::Renderer::setDrawBlendMode
+     * @sa SO::Renderer::setDrawColor
      */
     Renderer& present();
 
@@ -380,8 +380,8 @@ namespace SDLO
      * @param format the desired format of the pixel data
      * @param pixels pointer filled with the pixel data
      * @param pitch the pitch of the pixels parameter
-     * @return SDLO::Renderer&
-     * @throw SDLO::Error on failure
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
      * @remark This is a very slow operation, and should not be used frequently.
      */
     Renderer& readPixels(const Rect& rect, PixelFormats format, void* pixels, int pitch); // Need to be change in the future
@@ -392,7 +392,7 @@ namespace SDLO
      * @brief Return wheter the renderer supports the use of render targets.
      * @return bool
      * @version **SDL2.0.0**
-     * @sa SDLO::Renderer::setTarget
+     * @sa SO::Renderer::setTarget
      */
     bool targetSupported() const;
 #endif

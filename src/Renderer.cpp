@@ -29,12 +29,12 @@
 
 #include "Renderer.hpp"
 
-namespace SDLO
+namespace SO
 {
 
   // constructors/destructor
 
-  Renderer::Renderer(Window& window, RendererFlags flags, int index)
+  Renderer::Renderer(Window& window, Render flags, int index)
     : m_renderer(nullptr)
   {
     m_renderer = SDL_CreateRenderer(window.toSDL(), index, (Uint32)flags);
@@ -110,7 +110,7 @@ namespace SDLO
     int w, h;
 
     if (SDL_GetRendererOutputSize(m_renderer, &w, &h) != 0)
-      throw SDLO::Error(SDL_GetError());
+      throw SO::Error(SDL_GetError());
 
     return {w, h};
   }
@@ -201,7 +201,7 @@ namespace SDLO
 
     if (this->getInfo(info) == 0)
     {
-      if (info.flags & (Uint32)RendererFlags::TargetTexture)
+      if (info.flags & (Uint32)Render::TargetTexture)
 	if (SDL_SetRenderTarget(m_renderer, texture.toSDL()) != 0)
 	  throw Error(SDL_GetError());
       return true;
@@ -320,7 +320,7 @@ namespace SDLO
   Renderer& Renderer::drawLine(int x1, int y1, int x2, int y2)
   {
     if (SDL_RenderDrawLine(m_renderer, x1, y1, x2, y2) != 0)
-      throw SDLO::Error(SDL_GetError());
+      throw SO::Error(SDL_GetError());
 
     return *this;
   }
@@ -347,7 +347,7 @@ namespace SDLO
   Renderer& Renderer::drawPoint(int x, int y)
   {
     if (SDL_RenderDrawPoint(m_renderer, x, y) != 0)
-      throw SDLO::Error(SDL_GetError());
+      throw SO::Error(SDL_GetError());
 
     return *this;
   }
@@ -371,7 +371,7 @@ namespace SDLO
   Renderer& Renderer::drawRect(const Rect& rect)
   {
     if (SDL_RenderDrawRect(m_renderer, (const SDL_Rect*)&rect) != 0)
-      throw SDLO::Error(SDL_GetError());
+      throw SO::Error(SDL_GetError());
 
     return *this;
   }
@@ -389,7 +389,7 @@ namespace SDLO
   Renderer& Renderer::fillRect(const Rect& rect)
   {
     if (SDL_RenderFillRect(m_renderer, (const SDL_Rect*)&rect) != 0)
-      throw SDLO::Error(SDL_GetError());
+      throw SO::Error(SDL_GetError());
 
     return *this;
   }
@@ -410,7 +410,7 @@ namespace SDLO
 			     (const SDL_Rect*)&rect,
 			     (Uint32)format,
 			     pixels, pitch) != 0)
-      throw SDLO::Error(SDL_GetError());
+      throw SO::Error(SDL_GetError());
 
     return *this;
   }

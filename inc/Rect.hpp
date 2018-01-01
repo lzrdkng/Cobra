@@ -34,7 +34,7 @@
 
 #include "Point.hpp"
 
-namespace SDLO
+namespace SO
 {
 
   /**

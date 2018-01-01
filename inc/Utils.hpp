@@ -10,7 +10,7 @@
 #include "Error.hpp"
 
 
-namespace SDLO
+namespace SO
 {  
   typedef std::complex<double> Coord;
 
@@ -19,18 +19,19 @@ namespace SDLO
 
   class Color;
 
+/**
+ * Allow to OR/AND enum class of type T casted to type S. Useful for
+ * flags.
+ */
 #define __ENUM_CLASS_OR_OVERLOAD__(T, S) inline T operator|(T l, T r)	\
   {return static_cast<T>(static_cast<S>(l) | static_cast<S>(r));}
   
 #define __ENUM_CLASS_AND_OVERLOAD__(T, S) inline T operator&(T l, T r)	\
-  {return static_cast<T>(static_cast<S>(l) & static_cast<S>(r));}
+{return static_cast<T>(static_cast<S>(l) & static_cast<S>(r));}
 
-
-#define __NAME_COLLISION_HACK__(NAME) NAME 
-
-  enum class InitFlags : Uint32
+  enum class Init : Uint32
   {
-    Null           = 0,                       /**< Equivalent to NULL */
+    Null           = 0,
     Timer          = SDL_INIT_TIMER,          /**< Timer subsystem */
     Audio          = SDL_INIT_AUDIO,          /**< Audio subsystem */
     Video          = SDL_INIT_VIDEO,          /**< Video
@@ -51,14 +52,14 @@ namespace SDLO
     Noparachute    = SDL_INIT_NOPARACHUTE     /** Compatibility. This flag is ignored */
   };
 
-  __ENUM_CLASS_OR_OVERLOAD__(InitFlags, Uint32)
-  __ENUM_CLASS_AND_OVERLOAD__(InitFlags, Uint32)
+  __ENUM_CLASS_OR_OVERLOAD__(Init, Uint32)
+  __ENUM_CLASS_AND_OVERLOAD__(Init, Uint32)
 
-#undef InputFocus
+#undef InputFocus // Beaucse InputFocus already define in X11 lib
   
-  enum class WindowFlags : Uint32
+  enum class Wind : Uint32
   {
-    Null              = 0,
+    Null              = 0,   
     Fullscreen        = SDL_WINDOW_FULLSCREEN,
     FullscreenDesktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
     OpenGL            = SDL_WINDOW_OPENGL,
@@ -80,14 +81,16 @@ namespace SDLO
     PopupMenu         = SDL_WINDOW_POPUP_MENU
   };
 
-#define InputFocus 1L
+  __ENUM_CLASS_OR_OVERLOAD__(Wind, Uint32)
+  __ENUM_CLASS_AND_OVERLOAD__(Wind, Uint32)
 
-  __ENUM_CLASS_OR_OVERLOAD__(WindowFlags, Uint32)
-  __ENUM_CLASS_AND_OVERLOAD__(WindowFlags, Uint32)
 
-  enum class RendererFlags : Uint32
+#define InputFocus 1L // Restore value
+
+  enum class Render : Uint32
   {
-    Null          = 0,                          /**< Equivalent to NULL */
+    Null          = 0,
+    
     Software      = SDL_RENDERER_SOFTWARE,      /**< The renderer is
 						   a software
 						   fallback */
@@ -99,13 +102,15 @@ namespace SDLO
 						   the refresh
 						   rate */
     TargetTexture = SDL_RENDERER_TARGETTEXTURE  /**< The renderer
-						   supports
+p						   supports
 						   rendering
 						   texture */
   };
 
-  __ENUM_CLASS_OR_OVERLOAD__(RendererFlags, Uint32)
-  __ENUM_CLASS_AND_OVERLOAD__(RendererFlags, Uint32)
+
+  __ENUM_CLASS_OR_OVERLOAD__(Render, Uint32)
+  __ENUM_CLASS_AND_OVERLOAD__(Render, Uint32)
+  
 
   /**< Flags to create renderer. */
 
@@ -191,30 +196,31 @@ namespace SDLO
   };
 
 #ifdef SDL_IMAGE_H_
-  enum class ImageInitFlags : int
+  enum class ImageInit : int
   {
-    JPG = IMG_INIT_JPG,
-    PNG = IMG_INIT_PNG,
-    TIF = IMG_INIT_TIF
+    Null = 0,
+    JPG  = IMG_INIT_JPG,
+    PNG  = IMG_INIT_PNG,
+    TIF  = IMG_INIT_TIF
   };
-
-  __ENUM_CLASS_OR_OVERLOAD__(ImageInitFlags,int)
-  __ENUM_CLASS_AND_OVERLOAD__(ImageInitFlags, int)
+  
+  __ENUM_CLASS_OR_OVERLOAD__(ImageInit, Uint32)
+  __ENUM_CLASS_AND_OVERLOAD__(ImageInit, Uint32)
 
 #endif
 
-  void init(InitFlags flags);
+  void init(Init flags);
 
   /**
    * @brief Return a mask of the specified subsystems initialized.
    * @param flags
-   * @return If flags is SDLO::InitNull it returns a mask of all initiliazed
+   * @return If flags is SO::InitNull it returns a mask of all initiliazed
    * subsystems, otherwise it returns the initialization status of the
    * specified subsystems. The return value does not include
-   * SDLO::InitNoparachute
-   * @sa SDLO::InitFlags
+   * SO::InitNoparachute
+   * @sa SO::Init
    */
-  inline Uint32 wasInit(InitFlags flags)
+  inline Uint32 wasInit(Init flags)
   {
     return SDL_WasInit(static_cast<Uint32>(flags));
   }
@@ -246,7 +252,7 @@ namespace SDLO
    * @return True on success, false otherwise.
    * @remark Hints will not be set if there is an existing override
    * hint or environment variable that takes precedence. You can use
-   * SDLO::setHintWithPriority to set the hint with override priority
+   * SO::setHintWithPriority to set the hint with override priority
    * instead.
    */
   inline bool setHint(const char* name, const char* value)

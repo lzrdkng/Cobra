@@ -3,9 +3,9 @@
 #include "Color.hpp"
 
 
-namespace SDLO
+namespace SO
 {
-  void init(InitFlags flags)
+  void init(Init flags)
   {
     static bool isInit = false;
 

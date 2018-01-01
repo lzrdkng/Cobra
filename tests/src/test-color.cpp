@@ -32,12 +32,12 @@
 #include "catch.hpp"
 #include "Color.hpp"
 
-SCENARIO( "class SDLO::Color", "[Color]" )
+SCENARIO( "class SO::Color", "[Color]" )
 {
   GIVEN( "A black Color named B and a white color named W" )
   {
-    SDLO::Color B;
-    SDLO::Color W {255, 255, 255, 255};
+    SO::Color B;
+    SO::Color W {255, 255, 255, 255};
 
     // get methods
     REQUIRE( B.getRed() == 0 );
@@ -50,8 +50,8 @@ SCENARIO( "class SDLO::Color", "[Color]" )
     REQUIRE( W.getBlue() == 255);
     REQUIRE( W.getAlpha() == 255);
 
-    REQUIRE(B == SDLO::Color::Black);
-    REQUIRE(W == SDLO::Color::White);
+    REQUIRE(B == SO::Color::Black);
+    REQUIRE(W == SO::Color::White);
 
     WHEN( "Colors are compared" ) // operators == !=
     {
@@ -65,7 +65,7 @@ SCENARIO( "class SDLO::Color", "[Color]" )
     }
     WHEN( "Color C is copied from Color W" ) // copy constructor
     {
-      SDLO::Color C(W);
+      SO::Color C(W);
 
       THEN( "C equal W" )
       {
@@ -74,7 +74,7 @@ SCENARIO( "class SDLO::Color", "[Color]" )
     }
     WHEN( "Color A is assigned Color W" ) // operator =
     {
-      SDLO::Color A = W;
+      SO::Color A = W;
 
       THEN( "A equal W" )
       {
@@ -83,7 +83,7 @@ SCENARIO( "class SDLO::Color", "[Color]" )
     }
     WHEN( "Color S is created from class Color static method 'fromRGB' with same values as W" ) // static methods fromRGB fromRGBA
     {
-      SDLO::Color S = SDLO::Color::fromRGB(255, 255, 255);
+      SO::Color S = SO::Color::fromRGB(255, 255, 255);
 
       THEN( "S equal W" )
       {

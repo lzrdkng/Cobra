@@ -30,7 +30,7 @@
 #include "Texture.hpp"
 #include "Renderer.hpp"
 
-namespace SDLO
+namespace SO
 {
 
   // Public methods of class CTexture

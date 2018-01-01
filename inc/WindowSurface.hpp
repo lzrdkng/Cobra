@@ -4,7 +4,7 @@
 #include "Surface.hpp"
 #include "Window.hpp"
 
-namespace SDLO
+namespace SO
 {
 
   class WindowSurface : public Surface

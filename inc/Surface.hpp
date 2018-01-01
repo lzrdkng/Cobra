@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace SDLO
+namespace SO
 {
 
   class Surface
@@ -30,14 +30,14 @@ namespace SDLO
 
 
     /**
-     * @brief Return a wrapped SDL_Rect structure used to clip blits to the surface which can be set by SDLO::Surface::setClipRect().
-     * @return SDLO::Rect
+     * @brief Return a wrapped SDL_Rect structure used to clip blits to the surface which can be set by SO::Surface::setClipRect().
+     * @return SO::Rect
      */
     Rect getClipRect() const;
 
     /**
      * @brief Return the format of the pixels stored in the surface.
-     * @return SDLO::PixelFormats
+     * @return SO::PixelFormats
      */
 
     //PixelFormat getFormat() const;
@@ -63,8 +63,8 @@ namespace SDLO
      * @param srcRect the area to be copied.
      * @param dst the surface destination.
      * @param dstRect the area to be paste on.
-     * @return SDLO::Surface&
-     * @throw SDLO::Error on failure.
+     * @return SO::Surface&
+     * @throw SO::Error on failure.
      * @remark This method should not be called on a locked surface.
      * The width and height in srcRect determine the size of the copied rectangle.
      * Only the position is used in the destRect (the width and height are ignored).
@@ -78,8 +78,8 @@ namespace SDLO
      * @brief Use this method to perform a total fast surface copy to a destination surface.
      * @param dst the surface destination
      * @param dstRect the are to be paste on.
-     * @return SDLO::Surface&
-     * @throw SDLO::Error on failure.
+     * @return SO::Surface&
+     * @throw SO::Error on failure.
      */
     Surface& blit(Surface& dst, Rect& dstRect);
 
@@ -93,8 +93,8 @@ namespace SDLO
      * @param srcRect
      * @param dst
      * @param dstRect
-     * @return SDLO::Surface&
-     * @throw SDLO::Error on failure.
+     * @return SO::Surface&
+     * @throw SO::Error on failure.
      */
     Surface& blitScaled(const Rect& srcRect, Surface& dst, Rect& dstRect);
 
@@ -110,8 +110,8 @@ namespace SDLO
      *
      * @param rect the rectangle to fill
      * @param color the color to fill with
-     * @return SDLO::Surface&
-     * @throw SDLO::Error on failure.
+     * @return SO::Surface&
+     * @throw SO::Error on failure.
      */
     Surface& fillRect(const Rect& rect, Uint32 color);
 

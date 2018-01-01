@@ -32,12 +32,12 @@
 #include "Point.hpp"
 
 
-SCENARIO("class SDLO::Point", "[Point]")
+SCENARIO("class SO::Point", "[Point]")
 {
   GIVEN("A point Z with values (0,0) and a point U with values (1,1)")
     {
-      SDLO::Point Z(0,0);
-      SDLO::Point U(1,1);
+      SO::Point Z(0,0);
+      SO::Point U(1,1);
 
       REQUIRE((Z.getX() == 0 && Z.getY() == 0)); // get methods
 
@@ -52,7 +52,7 @@ SCENARIO("class SDLO::Point", "[Point]")
         }
       WHEN("When a new point C is copied from U") // copy constructor
         {
-	  SDLO::Point C(U);
+	  SO::Point C(U);
 
 	  THEN("C == U return true")
             {
@@ -61,7 +61,7 @@ SCENARIO("class SDLO::Point", "[Point]")
         }
       WHEN("When a point S is created from static method fromInt with values (1,1)") // static method fromInt
         {
-	  SDLO::Point S = SDLO::Point::fromInt(1,1);
+	  SO::Point S = SO::Point::fromInt(1,1);
 
 	  THEN("S == U return true")
             {
@@ -71,7 +71,7 @@ SCENARIO("class SDLO::Point", "[Point]")
       WHEN("When a point S is created from static method fromSDL with value SDL_Point {1,1}") // static method fromSDL
         {
 	  SDL_Point point {1,1};
-	  SDLO::Point S = SDLO::Point::fromSDL(point);
+	  SO::Point S = SO::Point::fromSDL(point);
 
 	  THEN("S == U return true")
             {

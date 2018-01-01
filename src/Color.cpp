@@ -1,6 +1,6 @@
 #include "Color.hpp"
 
-namespace SDLO
+namespace SO
 {
   const Color Color::White {0xFF, 0xFF, 0xFF};
 

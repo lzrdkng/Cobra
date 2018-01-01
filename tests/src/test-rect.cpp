@@ -31,13 +31,13 @@
 #include "catch.hpp"
 #include "Rect.hpp"
 
-SCENARIO("clas SDLO::Rect", "[Rect]")
+SCENARIO("clas SO::Rect", "[Rect]")
 {
   GIVEN("A Rect instance N with values (0, 0, 0, 0) and a Rect"
 	"instance U with values (0, 0, 1, 1)")
     {
-      SDLO::Rect N;
-      SDLO::Rect U(0, 0, 1, 1);
+      SO::Rect N;
+      SO::Rect U(0, 0, 1, 1);
 
       // get methods
       REQUIRE((
@@ -60,7 +60,7 @@ SCENARIO("clas SDLO::Rect", "[Rect]")
       // operator =
       WHEN("A is asigned U")
         {
-	  SDLO::Rect A = U;
+	  SO::Rect A = U;
 
 	  THEN("A == U")
             {
@@ -71,7 +71,7 @@ SCENARIO("clas SDLO::Rect", "[Rect]")
       // copy constructor
       WHEN("C is copied from U")
         {
-	  SDLO::Rect C(U);
+	  SO::Rect C(U);
 
 	  THEN("C == U")
             {
@@ -83,7 +83,7 @@ SCENARIO("clas SDLO::Rect", "[Rect]")
       WHEN("SC is implicility construct from SDL_Rect (0, 0, 1, 1)")
         {
 	  SDL_Rect rect {0, 0, 1, 1};
-	  SDLO::Rect SC(rect);
+	  SO::Rect SC(rect);
 
 	  THEN("SC == U")
             {
@@ -105,7 +105,7 @@ SCENARIO("clas SDLO::Rect", "[Rect]")
       // static method fromInt
       WHEN("S is created from static method fromInt with values (0, 0, 1, 1)")
         {
-	  SDLO::Rect S = SDLO::Rect::fromInt(0, 0, 1, 1);
+	  SO::Rect S = SO::Rect::fromInt(0, 0, 1, 1);
 
 	  THEN("S == U")
             {

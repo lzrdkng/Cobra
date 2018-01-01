@@ -1,6 +1,6 @@
 #include "Surface.hpp"
 
-namespace SDLO
+namespace SO
 {
 
   Surface::Surface(SDL_Surface* surface) : m_surface(surface)

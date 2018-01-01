@@ -32,14 +32,14 @@
 
 // Public interface
 
-namespace SDLO
+namespace SO
 {
 
 // constructor/destructor
   
   Window::Window(const char* title,
 		 Pair<int> size,
-		 WindowFlags flags,
+		 Wind flags,
 		 Pair<int> pos)
     : m_window(nullptr)
   {
@@ -52,7 +52,7 @@ namespace SDLO
       throw Error(SDL_GetError());
   }
 
-  Window::Window(const char* title, WindowFlags flags)
+  Window::Window(const char* title, Wind flags)
     : m_window(nullptr)
   {
     m_window = SDL_CreateWindow(title,
@@ -70,7 +70,7 @@ namespace SDLO
   {
     Point       pos   = orig.getPosition();
     Pair<int>   size  = orig.getSize();
-    WindowFlags flags = orig.getFlags();
+    Wind flags = orig.getFlags();
 
     m_window = SDL_CreateWindow(orig.getTitle(),
                                 pos.getX(), pos.getY(),
@@ -94,9 +94,9 @@ namespace SDLO
 
 
 
-  WindowFlags Window::getFlags() const
+  Wind Window::getFlags() const
   {
-    return static_cast<WindowFlags>(SDL_GetWindowFlags(m_window));
+    return static_cast<Wind>(SDL_GetWindowFlags(m_window));
   }
 
   bool Window::getGrab() const
@@ -187,7 +187,7 @@ namespace SDLO
 #endif
 
 
-  Window& Window::setFullscreen(WindowFlags flags)
+  Window& Window::setFullscreen(Wind flags)
   {
     if (SDL_SetWindowFullscreen(m_window, static_cast<Uint32>(flags)) != 0)
       throw Error(SDL_GetError());

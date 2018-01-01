@@ -38,7 +38,7 @@
 #include "Color.hpp"
 #include "Rect.hpp"
 
-namespace SDLO
+namespace SO
 {
 
   class Renderer;
@@ -84,8 +84,8 @@ namespace SDLO
     /**
      * @brief Set the blend mode of the texture.
      * @param blendMode
-     * @return SDLO::Texture&
-     * @throw SDLO::Error on failure.
+     * @return SO::Texture&
+     * @throw SO::Error on failure.
      */
     Texture& setBlendMode(BlendModes blendMode);
 
@@ -106,7 +106,7 @@ namespace SDLO
       const CRect& dst,
       const double angle,
       const CPoint& center,
-      SDLO::RendererFlip flip);*/
+      SO::RendererFlip flip);*/
 
 #ifdef SDL_IMAGE_H_
     Texture& loadFromFile(const char* file,

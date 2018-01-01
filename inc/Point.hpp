@@ -32,7 +32,7 @@
 
 #include <SDL2/SDL_rect.h>
 
-namespace SDLO
+namespace SO
 {
 
   /**

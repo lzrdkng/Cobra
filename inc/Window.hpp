@@ -39,7 +39,7 @@
 
 #include "Point.hpp"
 
-namespace SDLO
+namespace SO
 {
 
   /**
@@ -53,7 +53,7 @@ namespace SDLO
   public:
 
     /**
-     * @brief Explicit constructor for Class SDLO::Window.
+     * @brief Explicit constructor for Class SO::Window.
      *
      * Create a new window with the specified
      * title, position, dimensions, and flags.
@@ -63,10 +63,10 @@ namespace SDLO
      * @param y the y position of the window
      * @param w the width of the window, in screen coordinates
      * @param h the height of the window, in screen coordinates
-     * @param flags SDLO::WindowFlags
+     * @param flags SO::Wind
      *
      *
-     * @throw SDLO::Error
+     * @throw SO::Error
      *
      * If SDL failed to create the window.
      *
@@ -74,7 +74,7 @@ namespace SDLO
 
     explicit Window(const char* title,
 		    Pair<int> size = {640, 480},
-		    WindowFlags flags = WindowFlags::Shown,
+		    Wind flags = Wind::Shown,
 		    Pair<int> pos = {static_cast<int>(WindowPositions::Undefined),
 				     static_cast<int>(WindowPositions::Undefined)});
     
@@ -83,10 +83,10 @@ namespace SDLO
 		    Pair<int> pos);
 
     explicit Window(const char* title,
-		    WindowFlags flags);
+		    Wind flags);
 
     /**
-     * @brief Copy constructor of Class SDLO::Window.
+     * @brief Copy constructor of Class SO::Window.
      *
      * Create a new window with the same attribute as the original.
      *
@@ -105,10 +105,10 @@ namespace SDLO
     
     
     
-    /** Return a mask of the SDLO::WindowFlags.
-     * @return SDLO::WindowFlags
+    /** Return a mask of the SO::Wind.
+     * @return SO::Wind
      */
-    WindowFlags getFlags() const;
+    Wind getFlags() const;
 
     /** Return state of window's grabbed.
      * @return bool
@@ -118,19 +118,19 @@ namespace SDLO
     /**
      * @brief Return the window's ID.
      * @return Uint32
-     * @throw SDLO::Error on failure
+     * @throw SO::Error on failure
      */
     Uint32 getID() const;
 
     /** Return the window's maximum size.
      *  @return std::pair<int, int>
-     *  @sa SDLO::Pair
+     *  @sa SO::Pair
      */
     Pair<int> getMaximumSize() const;
 
     /** Return the window's minimum size.
      *  @return std::pair<int, int>
-     *  @sa SDLO::Pair
+     *  @sa SO::Pair
      */
     Pair<int> getMinimumSize() const;
 
@@ -139,13 +139,13 @@ namespace SDLO
     /**
      * @brief Return the window' opacity
      * @return float
-     * @throw SDLO::Error on failure
+     * @throw SO::Error on failure
      */
     float getOpacity() const;
 #endif
 
     /** Return the window's position.
-     *  @return SDLO::Point
+     *  @return SO::Point
      */
     Point getPosition() const;
 
@@ -174,28 +174,28 @@ namespace SDLO
     /**
      * @brief Get the driver specific information about the window.
      * @return SDL_SysWMInfo structure
-     * @throw SDLO::Error if information could not be retrieved.
+     * @throw SO::Error if information could not be retrieved.
      */
     SDL_SysWMinfo getWMInfo() const;
 #endif
     
     /** Set the window's fullscreen state.
      * @param Uint32 flags
-     * @return SDLO::Window&
-     * @throw SDLO::Error on failure.
+     * @return SO::Window&
+     * @throw SO::Error on failure.
      */
-    Window& setFullscreen(WindowFlags flags);
+    Window& setFullscreen(Wind flags);
 
     /** Set the window's input grab mode.
      * @param bool grabbed
-     * @return SDLO::Window&
+     * @return SO::Window&
      */
     Window& setGrab(bool grabbed);
 
     /** Set the window's maximum size.
      * @param int width
      * @param int height
-     * @return SDLO::Window&
+     * @return SO::Window&
      * @note Values **under** 0 or **overflow** of **int size**
      * will result in value 0.
      */
@@ -204,7 +204,7 @@ namespace SDLO
     /** Set the window's minimum size
      * @param int width
      * @param int height
-     * @return SDLO::Window&
+     * @return SO::Window&
      * @note Values **under** 0 or **overflow** of **int size**
      * wil result in value 0.
      */
@@ -214,14 +214,14 @@ namespace SDLO
     /**
      * @brief Set the opacity of the window.
      * @param opacity the opacity value [0, 1] == [transparent -> opaque]
-     * @return SDLO::Window&
-     * @throw SDLO::Error on failure
+     * @return SO::Window&
+     * @throw SO::Error on failure
      * @remark The parameter **opacity** will be clamped internally between
      * 0.0f (transparent) and 1.0f (opaque). This function also returns -1 if
      * setting the opacity isn't supported.
      * This function is only supported on DirectFB, X11, Cocoa (Apple Mac OS X)
      * and Microsoft Windows.
-     * @sa SDLO::Window::getOpacity
+     * @sa SO::Window::getOpacity
      */
     Window& setOpacity(float opacity);
 #endif
@@ -239,12 +239,12 @@ namespace SDLO
     /**
      * @brief Set the user-resizable state of the window.
      * @param resizable
-     * @return SDLO::Window&
-     * @remark This will ad or remove the window's SDLO::WindowResizable flags
+     * @return SO::Window&
+     * @remark This will ad or remove the window's SO::WindowResizable flags
      * and allow/disallow user resizing of the window. This is a no-op if the
      * window's resizable state already matches the requested state.
      * @note You can't change the resizable state of a fullscreen window.
-     * @sa SDLO::Window::getFlags
+     * @sa SO::Window::getFlags
      */
     Window& setResizable(bool resizable);
 #endif
@@ -309,8 +309,8 @@ namespace SDLO
     
     /**
      * @brief Use this method to copy the window surface to the screen.
-     * @return SDLO::Window&
-     * @throw SDLO::Error on failure.
+     * @return SO::Window&
+     * @throw SO::Error on failure.
      */
     Window& update();
 

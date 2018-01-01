@@ -32,7 +32,7 @@
 
 #include <SDL2/SDL_pixels.h>
 
-namespace SDLO
+namespace SO
 {
 
   /**

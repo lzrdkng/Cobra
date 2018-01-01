@@ -16,21 +16,21 @@
 
 TEST_CASE("Init subsystems")
 {
-  SDLO::init(SDLO::InitFlags::Everything);
+  SO::init(SO::Init::Everything);
 
-  SDLO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+  SO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
 #ifdef  SDL_IMAGE_H_
-  SDLO::initImage(SDLO::ImageInitFlags::PNG | SDLO::ImageInitFlags::JPG);
+  SO::initImage(SO::ImageInit::PNG | SO::ImageInit::JPG);
 #endif
 }
 
 #if INTERACT & 1
 TEST_CASE("Creating a window", "[window, tutorial]")
 {
-  SDLO::Window window("Creating a window [1]");
+  SO::Window window("Creating a window [1]");
 
-  SDLO::WindowSurface screenSurface(window);
+  SO::WindowSurface screenSurface(window);
 
   screenSurface.fillRect(12000);
 
@@ -41,11 +41,11 @@ TEST_CASE("Creating a window", "[window, tutorial]")
 #if INTERACT & 2
 TEST_CASE("Getting an image on the screen", "[image, tutorial]")
 {
-  SDLO::Window window("Getting an image on the screen [2]");
+  SO::Window window("Getting an image on the screen [2]");
 
-  SDLO::WindowSurface screenSurface(window);
+  SO::WindowSurface screenSurface(window);
 
-  SDLO::Surface imageSurface("media/hello_world.bmp", &screenSurface);
+  SO::Surface imageSurface("media/hello_world.bmp", &screenSurface);
 
   imageSurface.blit(screenSurface);
 
@@ -56,11 +56,11 @@ TEST_CASE("Getting an image on the screen", "[image, tutorial]")
 #if INTERACT & 4
 TEST_CASE("Event driven programming", "[event, tutorial")
 {
-  SDLO::Window window("Event driven programming [3]");
+  SO::Window window("Event driven programming [3]");
 
-  SDLO::WindowSurface windowSurface(window);
+  SO::WindowSurface windowSurface(window);
 
-  SDLO::Surface imageSurface("media/x.bmp");
+  SO::Surface imageSurface("media/x.bmp");
 
   SDL_Event event;
 
@@ -97,17 +97,17 @@ TEST_CASE("Key presses", "[key, tutorial")
 
 
 
-  SDLO::Window window("Key presses [4]");
+  SO::Window window("Key presses [4]");
 
-  SDLO::WindowSurface windowSurface(window);
+  SO::WindowSurface windowSurface(window);
 
-  std::vector<SDLO::Surface*> keyPressSurfaces = {new SDLO::Surface("media/press.bmp"),
-						  new SDLO::Surface("media/up.bmp"),
-						  new SDLO::Surface("media/down.bmp"),
-						  new SDLO::Surface("media/left.bmp"),
-						  new SDLO::Surface("media/right.bmp")};
+  std::vector<SO::Surface*> keyPressSurfaces = {new SO::Surface("media/press.bmp"),
+						  new SO::Surface("media/up.bmp"),
+						  new SO::Surface("media/down.bmp"),
+						  new SO::Surface("media/left.bmp"),
+						  new SO::Surface("media/right.bmp")};
   
-  SDLO::Surface* currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
+  SO::Surface* currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
 
   SDL_Event event; 
 
@@ -162,13 +162,13 @@ TEST_CASE("Key presses", "[key, tutorial")
 TEST_CASE("Optimized surface loading and soft stretching",
           "[surface, stretch, tutorial]")
 {
-  SDLO::Window window("Optimized surface loading and soft stretching [5]");
+  SO::Window window("Optimized surface loading and soft stretching [5]");
 
-  SDLO::WindowSurface windowSurface(window);
+  SO::WindowSurface windowSurface(window);
 
-  SDLO::Surface stretchedSurface("media/stretch.bmp", &windowSurface);
+  SO::Surface stretchedSurface("media/stretch.bmp", &windowSurface);
 
-  SDLO::Rect stretchRect(0, 0, 640, 480);
+  SO::Rect stretchRect(0, 0, 640, 480);
 
   stretchedSurface.blitScaled(windowSurface, stretchRect);
 
@@ -195,12 +195,12 @@ TEST_CASE("Optimized surface loading and soft stretching",
 TEST_CASE("Extension libraries and loading other image formats",
           "[SDL_image, lib, image, tutorial]")
 {
-  SDLO::Window window("Extension libraries and loading other image formats "
+  SO::Window window("Extension libraries and loading other image formats "
 		      "[6]");
 
-  SDLO::WindowSurface windowSurface(window);
+  SO::WindowSurface windowSurface(window);
 
-  SDLO::Surface pngSurface("media/loaded.png", &windowSurface);
+  SO::Surface pngSurface("media/loaded.png", &windowSurface);
 
   pngSurface.blit(windowSurface);
 
@@ -213,12 +213,12 @@ TEST_CASE("Extension libraries and loading other image formats",
 #if INTERACT & 64
 TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 {
-  SDLO::Window window("Texture Loading and Rendering [7]");
+  SO::Window window("Texture Loading and Rendering [7]");
 
-  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
-  render.setDrawColor(SDLO::Color {0, 0, 0});
+  SO::Renderer render(window, SO::Render::Accelerated);
+  render.setDrawColor(SO::Color {0, 0, 0});
 
-  SDLO::Texture loadedTexture(render, "media/texture.png");
+  SO::Texture loadedTexture(render, "media/texture.png");
 
   SDL_Event event;
 
@@ -244,12 +244,12 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 #if INTERACT & 128
 TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 {
-  SDLO::Window window("Geometry Rendering [8]");
+  SO::Window window("Geometry Rendering [8]");
   window.setResizable(true);
 
-  SDLO::Pair<int> size = window.getSize();
+  SO::Pair<int> size = window.getSize();
 
-  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
+  SO::Renderer render(window, SO::Render::Accelerated);
 
   SDL_Event event;
 
@@ -311,16 +311,16 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 #if INTERACT & 256
 TEST_CASE("The Viewport", "[viewport]")
 {
-  SDLO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+  SO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
     
-  SDLO::Window window("The Viewport [9]");
+  SO::Window window("The Viewport [9]");
   window.setResizable(true);
 
-  SDLO::Pair<int> size = window.getSize();
+  SO::Pair<int> size = window.getSize();
 
-  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
+  SO::Renderer render(window, SO::Render::Accelerated);
 
-  SDLO::Texture texture (render, "media/viewport.png");
+  SO::Texture texture (render, "media/viewport.png");
 
   SDL_Event event;
 
@@ -359,13 +359,13 @@ TEST_CASE("The Viewport", "[viewport]")
 #if INTERACT & 512
 TEST_CASE("Color keying", "[Color]")
 {
-  SDLO::Window window("Color keying [10]");
+  SO::Window window("Color keying [10]");
 
-  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
+  SO::Renderer render(window, SO::Render::Accelerated);
 
-  SDLO::Texture foo(render, "media/foo.png", {0, 255, 255});
+  SO::Texture foo(render, "media/foo.png", {0, 255, 255});
 
-  SDLO::Texture background(render, "media/background.png", {0, 255, 255});
+  SO::Texture background(render, "media/background.png", {0, 255, 255});
 
   SDL_Event event;
 
@@ -397,18 +397,18 @@ TEST_CASE("Color keying", "[Color]")
 TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 {
 
-  SDLO::Window window("Clip Rendering and Sprite Sheets [11]");
+  SO::Window window("Clip Rendering and Sprite Sheets [11]");
 
-  SDLO::Pair<int> size = window.getSize();
+  SO::Pair<int> size = window.getSize();
 
-  SDLO::Renderer render(window, SDLO::RendererFlags::Accelerated);
+  SO::Renderer render(window, SO::Render::Accelerated);
 
-  SDLO::Texture spriteSheet(render, "media/dots.png");
+  SO::Texture spriteSheet(render, "media/dots.png");
 
   int width = spriteSheet.getWidth();
   int height = spriteSheet.getHeight();
 
-  std::vector<SDLO::Rect> spriteClips ={{0, 0, 100, 100},
+  std::vector<SO::Rect> spriteClips ={{0, 0, 100, 100},
 					{100, 0, 100, 100},
 					{0, 100, 100, 100},
 					{100, 100, 100, 100}};
@@ -452,5 +452,5 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 
 TEST_CASE("Quit all subsystem")
 {
-  SDLO::quit();
+  SO::quit();
 }

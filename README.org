@@ -1,9 +1,9 @@
-* SDLO (Simple DirectMedia Layer ObjectOriented)
+* SO (SDL ObjectOriented)
 
 ** A *C++* wrapper around [[https://www.libsdl.org/][SDL]] cross-platform development library.
 
 ** Dependencies
-   *SDLO* is intend to work with all *SDL2* major versions.
+   *SO* is intend to work with all *SDL2* major versions.
    Other libraries such as [[https://www.libsdl.org/projects/SDL_image/][SDL_image]] and [[https://www.libsdl.org/projects/SDL_ttf/][SDL_ttf]] work too.
 
 ** Build library
@@ -17,60 +17,60 @@
    remove *-lSDL2_image* in *LIBS* from *MakeFile*.
 
 ** Testings
- *SDLO* uses [[https://github.com/philsquared/Catch][Catch]] for its testing.
+   *SO* uses [[https://github.com/philsquared/Catch][Catch]] for its testing.
 
- To *run* tests, use *make tests*.
+   To *run* tests, use *make tests*.
 
- To *create* tests, you simply have to create a *.cpp* file under the directory *tests/src*. 
+   To *create* tests, you simply have to create a *.cpp* file under the directory *tests/src*. 
 
 ** Documentation
 
-   *SDLO* uses [[http://www.stack.nl/~dimitri/doxygen/][Doxygen]] to generate its documentation.
+   *SO* uses [[http://www.stack.nl/~dimitri/doxygen/][Doxygen]] to generate its documentation.
 
    To *generate* documentaion, use *make doc*.
 
 ** Namespace & function's name
 
-   To make *SDLO* easier to use, every class wrapper use the (almost) same 
+   To make *SO* easier to use, every class wrapper use the (almost) same 
    documentation provided by the SDL's [[https://wiki.libsdl.org/][Wiki]].
 
-   Every other none wrapper classes/functions offered by *SDLO* follow the exact same documentation style.
-   Also, to ensure no name collision, everything is wrap in namespace *SDLO*.
+   Every other none wrapper classes/functions offered by *SO* follow the exact same documentation style.
+   Also, to ensure no name collision, everything is wrap in namespace *SO*.
    Finally, every name are /CamelCase/.
 
 *** Examples
 
-    *SDL_Window* -> *SDLO::Window*
+    *SDL_Window* -> *SO::Window*
  
-    *SDL_GetWindowPosition* -> *SDLO::Window::getPosition*
+    *SDL_GetWindowPosition* -> *SO::Window::getPosition*
 
-    *SDL_Renderer* -> *SDLO::Renderer*
+    *SDL_Renderer* -> *SO::Renderer*
 
-    *SDL_RenderSetScale* -> *SDLO::Renderer::setScale*
+    *SDL_RenderSetScale* -> *SO::Renderer::setScale*
 
     Constants have also been re-written in *enum class*.
 
-    *SDL_INIT_VIDEO* -> *SDLO::InitFlags::Video*
+    *SDL_INIT_VIDEO* -> *SO::Init::Video*
 
-    *SDL_WINDOW_FULLSCREEN* -> *SDLO::WindowFlags::FullScreen**
+    *SDL_WINDOW_FULLSCREEN* -> *SO::Wind::FullScreen**
 
 ** Usage
 
 #+BEGIN_SRC C++
-  #include <SDLO/SDL.hpp>
-  #include <SDLO/Window.hpp>
-  #include <SDLO/Renderer.hpp>
+  #include <SO/SDL.hpp>
+  #include <SO/Window.hpp>
+  #include <SO/Renderer.hpp>
 
   int main()
   {
     // Call to SDL_Init with flag SDL_INIT_VIDEO
-    SDLO::init(SDLO::InitFlags::Video);
+    SO::init(SO::Init::Video);
 
     // Create a resizable window at position (0,0) of size (250, 250)
-    SDLO::Window root("Minimal app", 0, 0, SDLO::WindowFlags::Resizable, 250, 250);
+    SO::Window root("Minimal app", 0, 0, SO::Wind::Resizable, 250, 250);
 
     // Create a hardware accelerated renderer, hooked to root
-    SDLO::Renderer renderer(root, SDLO::RenderFlags::Accelerated);
+    SO::Renderer renderer(root, SO::RenderFlags::Accelerated);
 
     SDL_Event event;
 
@@ -94,7 +94,7 @@
     }  
 
     // Quit all subsystems
-    SDLO::quit();
+    SO::quit();
 
     return 0;
   }
@@ -102,4 +102,4 @@
 
 ** Others examples
 
-   To see others examples, see my other repo [[https://github.com/lzrdkng/SDLO-Examples][SDLO-Examples]].
+   To see others examples, see my other repo [[https://github.com/lzrdkng/SO-Examples][SO-Examples]].

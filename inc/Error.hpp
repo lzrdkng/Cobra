@@ -34,7 +34,7 @@
 
 #include <stdexcept>
 
-namespace SDLO
+namespace SO
 {
 
   class Error : public std::runtime_error

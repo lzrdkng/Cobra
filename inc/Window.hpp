@@ -52,6 +52,36 @@ namespace SO
   {
   public:
 
+    #undef InputFocus // Because InputFocus already defined in X11 lib
+
+    /** Window initialization flags */
+    enum
+    {
+      Null              = 0,   
+      Fullscreen        = SDL_WINDOW_FULLSCREEN,
+      FullscreenDesktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
+      OpenGL            = SDL_WINDOW_OPENGL,
+      Shown             = SDL_WINDOW_SHOWN,
+      Hidden            = SDL_WINDOW_HIDDEN,
+      Borderless        = SDL_WINDOW_BORDERLESS,
+      Resizable         = SDL_WINDOW_RESIZABLE,
+      Minimized         = SDL_WINDOW_MINIMIZED,
+      Maximized         = SDL_WINDOW_MAXIMIZED,
+      InputGrabbed      = SDL_WINDOW_INPUT_GRABBED,
+      InputFocus        = SDL_WINDOW_INPUT_FOCUS,
+      Foreign           = SDL_WINDOW_FOREIGN,
+      AllowHighDPI      = SDL_WINDOW_ALLOW_HIGHDPI,
+      MouseCapture      = SDL_WINDOW_MOUSE_CAPTURE,
+      AlwaysOnTop       = SDL_WINDOW_ALWAYS_ON_TOP,
+      SkipTaskbar       = SDL_WINDOW_SKIP_TASKBAR,
+      Utility           = SDL_WINDOW_UTILITY,
+      Tooltip           = SDL_WINDOW_TOOLTIP,
+      PopupMenu         = SDL_WINDOW_POPUP_MENU
+    };
+
+#define InputFocus 1L // Restor value
+    
+    
     /**
      * @brief Explicit constructor for Class SO::Window.
      *
@@ -74,7 +104,7 @@ namespace SO
 
     explicit Window(const char* title,
 		    Pair<int> size = {640, 480},
-		    Wind flags = Wind::Shown,
+		    Uint32 flags  = Window::Shown,
 		    Pair<int> pos = {static_cast<int>(WindowPositions::Undefined),
 				     static_cast<int>(WindowPositions::Undefined)});
     
@@ -83,7 +113,7 @@ namespace SO
 		    Pair<int> pos);
 
     explicit Window(const char* title,
-		    Wind flags);
+		    Uint32 flags);
 
     /**
      * @brief Copy constructor of Class SO::Window.
@@ -108,7 +138,7 @@ namespace SO
     /** Return a mask of the SO::Wind.
      * @return SO::Wind
      */
-    Wind getFlags() const;
+    Uint32 getFlags() const;
 
     /** Return state of window's grabbed.
      * @return bool
@@ -184,7 +214,7 @@ namespace SO
      * @return SO::Window&
      * @throw SO::Error on failure.
      */
-    Window& setFullscreen(Wind flags);
+    Window& setFullscreen(Uint32 flags);
 
     /** Set the window's input grab mode.
      * @param bool grabbed
@@ -314,8 +344,7 @@ namespace SO
      */
     Window& update();
 
-  private:
-    
+  private:    
     SDL_Window*   m_window;  // wrapped object
 
   };

@@ -35,31 +35,31 @@
 namespace SO
 {
 
-// constructor/destructor
+// constructors/destructor
   
   Window::Window(const char* title,
 		 Pair<int> size,
-		 Wind flags,
+		 Uint32 flags,
 		 Pair<int> pos)
     : m_window(nullptr)
   {
     m_window = SDL_CreateWindow(title,
 				pos.first, pos.second,
 				size.first, size.second,
-				static_cast<Uint32>(flags));
+				flags);
 
     if (m_window == nullptr)
       throw Error(SDL_GetError());
   }
 
-  Window::Window(const char* title, Wind flags)
+  Window::Window(const char* title, Uint32 flags)
     : m_window(nullptr)
   {
     m_window = SDL_CreateWindow(title,
 				static_cast<int>(WindowPositions::Undefined),
 				static_cast<int>(WindowPositions::Undefined),
 				640, 480,
-				static_cast<Uint32>(flags));
+				flags);
 
     if (m_window == nullptr)
       throw Error(SDL_GetError());
@@ -68,19 +68,17 @@ namespace SO
   Window::Window(const Window& orig)
     : m_window(nullptr)
   {
-    Point       pos   = orig.getPosition();
-    Pair<int>   size  = orig.getSize();
-    Wind flags = orig.getFlags();
+    Point     pos   = orig.getPosition();
+    Pair<int> size  = orig.getSize();
+    Uint32    flags = orig.getFlags();
 
     m_window = SDL_CreateWindow(orig.getTitle(),
                                 pos.getX(), pos.getY(),
 				size.first, size.second,
-                                static_cast<Uint32>(flags));
+				flags);
 
     if (m_window == nullptr)
       throw Error(SDL_GetError());
-
-
 
   }
 
@@ -92,11 +90,11 @@ namespace SO
     m_window   = nullptr;
   }
 
-
-
-  Wind Window::getFlags() const
+// Get methods
+  
+  Uint32 Window::getFlags() const
   {
-    return static_cast<Wind>(SDL_GetWindowFlags(m_window));
+    return SDL_GetWindowFlags(m_window);
   }
 
   bool Window::getGrab() const
@@ -187,9 +185,9 @@ namespace SO
 #endif
 
 
-  Window& Window::setFullscreen(Wind flags)
+  Window& Window::setFullscreen(Uint32 flags)
   {
-    if (SDL_SetWindowFullscreen(m_window, static_cast<Uint32>(flags)) != 0)
+    if (SDL_SetWindowFullscreen(m_window, flags) != 0)
       throw Error(SDL_GetError());
     
     return *this;

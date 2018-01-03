@@ -12,7 +12,7 @@ namespace SO
   {
 
 
-#ifndef SDL_IMAGE_H_
+#ifndef _SDL_IMAGE_H
     SDL_Surface* loadedSurface = SDL_LoadBMP(path);
 #else
     SDL_Surface* loadedSurface = IMG_Load(path);
@@ -20,7 +20,7 @@ namespace SO
 
     if (loadedSurface == nullptr)
       {
-#ifndef SDL_IMAGE_H_
+#ifndef _SDL_IMAGE_H
         throw Error(SDL_GetError());
 #else
         throw Error(IMG_GetError());

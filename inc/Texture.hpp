@@ -51,7 +51,7 @@ namespace SO
                      int height,
                      TextureAccess access=TextureAccess::Target,
                      PixelFormats format=PixelFormats::Unknown);
-#ifdef SDL_IMAGE_H_
+#ifdef _SDL_IMAGE_H
     explicit Texture(Renderer& renderer,
                      const char* file,
 		     const Color& colorKeying = {0, 0, 0, 0});
@@ -108,7 +108,7 @@ namespace SO
       const CPoint& center,
       SO::RendererFlip flip);*/
 
-#ifdef SDL_IMAGE_H_
+#ifdef _SDL_IMAGE_H
     Texture& loadFromFile(const char* file,
                           Renderer& renderer,
 			  const Color& colorKeying = {0, 0, 0, 0});

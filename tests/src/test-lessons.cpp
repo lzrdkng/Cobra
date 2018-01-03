@@ -12,7 +12,7 @@
 #include "Rect.hpp"
 #include "Renderer.hpp"
 
-#define INTERACT 1024
+#define INTERACT 0
 
 TEST_CASE("Init subsystems")
 {
@@ -20,12 +20,11 @@ TEST_CASE("Init subsystems")
 
   SO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-#ifdef  SDL_IMAGE_H_
+#ifdef  _SDL_IMAGE_H
   SO::initImage(SO::ImageInit::PNG | SO::ImageInit::JPG);
 #endif
 }
 
-#if INTERACT & 1
 TEST_CASE("Creating a window", "[window, tutorial]")
 {
   SO::Window window("Creating a window [1]");
@@ -36,9 +35,7 @@ TEST_CASE("Creating a window", "[window, tutorial]")
 
   window.update();
 }
-#endif
 
-#if INTERACT & 2
 TEST_CASE("Getting an image on the screen", "[image, tutorial]")
 {
   SO::Window window("Getting an image on the screen [2]");
@@ -51,9 +48,8 @@ TEST_CASE("Getting an image on the screen", "[image, tutorial]")
 
   window.update();
 }
-#endif
 
-#if INTERACT & 4
+
 TEST_CASE("Event driven programming", "[event, tutorial")
 {
   SO::Window window("Event driven programming [3]");
@@ -78,11 +74,9 @@ TEST_CASE("Event driven programming", "[event, tutorial")
       imageSurface.blit(windowSurface);
       window.update();
     }
-  } while (true);
+  } while (INTERACT & 4);
 }
-#endif
 
-#if INTERACT & 8
 TEST_CASE("Key presses", "[key, tutorial")
 {
   enum KeyPressSurfaces
@@ -146,7 +140,7 @@ TEST_CASE("Key presses", "[key, tutorial")
       window.update();
     }
 
-  } while (true);
+  } while (INTERACT & 8);
 
   currentSurface = nullptr;
 
@@ -156,9 +150,7 @@ TEST_CASE("Key presses", "[key, tutorial")
   }
   keyPressSurfaces.clear();
 }
-#endif
 
-#if INTERACT & 16
 TEST_CASE("Optimized surface loading and soft stretching",
           "[surface, stretch, tutorial]")
 {
@@ -186,12 +178,10 @@ TEST_CASE("Optimized surface loading and soft stretching",
       break;
     }
 
-  } while (true);
+  } while (INTERACT & 16);
 }
-#endif
 
-#ifdef SDL_IMAGE_H_
-#if INTERACT & 32 
+#ifdef _SDL_IMAGE_H
 TEST_CASE("Extension libraries and loading other image formats",
           "[SDL_image, lib, image, tutorial]")
 {
@@ -206,16 +196,14 @@ TEST_CASE("Extension libraries and loading other image formats",
 
   window.update();
 }
-#endif
-#endif
+#endif // _SDL_IMAGE_H
 
-#ifdef SDL_IMAGE_H_
-#if INTERACT & 64
+#ifdef _SDL_IMAGE_H
 TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 {
   SO::Window window("Texture Loading and Rendering [7]");
 
-  SO::Renderer render(window, SO::Render::Accelerated);
+  SO::Renderer render(window, SO::Renderer::Accelerated);
   render.setDrawColor(SO::Color {0, 0, 0});
 
   SO::Texture loadedTexture(render, "media/texture.png");
@@ -231,25 +219,21 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
       break;
     }
 
-
     render.clear();
     loadedTexture.copy(render);
     render.present();
 
-  } while (true);
+  } while (INTERACT & 64);
 }
-#endif
-#endif
+#endif // _SDL_IMAGE_H
 
-#if INTERACT & 128
 TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 {
-  SO::Window window("Geometry Rendering [8]");
-  window.setResizable(true);
+  SO::Window window("Geometry Rendering [8]", SO::Window::Resizable);
 
   SO::Pair<int> size = window.getSize();
 
-  SO::Renderer render(window, SO::Render::Accelerated);
+  SO::Renderer render(window, SO::Renderer::Accelerated);
 
   SDL_Event event;
 
@@ -303,22 +287,19 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 
     render.present();
 
-  } while (true);
-}y
-#endif
+  } while (INTERACT & 128);
+}
 
-#ifdef SDL_IMAGE_H_
-#if INTERACT & 256
+#ifdef _SDL_IMAGE_H
 TEST_CASE("The Viewport", "[viewport]")
 {
   SO::setHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
     
-  SO::Window window("The Viewport [9]");
-  window.setResizable(true);
+  SO::Window window("The Viewport [9]", SO::Window::Resizable);
 
   SO::Pair<int> size = window.getSize();
 
-  SO::Renderer render(window, SO::Render::Accelerated);
+  SO::Renderer render(window, SO::Renderer::Accelerated);
 
   SO::Texture texture (render, "media/viewport.png");
 
@@ -350,18 +331,16 @@ TEST_CASE("The Viewport", "[viewport]")
     render.present();
 
 
-  } while (true);
+  } while (INTERACT & 256);
 }
-#endif
-#endif
+#endif // _SDL_IMAGE_H
 
-#ifdef SDL_IMAGE_H_
-#if INTERACT & 512
+#ifdef _SDL_IMAGE_H
 TEST_CASE("Color keying", "[Color]")
 {
   SO::Window window("Color keying [10]");
 
-  SO::Renderer render(window, SO::Render::Accelerated);
+  SO::Renderer render(window, SO::Renderer::Accelerated);
 
   SO::Texture foo(render, "media/foo.png", {0, 255, 255});
 
@@ -386,14 +365,12 @@ TEST_CASE("Color keying", "[Color]")
 
     render.present();
 	
-  }  while (true);
+  }  while (INTERACT & 512);
 	
 }
-#endif
-#endif
+#endif // _SDL_IMAGE_H
 
-#ifdef SDL_IMAGE_H_
-#if INTERACT & 1024 
+#ifdef _SDL_IMAGE_H
 TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 {
 
@@ -401,7 +378,7 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 
   SO::Pair<int> size = window.getSize();
 
-  SO::Renderer render(window, SO::Render::Accelerated);
+  SO::Renderer render(window, SO::Renderer::Accelerated);
 
   SO::Texture spriteSheet(render, "media/dots.png");
 
@@ -430,7 +407,7 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 			     spriteClips[0]);
       
     spriteSheet.copyToRender(render,
-			     {size.first - spriteClips[1].getWidth(), 0, width, height},
+			     {size.first - spriteClips[1].getWidth(), 0,width, height},
 			     spriteClips[1]);
       
     spriteSheet.copyToRender(render,
@@ -442,12 +419,11 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 			     spriteClips[3]);
     render.present();
       
-  } while (true);
+  } while (INTERACT & 1024);
     
   
 }
-#endif
-#endif
+#endif // _SDL_IMAGE_H
 
 
 TEST_CASE("Quit all subsystem")

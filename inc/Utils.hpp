@@ -55,63 +55,6 @@ namespace SO
   __ENUM_CLASS_OR_OVERLOAD__(Init, Uint32)
   __ENUM_CLASS_AND_OVERLOAD__(Init, Uint32)
 
-#undef InputFocus // Beaucse InputFocus already define in X11 lib
-  
-  enum class Wind : Uint32
-  {
-    Null              = 0,   
-    Fullscreen        = SDL_WINDOW_FULLSCREEN,
-    FullscreenDesktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
-    OpenGL            = SDL_WINDOW_OPENGL,
-    Shown             = SDL_WINDOW_SHOWN,
-    Hidden            = SDL_WINDOW_HIDDEN,
-    Borderless        = SDL_WINDOW_BORDERLESS,
-    Resizable         = SDL_WINDOW_RESIZABLE,
-    Minimized         = SDL_WINDOW_MINIMIZED,
-    Maximized         = SDL_WINDOW_MAXIMIZED,
-    InputGrabbed      = SDL_WINDOW_INPUT_GRABBED,
-    InputFocus        = SDL_WINDOW_INPUT_FOCUS,
-    Foreign           = SDL_WINDOW_FOREIGN,
-    AllowHighDPI      = SDL_WINDOW_ALLOW_HIGHDPI,
-    MouseCapture      = SDL_WINDOW_MOUSE_CAPTURE,
-    AlwaysOnTop       = SDL_WINDOW_ALWAYS_ON_TOP,
-    SkipTaskbar       = SDL_WINDOW_SKIP_TASKBAR,
-    Utility           = SDL_WINDOW_UTILITY,
-    Tooltip           = SDL_WINDOW_TOOLTIP,
-    PopupMenu         = SDL_WINDOW_POPUP_MENU
-  };
-
-  __ENUM_CLASS_OR_OVERLOAD__(Wind, Uint32)
-  __ENUM_CLASS_AND_OVERLOAD__(Wind, Uint32)
-
-
-#define InputFocus 1L // Restore value
-
-  enum class Render : Uint32
-  {
-    Null          = 0,
-    
-    Software      = SDL_RENDERER_SOFTWARE,      /**< The renderer is
-						   a software
-						   fallback */
-    Accelerated   = SDL_RENDERER_ACCELERATED,   /**< The renderer
-						   uses hardware
-						   acceleration */
-    PresentVSync  = SDL_RENDERER_PRESENTVSYNC,  /**< Present is
-						   synchronized with
-						   the refresh
-						   rate */
-    TargetTexture = SDL_RENDERER_TARGETTEXTURE  /**< The renderer
-p						   supports
-						   rendering
-						   texture */
-  };
-
-
-  __ENUM_CLASS_OR_OVERLOAD__(Render, Uint32)
-  __ENUM_CLASS_AND_OVERLOAD__(Render, Uint32)
-  
-
   /**< Flags to create renderer. */
 
   enum class TextureAccess : int
@@ -195,7 +138,7 @@ p						   supports
 
   };
 
-#ifdef SDL_IMAGE_H_
+#ifdef _SDL_IMAGE_H
   enum class ImageInit : int
   {
     Null = 0,
@@ -230,7 +173,7 @@ p						   supports
    */
   void quit();
 
-#ifdef SDL_IMAGE_H_
+#ifdef _SDL_IMAGE_H
   void initImage(ImageInit flags);
 
   void quitImage();

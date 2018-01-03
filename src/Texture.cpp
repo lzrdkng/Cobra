@@ -53,7 +53,7 @@ namespace SO
     if (m_texture == nullptr)
       throw Error(SDL_GetError());
   }
-#ifdef SDL_IMAGE_H_
+#ifdef _SDL_IMAGE_H
   Texture::Texture(Renderer& renderer,        
 		   const char* file,
 		   const Color& colorKeying)
@@ -230,7 +230,7 @@ namespace SO
     }*/
 
 
-#ifdef SDL_IMAGE_H_
+#ifdef _SDL_IMAGE_H
   Texture& Texture::loadFromFile(const char* file,
 				 Renderer& renderer,
 				 const Color& colorKeying)

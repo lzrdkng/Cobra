@@ -55,6 +55,7 @@ namespace SO
 
     static const Color White;
     static const Color Black;
+    static const Color Gray;
 
 
     // static methods

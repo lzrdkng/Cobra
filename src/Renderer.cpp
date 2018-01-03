@@ -34,10 +34,10 @@ namespace SO
 
   // constructors/destructor
 
-  Renderer::Renderer(Window& window, Render flags, int index)
+  Renderer::Renderer(Window& window, Uint32 flags, int index)
     : m_renderer(nullptr)
   {
-    m_renderer = SDL_CreateRenderer(window.toSDL(), index, (Uint32)flags);
+    m_renderer = SDL_CreateRenderer(window.toSDL(), index, flags);
 
     if (m_renderer == nullptr)
       throw Error(SDL_GetError());
@@ -201,7 +201,7 @@ namespace SO
 
     if (this->getInfo(info) == 0)
     {
-      if (info.flags & (Uint32)Render::TargetTexture)
+      if (info.flags & Renderer::TargetTexture)
 	if (SDL_SetRenderTarget(m_renderer, texture.toSDL()) != 0)
 	  throw Error(SDL_GetError());
       return true;

@@ -54,6 +54,20 @@ namespace SO
   class Renderer
   {
   public:
+
+    /** Renderer Initialization flags */
+    enum 
+    {
+      Null          = 0,
+      /** The renderer is a software fallback */
+      Software      = SDL_RENDERER_SOFTWARE,
+      /** The renderer uses hardware acceleration */
+      Accelerated   = SDL_RENDERER_ACCELERATED,
+      /** Present is synchronized with the refresh rate */
+      PresentVSync  = SDL_RENDERER_PRESENTVSYNC,
+      /** The renderer p supports rendering texture */
+      TargetTexture = SDL_RENDERER_TARGETTEXTURE  
+    };
     
 
     // constructors/destructor
@@ -71,7 +85,7 @@ namespace SO
      * @sa SO::Renderer:~Renderer
      */
     explicit Renderer(Window& window,
-                      Render flags = Render::Null,
+                      Uint32 flags = Renderer::Null,
                       int index = -1);
 
 

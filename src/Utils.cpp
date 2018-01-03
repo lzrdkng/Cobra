@@ -29,7 +29,7 @@ namespace SO
 
   void quit()
   {
-#ifdef SDL_IMAGE_H_
+#ifdef _SDL_IMAGE_H
     quitImage();
 #endif
 
@@ -37,10 +37,13 @@ namespace SO
     SDL_Quit();
   }
 
-#ifdef SDL_IMAGE_H_
+#ifdef _SDL_IMAGE_H
   void initImage(ImageInit flags)
   {
-    if ((IMG_Init(static_cast<int>(flags)) & flags) != flags)
+
+    int i_flags = static_cast<int>(flags);
+    
+    if ((IMG_Init(i_flags) & i_flags) != i_flags)
     {
       throw Error(IMG_GetError());
     }

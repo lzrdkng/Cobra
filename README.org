@@ -67,27 +67,27 @@
     SO::init(SO::Init::Video);
 
     // Create a resizable window at position (0,0) of size (250, 250)
-    SO::Window root("Minimal app", 0, 0, SO::Wind::Resizable, 250, 250);
+    SO::Window root("Minimal app", 0, 0, SO::Window::Resizable, 250, 250);
 
     // Create a hardware accelerated renderer, hooked to root
-    SO::Renderer renderer(root, SO::RenderFlags::Accelerated);
+    SO::Renderer renderer(root, SO::Renderer::Accelerated);
 
-    SDL_Event event;
+    SO::Event event;
 
     bool quit = false;
 
     while (!quit)
     {
       // Events handler
-      while (SDL_PollEvent(&event) != 0)
+      while (SO::PollEvent(event))
       {
-	if (event.type == SDL_QUIT)
-	{
-	  quit = false;
-	  break;
-	}
+        if (event.type == SDL_QUIT)
+        {
+          quit = false;
+          break;
+        }
 
-	// Handle other events
+        // Handle other events
       }
 
       // Do stuff 

@@ -11,6 +11,7 @@
 #include "WindowSurface.hpp"
 #include "Rect.hpp"
 #include "Renderer.hpp"
+#include "Event.hpp"
 
 #define INTERACT 0
 
@@ -58,12 +59,12 @@ TEST_CASE("Event driven programming", "[event, tutorial")
 
   SO::Surface imageSurface("media/x.bmp");
 
-  SDL_Event event;
+  SO::Event event;
 
   // Main loop
   do
   {
-    SDL_PollEvent(&event);
+    SO::PollEvent(event);
 
     if (event.type == SDL_QUIT)
     {
@@ -80,14 +81,14 @@ TEST_CASE("Event driven programming", "[event, tutorial")
 TEST_CASE("Key presses", "[key, tutorial")
 {
   enum KeyPressSurfaces
-    {
-      KeyPressSurfaceDefault,
-      KeyPressSurfaceUp,
-      KeyPressSurfaceDown,
-      KeyPressSurfaceLeft,
-      KeyPressSurfaceRight,
-      KeyPressSurfaceTotal
-    };
+  {
+    KeyPressSurfaceDefault,
+    KeyPressSurfaceUp,
+    KeyPressSurfaceDown,
+    KeyPressSurfaceLeft,
+    KeyPressSurfaceRight,
+    KeyPressSurfaceTotal
+  };
 
 
 
@@ -96,19 +97,19 @@ TEST_CASE("Key presses", "[key, tutorial")
   SO::WindowSurface windowSurface(window);
 
   std::vector<SO::Surface*> keyPressSurfaces = {new SO::Surface("media/press.bmp"),
-						  new SO::Surface("media/up.bmp"),
-						  new SO::Surface("media/down.bmp"),
-						  new SO::Surface("media/left.bmp"),
-						  new SO::Surface("media/right.bmp")};
+						new SO::Surface("media/up.bmp"),
+						new SO::Surface("media/down.bmp"),
+						new SO::Surface("media/left.bmp"),
+						new SO::Surface("media/right.bmp")};
   
   SO::Surface* currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
 
-  SDL_Event event; 
+  SO::Event event;
 
   // Main Loop
   do
   {
-    SDL_PollEvent(&event);
+    SO::PollEvent(event);
 
     if (event.type == SDL_QUIT)
     {
@@ -166,12 +167,12 @@ TEST_CASE("Optimized surface loading and soft stretching",
 
   window.update();
 
-  SDL_Event event;
+  SO::Event event;
 
   // Main Loop
   do
   {
-    SDL_PollEvent(&event);
+    SO::PollEvent(event);
 
     if (event.type == SDL_QUIT)
     {
@@ -186,7 +187,7 @@ TEST_CASE("Extension libraries and loading other image formats",
           "[SDL_image, lib, image, tutorial]")
 {
   SO::Window window("Extension libraries and loading other image formats "
-		      "[6]");
+		    "[6]");
 
   SO::WindowSurface windowSurface(window);
 
@@ -208,11 +209,11 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
 
   SO::Texture loadedTexture(render, "media/texture.png");
 
-  SDL_Event event;
+  SO::Event event;
 
   do
   {
-    SDL_PollEvent(&event);
+    SO::PollEvent(event);
 
     if (event.type == SDL_QUIT)
     {
@@ -235,11 +236,11 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 
   SO::Renderer render(window, SO::Renderer::Accelerated);
 
-  SDL_Event event;
+  SO::Event event;
 
   do
   {
-    SDL_PollEvent(&event);
+    SO::PollEvent(event);
 
     if (event.type == SDL_QUIT)
     {
@@ -263,15 +264,15 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 
     render.setDrawColor({0xFF, 0, 0});
     render.fillRect({size.first / 4, size.second / 4,
-		     size.first / 2, size.second / 2});
+	  size.first / 2, size.second / 2});
 
     render.setDrawColor({0, 0xFF, 0});
     render.drawRect({size.first / 6, size.second / 6,
-		     2*size.first/3, 2*size.second/3 });
+	  2*size.first/3, 2*size.second/3 });
 
     render.setDrawColor({0, 0, 0xFF});
     render.drawLine({{0, size.second / 2},
-		     {size.first, size.second / 2}});
+	{size.first, size.second / 2}});
       
     render.setDrawColor({0, 0xFF, 0xFF});
     render.drawCircle(size.first/2, size.second/2, 150);
@@ -303,11 +304,11 @@ TEST_CASE("The Viewport", "[viewport]")
 
   SO::Texture texture (render, "media/viewport.png");
 
-  SDL_Event event;
+  SO::Event event;
 
   do
   {
-    SDL_PollEvent(&event);
+    SO::PollEvent(event);
 
     if (event.type == SDL_QUIT)
     {
@@ -346,11 +347,11 @@ TEST_CASE("Color keying", "[Color]")
 
   SO::Texture background(render, "media/background.png", {0, 255, 255});
 
-  SDL_Event event;
+  SO::Event event;
 
   do
   {
-    SDL_PollEvent(&event);
+    SO::PollEvent(event);
 
     if (event.type == SDL_QUIT)
       break;
@@ -386,15 +387,15 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
   int height = spriteSheet.getHeight();
 
   std::vector<SO::Rect> spriteClips ={{0, 0, 100, 100},
-					{100, 0, 100, 100},
-					{0, 100, 100, 100},
-					{100, 100, 100, 100}};
+				      {100, 0, 100, 100},
+				      {0, 100, 100, 100},
+				      {100, 100, 100, 100}};
 
-  SDL_Event event;
+  SO::Event event;
 
   do
   {
-    SDL_PollEvent(&event);
+    SO::PollEvent(event);
 
     if (event.type == SDL_QUIT)
       break;
@@ -424,6 +425,8 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
   
 }
 #endif // _SDL_IMAGE_H
+
+
 
 
 TEST_CASE("Quit all subsystem")

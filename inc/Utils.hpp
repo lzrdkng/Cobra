@@ -9,7 +9,6 @@
 #include "Point.hpp"
 #include "Error.hpp"
 
-
 namespace SO
 {  
   typedef std::complex<double> Coord;

@@ -6,14 +6,15 @@
 #include "catch.hpp"
 
 // lib imports
-#include "SDL.hpp"
-#include "Window.hpp"
-#include "WindowSurface.hpp"
+#include "Event.hpp"
 #include "Rect.hpp"
 #include "Renderer.hpp"
-#include "Event.hpp"
+#include "SDL.hpp"
+#include "Texture.hpp"
+#include "Window.hpp"
+#include "WindowSurface.hpp"
 
-#define INTERACT 0
+#define INTERACT 4096
 
 TEST_CASE("Init subsystems")
 {
@@ -426,7 +427,166 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 }
 #endif // _SDL_IMAGE_H
 
+#ifdef _SDL_IMAGE_H
+TEST_CASE("Color modulation", "")
+{
+  SO::Window window("Color modulation [12]");
 
+  SO::Renderer render(window);
+
+  SO::Texture modulatedTexture(render, "media/colors.png");
+
+  SO::Event event;
+
+  bool quit = false;
+
+  Uint8 r = 255;
+  Uint8 g = 255;
+  Uint8 b = 255;
+
+  do
+  {
+    while (SO::PollEvent(event) != 0)
+    {
+      if (event.type == SDL_QUIT)
+      {
+	quit = true;
+	break;
+      }
+      else if (event.type == SDL_KEYDOWN)
+      {
+	switch (event.key.keysym.sym)
+	{
+	  case SDLK_q:
+	    r += 32;
+	    break;
+	  case SDLK_w:
+	    g += 32;
+	    break;
+	  case SDLK_e:
+	    b += 32;
+	    break;
+	  case SDLK_a:
+	    r -= 32;
+	    break;
+	  case SDLK_s:
+	    g -= 32;
+	    break;
+	  case SDLK_d:
+	    b -=32;
+	    break;
+	  default:
+	    break;
+	}
+      }
+    } 
+
+    render.setDrawColor(UINT32_MAX);
+    render.clear();
+
+    modulatedTexture.setColorMod({r, g, b});
+    modulatedTexture.copy(render);
+
+    render.present();
+  } while (!quit && INTERACT & 2048);
+  
+}
+#endif // _SDL_IMAGE_H
+
+TEST_CASE("Alpha blending")
+{
+  
+}
+
+TEST_CASE("Animated sprites and vsync")
+{
+  const int WALKING_ANIMATION_FRAMES = 6;
+  const int WALKING_SHOOTING_ANIMATION_FRAMES = 6;
+
+  SO::Window window("Animated sprites and vsync [14]");
+
+  SO::Pair<int> size = window.getSize();
+
+  SO::Renderer render(window, SO::Renderer::Accelerated|SO::Renderer::PresentVSync);
+
+  SO::Texture* walkingSprites[WALKING_ANIMATION_FRAMES] = {new SO::Texture(render, "media/urban/6.png"),
+							   new SO::Texture(render, "media/urban/1.png"),
+							   new SO::Texture(render, "media/urban/2.png"),
+							   new SO::Texture(render, "media/urban/3.png"),
+							   new SO::Texture(render, "media/urban/4.png"),
+							   new SO::Texture(render, "media/urban/5.png")};
+  
+  SO::Texture* walkingShootingSprites[WALKING_SHOOTING_ANIMATION_FRAMES] = {new SO::Texture(render, "media/urban/6s.png"),
+									    new SO::Texture(render, "media/urban/1s.png"),
+									    new SO::Texture(render, "media/urban/2s.png"),
+									    new SO::Texture(render, "media/urban/3s.png"),
+									    new SO::Texture(render, "media/urban/4s.png"),
+									    new SO::Texture(render, "media/urban/5s.png")};
+  SO::Event event;
+
+  bool quit = false;
+
+  int frame = 0;
+
+  bool shooted = false;
+
+  do
+  {
+    while (SO::PollEvent(event) != 0)
+    {
+      if (event.type == SDL_QUIT)
+      {
+	quit = true;
+	break;
+      }
+      else if (event.type == SDL_KEYDOWN)
+      {
+	switch (event.key.keysym.sym)
+	{
+	  case SDLK_SPACE:
+	    shooted = true;
+	    break;
+	  default:
+	    break;
+	}
+      }
+    }
+
+    render.setDrawColor(SO::Color::Black);
+    render.clear();
+
+    SO::Texture* currentFrame = nullptr;
+
+    if (shooted)
+      currentFrame = walkingShootingSprites[frame++];
+    else
+      currentFrame = walkingSprites[frame++];
+
+    int width = currentFrame->getWidth();
+    int height = currentFrame->getHeight();
+
+    currentFrame->copyToDst(render, {(size.first - width) / 2,
+	  (size.second - height)/2, width, height});
+    
+    render.present();
+
+    frame %= WALKING_ANIMATION_FRAMES;
+
+    shooted = false;
+
+    SO::delay(120);
+    
+  } while (!quit && INTERACT & 4096);
+
+  for (int i = 0; i < WALKING_ANIMATION_FRAMES; ++i) {
+    delete walkingSprites[i];
+  }
+  
+  for (int i = 0; i < WALKING_SHOOTING_ANIMATION_FRAMES; ++i) {
+    delete walkingShootingSprites[i];
+  }
+
+}
 
 
 TEST_CASE("Quit all subsystem")

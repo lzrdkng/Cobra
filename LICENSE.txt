@@ -1,5 +1,5 @@
 /*
- *  Cobra -- SDL2 C++ Wrapper
+ *  SO -- SDL2 Object Oriented C++ Wrapper
  *
  *  Copyright (C) 2017 Olivier Dion <olivier-dion@hotmail.com>
  *

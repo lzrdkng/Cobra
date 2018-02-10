@@ -52,7 +52,7 @@
 
     *SDL_INIT_VIDEO* -> *SO::Init::Video*
 
-    *SDL_WINDOW_FULLSCREEN* -> *SO::Wind::FullScreen**
+    *SDL_WINDOW_FULLSCREEN* -> *SO::Window::FullScreen**
 
 ** Usage
 

@@ -148,8 +148,14 @@ namespace SO
   
   __ENUM_CLASS_OR_OVERLOAD__(ImageInit, Uint32)
   __ENUM_CLASS_AND_OVERLOAD__(ImageInit, Uint32)
-
 #endif
+
+  enum class Flip : int
+  {
+    Null       = SDL_FLIP_NONE,
+    Horizontal = SDL_FLIP_HORIZONTAL,
+    Vertical   = SDL_FLIP_VERTICAL
+  };
 
   void init(Init flags);
 

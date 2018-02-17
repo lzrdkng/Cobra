@@ -14,7 +14,23 @@
 #include "Window.hpp"
 #include "WindowSurface.hpp"
 
-#define INTERACT 4096
+enum
+{
+  T_3  = 0x1,
+  T_4  = 0x2,
+  T_5  = 0x4,
+  T_7  = 0x8,
+  T_8  = 0x10,
+  T_9  = 0x20,
+  T_10 = 0x40,
+  T_11 = 0x80,
+  T_12 = 0x100,
+  T_13 = 0x200,
+  T_14 = 0x400,
+  T_15 = 0x800
+};
+
+#define INTERACT T_15
 
 TEST_CASE("Init subsystems")
 {
@@ -76,20 +92,20 @@ TEST_CASE("Event driven programming", "[event, tutorial")
       imageSurface.blit(windowSurface);
       window.update();
     }
-  } while (INTERACT & 4);
+  } while (INTERACT & T_3);
 }
 
 TEST_CASE("Key presses", "[key, tutorial")
 {
   enum KeyPressSurfaces
-  {
-    KeyPressSurfaceDefault,
-    KeyPressSurfaceUp,
-    KeyPressSurfaceDown,
-    KeyPressSurfaceLeft,
-    KeyPressSurfaceRight,
-    KeyPressSurfaceTotal
-  };
+    {
+      KeyPressSurfaceDefault,
+      KeyPressSurfaceUp,
+      KeyPressSurfaceDown,
+      KeyPressSurfaceLeft,
+      KeyPressSurfaceRight,
+      KeyPressSurfaceTotal
+    };
 
 
 
@@ -97,11 +113,14 @@ TEST_CASE("Key presses", "[key, tutorial")
 
   SO::WindowSurface windowSurface(window);
 
-  std::vector<SO::Surface*> keyPressSurfaces = {new SO::Surface("media/press.bmp"),
-						new SO::Surface("media/up.bmp"),
-						new SO::Surface("media/down.bmp"),
-						new SO::Surface("media/left.bmp"),
-						new SO::Surface("media/right.bmp")};
+  std::vector<SO::Surface*> keyPressSurfaces =
+    {
+      new SO::Surface("media/press.bmp"),
+      new SO::Surface("media/up.bmp"),
+      new SO::Surface("media/down.bmp"),
+      new SO::Surface("media/left.bmp"),
+      new SO::Surface("media/right.bmp")
+    };
   
   SO::Surface* currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
 
@@ -120,20 +139,20 @@ TEST_CASE("Key presses", "[key, tutorial")
     {
       switch (event.key.keysym.sym)
       {
-      case SDLK_UP:
-	currentSurface = keyPressSurfaces[KeyPressSurfaceUp];
-	break;
-      case SDLK_DOWN:
-	currentSurface = keyPressSurfaces[KeyPressSurfaceDown];
-	break;
-      case SDLK_LEFT:
-	currentSurface = keyPressSurfaces[KeyPressSurfaceLeft];
-	break;
-      case SDLK_RIGHT:
-	currentSurface = keyPressSurfaces[KeyPressSurfaceRight];
-	break;
-      default:
-	currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
+	case SDLK_UP:
+	  currentSurface = keyPressSurfaces[KeyPressSurfaceUp];
+	  break;
+	case SDLK_DOWN:
+	  currentSurface = keyPressSurfaces[KeyPressSurfaceDown];
+	  break;
+	case SDLK_LEFT:
+	  currentSurface = keyPressSurfaces[KeyPressSurfaceLeft];
+	  break;
+	case SDLK_RIGHT:
+	  currentSurface = keyPressSurfaces[KeyPressSurfaceRight];
+	  break;
+	default:
+	  currentSurface = keyPressSurfaces[KeyPressSurfaceDefault];
       }
     }
     else
@@ -142,7 +161,7 @@ TEST_CASE("Key presses", "[key, tutorial")
       window.update();
     }
 
-  } while (INTERACT & 8);
+  } while (INTERACT & T_4);
 
   currentSurface = nullptr;
 
@@ -180,7 +199,7 @@ TEST_CASE("Optimized surface loading and soft stretching",
       break;
     }
 
-  } while (INTERACT & 16);
+  } while (INTERACT & T_5);
 }
 
 #ifdef _SDL_IMAGE_H
@@ -206,7 +225,7 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
   SO::Window window("Texture Loading and Rendering [7]");
 
   SO::Renderer render(window, SO::Renderer::Accelerated);
-  render.setDrawColor(SO::Color {0, 0, 0});
+  render.setDrawColor(SO::Color::Black);
 
   SO::Texture loadedTexture(render, "media/texture.png");
 
@@ -222,10 +241,10 @@ TEST_CASE("Texture Loading and Rendering", "[SDL_Texture, image, tutorial]")
     }
 
     render.clear();
-    loadedTexture.copy(render);
+    render.copy(loadedTexture, NULL, NULL);
     render.present();
 
-  } while (INTERACT & 64);
+  } while (INTERACT & T_7);
 }
 #endif // _SDL_IMAGE_H
 
@@ -251,29 +270,38 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
     {
       switch (event.window.event)
       {
-      case SDL_WINDOWEVENT_RESIZED:
-      case SDL_WINDOWEVENT_SIZE_CHANGED:
-	size = window.getSize();
-	break;
-      default:
-	break;
+	case SDL_WINDOWEVENT_RESIZED:
+	case SDL_WINDOWEVENT_SIZE_CHANGED:
+	  size = window.getSize();
+	  break;
+	default:
+	  break;
       }
     }
 
-    render.setDrawColor(0);
+    render.setDrawColor(SO::Color::Black);
     render.clear();
 
     render.setDrawColor({0xFF, 0, 0});
-    render.fillRect({size.first / 4, size.second / 4,
-	  size.first / 2, size.second / 2});
+    render.fillRect(
+    {
+      size.first / 4, size.second / 4,
+      size.first / 2, size.second / 2
+    });
 
     render.setDrawColor({0, 0xFF, 0});
-    render.drawRect({size.first / 6, size.second / 6,
-	  2*size.first/3, 2*size.second/3 });
+    render.drawRect(
+    {
+      size.first / 6, size.second / 6,
+      2*size.first/3, 2*size.second/3
+    });
 
     render.setDrawColor({0, 0, 0xFF});
-    render.drawLine({{0, size.second / 2},
-	{size.first, size.second / 2}});
+    render.drawLine(
+    {
+      {0, size.second / 2},
+      {size.first, size.second / 2}
+    });
       
     render.setDrawColor({0, 0xFF, 0xFF});
     render.drawCircle(size.first/2, size.second/2, 150);
@@ -282,6 +310,7 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
     render.fillCircle(size.first/2, size.second/2, 75);
 
     render.setDrawColor({0xFF, 0xFF, 0});
+    
     for (auto i=0; i<size.first; i += 4)
     {
       render.drawPoint({size.first/2, i});
@@ -289,7 +318,7 @@ TEST_CASE("Geometry Rendering", "[Rect, Point, Line]")
 
     render.present();
 
-  } while (INTERACT & 128);
+  } while (INTERACT & T_8);
 }
 
 #ifdef _SDL_IMAGE_H
@@ -318,22 +347,22 @@ TEST_CASE("The Viewport", "[viewport]")
 
     size = window.getSize();
 
-    render.setDrawColor(UINT32_MAX);
+    render.setDrawColor(SO::Color::White);
     render.clear();
 
     render.setViewport({0, 0, size.first / 2, size.second / 2});
-    texture.copy(render);
+    render.copy(texture, NULL, NULL);
 
     render.setViewport({size.first / 2, 0, size.first / 2, size.second / 2});
-    texture.copy(render);
+    render.copy(texture, NULL, NULL);
 
     render.setViewport({0, size.second/2, size.first, size.second/2});
-    texture.copy(render);
+    render.copy(texture, NULL, NULL);
 
     render.present();
 
 
-  } while (INTERACT & 256);
+  } while (INTERACT & T_9);
 }
 #endif // _SDL_IMAGE_H
 
@@ -350,6 +379,10 @@ TEST_CASE("Color keying", "[Color]")
 
   SO::Event event;
 
+  SO::Rect backgroundDst {0, 0, background.getWidth(), background.getHeight()};
+
+  SO::Rect fooDst {240, 190, foo.getWidth(), foo.getHeight()};
+  
   do
   {
     SO::PollEvent(event);
@@ -357,17 +390,19 @@ TEST_CASE("Color keying", "[Color]")
     if (event.type == SDL_QUIT)
       break;
 
-    render.setDrawColor(UINT32_MAX);
+    render.setDrawColor(SO::Color::White);
     render.clear();
 
-    background.copyToDst(render,
-			 {0, 0, background.getWidth(), background.getHeight()});
-    foo.copyToDst(render,
-		  {240, 190, foo.getWidth(), foo.getHeight()});
+    render.copy(background,
+		NULL,
+		&backgroundDst);
+    render.copy(foo,
+		NULL,
+		&fooDst);
 
     render.present();
 	
-  }  while (INTERACT & 512);
+  }  while (INTERACT & T_10);
 	
 }
 #endif // _SDL_IMAGE_H
@@ -391,6 +426,12 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
 				      {100, 0, 100, 100},
 				      {0, 100, 100, 100},
 				      {100, 100, 100, 100}};
+  
+  std::vector<SO::Rect> src = {{0, 0, width, height},
+			       {size.first - spriteClips[1].getWidth(), 0, width, height},
+			       {0, size.second - spriteClips[2].getHeight(), width, height},
+			       {size.first - spriteClips[3].getWidth(),
+				size.second - spriteClips[3].getHeight(), width, height}};
 
   SO::Event event;
 
@@ -401,27 +442,27 @@ TEST_CASE("Clip Rendering and Sprite Sheets", "[Sprite]")
     if (event.type == SDL_QUIT)
       break;
 
-    render.setDrawColor(UINT32_MAX);
+    render.setDrawColor(SO::Color::White);
     render.clear();
 
-    spriteSheet.copyToRender(render,
-			     {0, 0,width, height},
-			     spriteClips[0]);
+    render.copy(spriteSheet,
+		&src[0],
+		&spriteClips[0]);
       
-    spriteSheet.copyToRender(render,
-			     {size.first - spriteClips[1].getWidth(), 0,width, height},
-			     spriteClips[1]);
+    render.copy(spriteSheet,
+		&src[1],
+		&spriteClips[1]);
       
-    spriteSheet.copyToRender(render,
-			     {0, size.second - spriteClips[2].getHeight(), width, height},
-			     spriteClips[2]);
+    render.copy(spriteSheet,
+		&src[2],
+		&spriteClips[2]);
       
-    spriteSheet.copyToRender(render,
-			     {size.first - spriteClips[3].getWidth(), size.second - spriteClips[3].getHeight(), width, height},
-			     spriteClips[3]);
+    render.copy(spriteSheet,
+		&src[3],
+		&spriteClips[3]);
     render.present();
       
-  } while (INTERACT & 1024);
+  } while (INTERACT & T_11);
     
   
 }
@@ -481,23 +522,80 @@ TEST_CASE("Color modulation", "")
       }
     } 
 
-    render.setDrawColor(UINT32_MAX);
+    render.setDrawColor(SO::Color::White);
     render.clear();
 
     modulatedTexture.setColorMod({r, g, b});
-    modulatedTexture.copy(render);
+    render.copy(modulatedTexture, NULL, NULL);
 
     render.present();
-  } while (!quit && INTERACT & 2048);
+  } while (!quit && INTERACT & T_12);
   
 }
 #endif // _SDL_IMAGE_H
 
+#ifdef _SDL_IMAGE_H
 TEST_CASE("Alpha blending")
 {
-  
-}
+  SO::Window window("Alpha blending [13]");
 
+  SO::Renderer render(window, SO::Renderer::Accelerated);
+
+  SO::Texture fadeOut(render, "media/fadeout.png", {0, 0xFF, 0xFF});
+
+  SO::Texture fadeIn(render, "media/fadein.png", {0, 0xFF, 0xFF});
+
+  SO::Event event;
+
+  bool quit = false;
+
+  Uint8 a = 255;
+
+  do
+  {
+    while (SO::PollEvent(event) != 0)
+    {
+      if (event.type == SDL_QUIT)
+      {
+	quit = true;
+	break;
+      }
+      else if (event.type == SDL_KEYDOWN)
+      {
+	switch (event.key.keysym.sym)
+	{
+	  case SDLK_w:
+	    if (a + 32 > 255)
+	      a = 255;
+	    else
+	      a += 32;
+	    break;
+	  case SDLK_s:
+	    if (a - 32 < 0)
+	      a = 0;
+	    else
+	      a -= 32;
+	    break;
+	  default:
+	    break;
+	}
+      }
+    }
+
+    render.setDrawColor(SO::Color::White);
+    render.clear();
+
+    render.copy(fadeIn, NULL, NULL);
+
+    fadeOut.setAlphaMod(a);
+    render.copy(fadeOut, NULL, NULL);
+
+    render.present();
+  } while (!quit && INTERACT & T_13);
+}
+#endif
+
+#ifdef _SDL_IMAGE_H
 TEST_CASE("Animated sprites and vsync")
 {
   const int WALKING_ANIMATION_FRAMES = 6;
@@ -509,19 +607,26 @@ TEST_CASE("Animated sprites and vsync")
 
   SO::Renderer render(window, SO::Renderer::Accelerated|SO::Renderer::PresentVSync);
 
-  SO::Texture* walkingSprites[WALKING_ANIMATION_FRAMES] = {new SO::Texture(render, "media/urban/6.png"),
-							   new SO::Texture(render, "media/urban/1.png"),
-							   new SO::Texture(render, "media/urban/2.png"),
-							   new SO::Texture(render, "media/urban/3.png"),
-							   new SO::Texture(render, "media/urban/4.png"),
-							   new SO::Texture(render, "media/urban/5.png")};
+  SO::Texture* walkingSprites[WALKING_ANIMATION_FRAMES] =
+    {
+      new SO::Texture(render, "media/urban/6.png"),
+      new SO::Texture(render, "media/urban/1.png"),
+      new SO::Texture(render, "media/urban/2.png"),
+      new SO::Texture(render, "media/urban/3.png"),
+      new SO::Texture(render, "media/urban/4.png"),
+      new SO::Texture(render, "media/urban/5.png")
+    };
   
-  SO::Texture* walkingShootingSprites[WALKING_SHOOTING_ANIMATION_FRAMES] = {new SO::Texture(render, "media/urban/6s.png"),
-									    new SO::Texture(render, "media/urban/1s.png"),
-									    new SO::Texture(render, "media/urban/2s.png"),
-									    new SO::Texture(render, "media/urban/3s.png"),
-									    new SO::Texture(render, "media/urban/4s.png"),
-									    new SO::Texture(render, "media/urban/5s.png")};
+  SO::Texture* walkingShootingSprites[WALKING_SHOOTING_ANIMATION_FRAMES] =
+    {
+      new SO::Texture(render, "media/urban/6s.png"),
+      new SO::Texture(render, "media/urban/1s.png"),
+      new SO::Texture(render, "media/urban/2s.png"),
+      new SO::Texture(render, "media/urban/3s.png"),
+      new SO::Texture(render, "media/urban/4s.png"),
+      new SO::Texture(render, "media/urban/5s.png")
+    };
+  
   SO::Event event;
 
   bool quit = false;
@@ -558,15 +663,18 @@ TEST_CASE("Animated sprites and vsync")
     SO::Texture* currentFrame = nullptr;
 
     if (shooted)
-      currentFrame = walkingShootingSprites[frame++];
+      currentFrame = walkingShootingSprites[(frame + WALKING_SHOOTING_ANIMATION_FRAMES - 1) % 6];
     else
-      currentFrame = walkingSprites[frame++];
+      currentFrame = walkingSprites[frame];
+
+    ++frame;
 
     int width = currentFrame->getWidth();
     int height = currentFrame->getHeight();
 
-    currentFrame->copyToDst(render, {(size.first - width) / 2,
-	  (size.second - height)/2, width, height});
+    SO::Rect dst {(size.first - width) / 2, (size.second - height) / 2, width, height};
+
+    render.copy(*currentFrame, NULL, &dst);
     
     render.present();
 
@@ -576,7 +684,7 @@ TEST_CASE("Animated sprites and vsync")
 
     SO::delay(120);
     
-  } while (!quit && INTERACT & 4096);
+  } while (!quit && INTERACT & T_14);
 
   for (int i = 0; i < WALKING_ANIMATION_FRAMES; ++i) {
     delete walkingSprites[i];
@@ -587,7 +695,81 @@ TEST_CASE("Animated sprites and vsync")
   }
 
 }
+#endif // _SDL_IMAGE_H
 
+#ifdef _SDL_IMAGE_H
+TEST_CASE("Rotation and Flipping")
+{
+  SO::Window window("Rotation and Flipping [15]");
+
+  SO::Pair<int> size = window.getSize();
+
+  SO::Renderer render(window);
+
+  SO::Texture arrow(render, "media/arrow.png");
+
+  bool quit = false;
+
+  double degree = 0.0;
+
+  SO::Event event;
+
+  SO::Flip flip = SO::Flip::Null;
+
+  SO::Rect dst {(size.first - arrow.getWidth()) / 2,
+		(size.second - arrow.getHeight()) / 2,
+		arrow.getWidth(), arrow.getHeight()};
+
+
+  do
+  {
+    while (SO::PollEvent(event) != 0)
+    {
+      if (event.type == SDL_QUIT)
+      {
+	quit = true;
+	break;
+      }
+      else if (event.type == SDL_KEYDOWN)
+      {
+	switch (event.key.keysym.sym)
+	{
+	  case SDLK_a:
+	    degree -=60;
+	    break;
+	  case SDLK_d:
+	    degree += 60;
+	    break;
+	  case SDLK_q:
+	    flip = SO::Flip::Horizontal;
+	    break;
+	  case SDLK_w:
+	    flip = SO::Flip::Null;
+	    break;
+	  case SDLK_e:
+	    flip = SO::Flip::Vertical;
+	    break;
+	}
+      }
+    }
+  
+
+    render.setDrawColor(SO::Color::White);
+    render.clear();
+
+    render.copyEx(arrow,
+		  NULL,
+		  &dst,
+		  degree,
+		  NULL,
+		  flip);
+
+    render.present();
+  } while  (!quit && INTERACT & T_15);
+}
+
+
+#endif // _SDL_IMAGE_H
 
 TEST_CASE("Quit all subsystem")
 {

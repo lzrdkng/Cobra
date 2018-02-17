@@ -52,7 +52,7 @@ namespace SO
   {
   public:
 
-    #undef InputFocus // Because InputFocus already defined in X11 lib
+#undef InputFocus // Because InputFocus already defined in X11 lib
 
     /** Window initialization flags */
     enum

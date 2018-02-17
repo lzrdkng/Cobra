@@ -167,68 +167,6 @@ namespace SO
 
   /* other methods */
 
-  Texture& Texture::copyToRender(Renderer& renderer,
-				 const Rect& src, const Rect& dst)
-  {
-    if (SDL_RenderCopy(renderer.toSDL(),
-		       m_texture,
-		       (const SDL_Rect*)&src,
-		       (const SDL_Rect*)&dst) != 0 )
-      throw Error(SDL_GetError());
-
-    return *this;
-  }
-
-  Texture& Texture::copyFromSrc(Renderer& renderer, const Rect& src)
-  {
-    if (SDL_RenderCopy(renderer.toSDL(),
-		       m_texture,
-		       (const SDL_Rect*)&src,
-		       NULL) != 0)
-      throw Error(SDL_GetError());
-
-    return *this;
-  }
-
-  Texture& Texture::copyToDst(Renderer& renderer, const Rect& dst)
-  {
-    if (SDL_RenderCopy(renderer.toSDL(),
-		       m_texture,
-		       NULL,
-		       (const SDL_Rect*)&dst) != 0)
-      throw Error(SDL_GetError());
-
-    return *this;
-  }
-    
-
-  Texture& Texture::copy(Renderer& renderer)
-  {
-    if (SDL_RenderCopy(renderer.toSDL(),
-		       m_texture,
-		       NULL,
-		       NULL) != 0)
-      throw Error(SDL_GetError());
-
-    return *this;
-  }
-
-  /*
-    bool CTexture::copyToRenderEx(const CRect& src,
-    const CRect& dst,
-    const double angle,
-    const CPoint& center,
-    SDL::RendererFlip flip) 
-    {
-    return SDL_RenderCopyEx(m_renderer,
-    m_texture,
-    src.toSDL(),
-    dst.toSDL(),
-    angle,
-    center.toSDL(),
-    flip) == 0 ? true:false;
-    }*/
-
 
 #ifdef _SDL_IMAGE_H
   Texture& Texture::loadFromFile(const char* file,

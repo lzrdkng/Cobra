@@ -89,24 +89,8 @@ namespace SO
      */
     Texture& setBlendMode(BlendModes blendMode);
 
-
     Texture& setColorMod(const Color& color);
-
-    Texture& copyToRender(Renderer& renderer, const Rect& src, const Rect& dst);
     
-    Texture& copyFromSrc(Renderer& renderer, const Rect& src);
-
-    Texture& copyToDst(Renderer& renderer, const Rect& dst);
-
-    Texture& copy(Renderer& renderer);
-
-
-
-    /*bool copyToRenderEx(const CRect& src,
-      const CRect& dst,
-      const double angle,
-      const CPoint& center,
-      SO::RendererFlip flip);*/
 
 #ifdef _SDL_IMAGE_H
     Texture& loadFromFile(const char* file,

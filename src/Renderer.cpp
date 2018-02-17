@@ -141,6 +141,22 @@ namespace SO
   }
 #endif
 
+#if SDL_VERSION_ATLEAST(2, 0, 4)
+  bool Renderer::isClipEnabled() const
+  {
+    return static_cast<bool>(SDL_RenderIsClipEnabled(m_renderer));
+  }
+#endif
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+  bool Renderer::targetSupported() const
+  {
+    return static_cast<bool>(SDL_RenderTargetSupported(m_renderer));
+  }
+#endif
+
+// SET METHODS
+  
   Renderer& Renderer::setClipRect(const Rect& rect)
   {
     if (SDL_RenderSetClipRect(m_renderer, (const SDL_Rect*)&rect) != 0)
@@ -212,7 +228,7 @@ namespace SO
 #endif
 
 
-// other methods
+// OTHER METHODS
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
   Renderer& Renderer::clear()
@@ -224,25 +240,44 @@ namespace SO
   }
 #endif
 
-#if SDL_VERSION_ATLEAST(2, 0, 4)
-  bool Renderer::isClipEnabled() const
+  Renderer& Renderer::copy(Texture& texture,
+			   const Rect* src,
+			   const Rect* dst)
   {
-    return static_cast<bool>(SDL_RenderIsClipEnabled(m_renderer));
+
+    if (SDL_RenderCopy(m_renderer,
+		       texture.toSDL(),
+		       (const SDL_Rect*)src,
+		       (const SDL_Rect*)dst) != 0)
+      throw Error(SDL_GetError());
+    
+    return *this;
   }
-#endif
+    
+  Renderer& Renderer::copyEx(Texture& texture,
+			     const Rect* src,
+			     const Rect* dst,
+			     const double angle,
+			     const Point* center,
+			     const Flip flip)
+  {
+    if (SDL_RenderCopyEx(m_renderer,
+			 texture.toSDL(),
+			 (const SDL_Rect*)src,
+			 (const SDL_Rect*)dst,
+			 angle,
+			 (const SDL_Point*)center,
+			 static_cast<SDL_RendererFlip>(flip)) != 0)
+      throw Error(SDL_GetError());
+    
+    return *this;
+  }
 
   Renderer& Renderer::present()
   {
     SDL_RenderPresent(m_renderer); 
     return *this;
   }
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-  bool Renderer::targetSupported() const
-  {
-    return static_cast<bool>(SDL_RenderTargetSupported(m_renderer));
-  }
-#endif
 
   Renderer& Renderer::drawCircle(int x0, int y0, int r)
   {

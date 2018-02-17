@@ -50,7 +50,7 @@ namespace SO
    *
    * **SDL 2.0.0**
    */
-
+  
   class Renderer
   {
   public:
@@ -203,6 +203,29 @@ namespace SO
     Rect getViewport() const;
 #endif
 
+#if SDL_VERSION_ATLEAST(2, 0, 4)
+    /**
+     * @brief Return wheter clipping is enable on the renderer.
+     * @return bool
+     * @version **SDL2.0.4**
+     * @sa SO::Renderer::getClipRect
+     * @sa SO::Renderer::setClipRect
+     */
+    bool isClipEnabled() const;
+#endif
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    /**
+     * @brief Return wheter the renderer supports the use of render targets.
+     * @return bool
+     * @version **SDL2.0.0**
+     * @sa SO::Renderer::setTarget
+     */
+    bool targetSupported() const;
+#endif    
+
+
+    // set methods
 
     /**
      * @brief Set the clip rectangle for the renderer's target.
@@ -295,9 +318,58 @@ namespace SO
     Renderer& setViewport(const Rect& rect);
     
     
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    /**
+     * @brief Clear the renderer with its drawing color.
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
+     * @note This method clears the entire renderer, ignoring the viewport
+     * and the clip rectangle.
+     * @version **SDL2.0.0**
+     * @sa SO::Renderer::setDrawColor
+     */
+    Renderer& clear();
+#endif
+
     // other methods
 
-
+    /**
+     * @brief Use this method to copy a portion of the texture to the renderer.
+     * @param texture the source texture
+     * @param src the source Rect
+     * @param dst the destination Rect
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
+     */
+    Renderer& copy(Texture& texture,
+		   const Rect* src,
+		   const Rect* dst);
+    
+    /**
+     * @brief Use this method to copy a portion of the texture to the renderer,
+     * optionnaly rotating it by angle around the given center and also flipping
+     * it top-bottom and/or left-right.
+     * @param texture the source texture
+     * @param src the source Rect
+     * @param dst the destination Rect
+     * @param angle an angle in degrees that indicates the rotation that will
+     * be applied to dst, rotating it in a clockwise direction
+     * @param center point around which dst will be rotated
+     * @param flip a SO::Flip value stating which flipping actions should be
+     * performed on the texture
+     * @return SO::Renderer&
+     * @throw SO::Error on failure
+     * @sa SO::Renderer::copyFromSrc
+     * @sa SO::Renderer::copyToDst
+     * @sa SO::Renderer::copyEx
+     */
+    Renderer& copyEx(Texture& texture,
+		     const Rect* src,
+		     const Rect* dst,
+		     const double angle,
+		     const Point* center,
+		     const Flip flip);
+    
     Renderer& drawCircle(int x0, int y0, int r);
 
     Renderer& fillCircle(int x0, int y0, int r);
@@ -332,31 +404,6 @@ namespace SO
     Renderer& fillRect(const Rect& rect);
 
     Renderer& fillRects(const std::vector<Rect>& rects);
-
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    /**
-     * @brief Clear the renderer with its drawing color.
-     * @return SO::Renderer&
-     * @throw SO::Error on failure
-     * @note This method clears the entire renderer, ignoring the viewport
-     * and the clip rectangle.
-     * @version **SDL2.0.0**
-     * @sa SO::Renderer::setDrawColor
-     */
-    Renderer& clear();
-#endif
-
-#if SDL_VERSION_ATLEAST(2, 0, 4)
-    /**
-     * @brief Return wheter clipping is enable on the renderer.
-     * @return bool
-     * @version **SDL2.0.4**
-     * @sa SO::Renderer::getClipRect
-     * @sa SO::Renderer::setClipRect
-     */
-    bool isClipEnabled() const;
-#endif
 
 
     /**
@@ -399,17 +446,6 @@ namespace SO
      * @remark This is a very slow operation, and should not be used frequently.
      */
     Renderer& readPixels(const Rect& rect, PixelFormats format, void* pixels, int pitch); // Need to be change in the future
-
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    /**
-     * @brief Return wheter the renderer supports the use of render targets.
-     * @return bool
-     * @version **SDL2.0.0**
-     * @sa SO::Renderer::setTarget
-     */
-    bool targetSupported() const;
-#endif
     
     /**
      * @brief Return the constant wrapped SDL_Renderer.

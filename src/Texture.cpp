@@ -53,16 +53,28 @@ namespace SO
     if (m_texture == nullptr)
       throw Error(SDL_GetError());
   }
+  
 #ifdef _SDL_IMAGE_H
-  Texture::Texture(Renderer& renderer,        
+  Texture::Texture(Renderer& renderer,
 		   const char* file,
 		   const Color& colorKeying)
     : m_texture(nullptr)
   {
-    this->loadFromFile(file, renderer, colorKeying);
+    this->loadFromFile(renderer, file, colorKeying);
   }
 #endif
 
+#ifdef _SDL_TTF_H
+  Texture::Texture(Renderer& renderer,
+		   const char* text,
+		   const Color& textColor,
+		   TTF_Font* font)
+    : m_texture(nullptr)
+  {
+    this->loadFromRenderedText(renderer, text, textColor, font);
+  }
+#endif
+  
   Texture::~Texture() 
   {
     free();
@@ -169,8 +181,8 @@ namespace SO
 
 
 #ifdef _SDL_IMAGE_H
-  Texture& Texture::loadFromFile(const char* file,
-				 Renderer& renderer,
+  Texture& Texture::loadFromFile(Renderer& renderer,
+				 const char* file,
 				 const Color& colorKeying)
   {
 
@@ -185,15 +197,12 @@ namespace SO
       this->free();
 
       if (colorKeying != Color {0, 0, 0, 0})
-	SDL_SetColorKey(
-	  loadedSurface,
-	  SDL_TRUE,
-	  SDL_MapRGB(
-	    loadedSurface->format,
-	    colorKeying.getRed(),
-	    colorKeying.getGreen(), 
-	    colorKeying.getBlue())
-	  );
+	SDL_SetColorKey(loadedSurface,
+			SDL_TRUE,
+			SDL_MapRGB(loadedSurface->format,
+				   colorKeying.getRed(),
+				   colorKeying.getGreen(), 
+				   colorKeying.getBlue()));
 
       m_texture = SDL_CreateTextureFromSurface(renderer.toSDL(),
 					       loadedSurface);
@@ -203,6 +212,36 @@ namespace SO
       {
 	throw Error(SDL_GetError());
       }
+    }
+
+    return *this;
+  }
+#endif
+
+#ifdef _SDL_TTF_H
+  Texture& Texture::loadFromRenderedText(Renderer& render,
+					 const char* text,
+					 const Color& textColor,
+					 TTF_Font* font)
+  {
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, *((SDL_Color*)&textColor));
+
+    if (textSurface == nullptr)
+    {
+      throw Error(TTF_GetError());
+    }
+    else
+    {
+      this->free();
+
+      m_texture = SDL_CreateTextureFromSurface(render.toSDL(), textSurface);
+      
+      SDL_FreeSurface(textSurface);
+
+      if (m_texture == nullptr)
+      {
+	throw Error(SDL_GetError());
+      }      
     }
 
     return *this;

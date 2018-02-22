@@ -33,6 +33,10 @@ namespace SO
     quitImage();
 #endif
 
+#ifdef _SDL_TTF_H
+    quitTTF();
+#endif
+    
     SDL_QuitSubSystem(SDL_WasInit(0));
     SDL_Quit();
   }
@@ -54,5 +58,18 @@ namespace SO
     IMG_Quit();
   }
 #endif
+
+#ifdef _SDL_TTF_H
+  void initTTF()
+  {
+    if (TTF_Init() == -1)
+      throw Error(TTF_GetError());
+  }
+
+  void quitTTF()
+  {
+    TTF_Quit();
+  }
+#endif 
 
 }

@@ -41,7 +41,13 @@
 namespace SO
 {
 
-  class Renderer;
+  typedef enum
+  {
+    File,
+    Text
+  } RendereredFrom;
+  
+  class Renderer; // Forward declaration
 
   class Texture {
   public:
@@ -54,9 +60,16 @@ namespace SO
 #ifdef _SDL_IMAGE_H
     explicit Texture(Renderer& renderer,
                      const char* file,
-		     const Color& colorKeying = {0, 0, 0, 0});
+		     const Color& colorKeying = Color::Black);
 #endif
 
+#ifdef _SDL_TTF_H
+    explicit Texture(Renderer& renderer,
+		     const char* text,
+		     const Color& textColor,
+		     TTF_Font* font);
+#endif
+    
     
     Texture(const Texture& orig)             = delete;
     Texture(Texture&& orig)                  = delete;
@@ -93,9 +106,16 @@ namespace SO
     
 
 #ifdef _SDL_IMAGE_H
-    Texture& loadFromFile(const char* file,
-                          Renderer& renderer,
-			  const Color& colorKeying = {0, 0, 0, 0});
+    Texture& loadFromFile(Renderer& renderer,
+			  const char* str,
+			  const Color& color = Color::Black);
+#endif
+
+#ifdef _SDL_TTF_H
+    Texture& loadFromRenderedText(Renderer& renderer,
+				  const char* str,
+				  const Color& color,
+				  TTF_Font* font);
 #endif
 
     //bool lock(const CRectangle& rect, void** pixels, int* pitch);

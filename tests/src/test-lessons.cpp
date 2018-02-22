@@ -1,18 +1,8 @@
-// std imports
 #include <vector>
-#include <iostream>
 
-// catch import
 #include "catch.hpp"
 
-// lib imports
-#include "Event.hpp"
-#include "Rect.hpp"
-#include "Renderer.hpp"
 #include "SDL.hpp"
-#include "Texture.hpp"
-#include "Window.hpp"
-#include "WindowSurface.hpp"
 
 enum
 {
@@ -27,10 +17,72 @@ enum
   T_12 = 0x100,
   T_13 = 0x200,
   T_14 = 0x400,
-  T_15 = 0x800
+  T_15 = 0x800,
+  T_16 = 0x1000,
+  T_17 = 0x2000
 };
 
-#define INTERACT T_15
+const uint INTERACT = T_17;
+
+// BEGIN T_17
+const int BUTTON_WIDTH  = 300;
+const int BUTTON_HEIGHT = 200;
+const int TOTAL_BUTTONS = 4;
+
+enum ButtonSprite
+{
+  MouseOut = 0,
+  MouseOverMotion = 1,
+  MouseDown = 2,
+  MouseUp = 3,
+  Total = 4
+};
+
+typedef struct Button
+{
+  SO::Point pos;
+    
+  ButtonSprite currentSprite;
+    
+} Button;
+
+void Button_HandleEvent(Button& button, const SO::Event& event)
+{
+  if (event.type == SDL_MOUSEMOTION ||
+      event.type == SDL_MOUSEBUTTONDOWN ||
+      event.type == SDL_MOUSEBUTTONUP)
+  {
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+
+    bool inside = true;
+
+    if (x < button.pos.getX() ||
+	x > button.pos.getX() + BUTTON_WIDTH ||
+	y < button.pos.getY() ||
+	y > button.pos.getY() + BUTTON_HEIGHT)
+      inside = false;
+
+    if (!inside)
+      button.currentSprite = MouseOut;
+    else
+    {
+      switch (event.type)
+      {
+	case SDL_MOUSEMOTION:
+	  button.currentSprite = MouseOverMotion;
+	  break;
+	case SDL_MOUSEBUTTONDOWN:
+	  button.currentSprite = MouseDown;
+	  break;
+	case SDL_MOUSEBUTTONUP:
+	  button.currentSprite = MouseUp;
+	  break;
+      }
+    }      
+  }
+}
+// END T_17
 
 TEST_CASE("Init subsystems")
 {
@@ -40,6 +92,10 @@ TEST_CASE("Init subsystems")
 
 #ifdef  _SDL_IMAGE_H
   SO::initImage(SO::ImageInit::PNG | SO::ImageInit::JPG);
+#endif
+  
+#ifdef _SDL_TTF_H
+  SO::initTTF();
 #endif
 }
 
@@ -767,9 +823,115 @@ TEST_CASE("Rotation and Flipping")
     render.present();
   } while  (!quit && INTERACT & T_15);
 }
-
-
 #endif // _SDL_IMAGE_H
+
+#ifdef _SDL_TTF_H
+TEST_CASE("True type fonts", "[fonts]")
+{
+  SO::Window window("True type fonts [16]");
+
+  SO::Pair<int> size = window.getSize();
+
+  SO::Renderer render(window);
+
+  TTF_Font* font = TTF_OpenFont("fonts/lazy.ttf", 28);
+
+  SO::Texture textTexture(render, "The quick brown fox jumps over the lazy dog",
+			  SO::Color::Black, font);
+  bool quit = false;
+
+  SO::Event event;
+
+  SO::Rect dst {(size.first - textTexture.getWidth()) / 2,
+		(size.second - textTexture.getHeight())/ 2,
+		textTexture.getWidth(), textTexture.getHeight()};
+
+  do
+  {
+    while (SO::PollEvent(event) != 0)
+      if (event.type == SDL_QUIT)
+      {
+	quit = true;
+	break;
+      }
+
+    render.setDrawColor(SO::Color::White);
+    render.clear();
+
+    render.copy(textTexture, NULL, &dst);
+
+    render.present();
+    
+  } while (!quit && INTERACT & T_16);
+
+  TTF_CloseFont(font);
+  font = NULL;
+}
+#endif // _SDL_TTF_H
+
+TEST_CASE("Mouse events", "[Mouse]")
+{  
+  SO::Window window("Mouse events [17]");
+
+  SO::Pair<int> size = window.getSize();
+
+  SO::Renderer render(window);
+
+  SO::Texture buttonSpriteSheetTexture(render, "media/button.png", SO::Color::White);
+
+  SO::Rect spriteClips[Total] = {{0, 0,   BUTTON_WIDTH, BUTTON_HEIGHT},
+				 {0, 200, BUTTON_WIDTH, BUTTON_HEIGHT},
+				 {0, 400, BUTTON_WIDTH, BUTTON_HEIGHT},
+				 {0, 600, BUTTON_WIDTH, BUTTON_HEIGHT}};
+
+  Button buttons[TOTAL_BUTTONS] = {{{0, 0},
+				    MouseOut},
+				   {{size.first - BUTTON_WIDTH, 0},
+				    MouseOut},
+				   {{0, size.second - BUTTON_HEIGHT},
+				    MouseOut},
+				   {{size.first - BUTTON_WIDTH, size.second - BUTTON_HEIGHT},
+				    MouseOut}};
+
+  bool quit = false;
+
+  SO::Event event;
+
+  SO::Rect dst;
+
+  do
+  {
+    while (SO::PollEvent(event) != 0)
+    {
+      if (event.type == SDL_QUIT)
+      {
+	quit = true;
+	break;
+      }
+
+      for (auto i = 0; i < TOTAL_BUTTONS; ++i)
+      {
+	Button_HandleEvent(buttons[i], event);
+      }
+
+    }
+
+    render.setDrawColor(SO::Color::White);
+    render.clear();
+
+    for (auto i = 0; i < TOTAL_BUTTONS; ++i)
+    {
+      dst = spriteClips[buttons[i].currentSprite];
+      dst.setX(buttons[i].pos.getX());
+      dst.setY(buttons[i].pos.getY());
+      
+      render.copyEx(buttonSpriteSheetTexture, &spriteClips[buttons[i].currentSprite], &dst);
+    }
+
+    render.present();
+    
+  } while (!quit && INTERACT & T_17);	      		 
+}
 
 TEST_CASE("Quit all subsystem")
 {

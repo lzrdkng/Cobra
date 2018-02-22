@@ -366,9 +366,9 @@ namespace SO
     Renderer& copyEx(Texture& texture,
 		     const Rect* src,
 		     const Rect* dst,
-		     const double angle,
-		     const Point* center,
-		     const Flip flip);
+		     const double angle = 0,
+		     const Point* center = NULL,
+		     const Flip flip = Flip::Null);
     
     Renderer& drawCircle(int x0, int y0, int r);
 

@@ -1,17 +1,18 @@
-#ifndef COBRA_SDL_HPP
-#define COBRA_SDL_HPP
+#ifndef SO_SDL_HPP
+#define SO_SDL_HPP
 
 // std import
 #include <complex>
 
 // SDL2 import
 #include <SDL2/SDL.h>
-
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 // lib import
-#include "Point.hpp"
+#include "Color.hpp"
 #include "Error.hpp"
+#include "Event.hpp"
 #include "PixelFormat.hpp"
 #include "Point.hpp"
 #include "Rect.hpp"
@@ -23,5 +24,5 @@
 #include "WindowSurface.hpp"
 
 
-#endif // COBRA_SDL_HPP
+#endif // SO_SDL_HPP
 
